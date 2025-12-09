@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>8강 - Gen.G vs Hanwha Life Esports</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+    :root {
+        --bg-dark: #0a0e13;
+        --bg-card: #111827;
+        --bg-hover: #1f2937;
+        --gold-primary: #c89b3c;
+        --gold-secondary: #f0e6d2;
+        --blue-accent: #0ac8b9;
+        --red-accent: #ff4655;
+        --text-primary: #f0e6d2;
+        --text-secondary: #a09b8c;
+        --border-color: #3c3c41;
+        --gradient-gold: linear-gradient(135deg, #785a28 0%, #c8aa6e 50%, #c89b3c 100%);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+        font-family: 'Noto Sans KR', sans-serif;
+        background: var(--bg-dark);
+        color: var(--text-primary);
+        min-height: 100vh;
+        background-image: radial-gradient(ellipse at top, rgba(200, 155, 60, 0.05) 0%, transparent 50%);
+    }
+    .container { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
+    .back-link {
+        display: inline-flex; align-items: center; gap: 8px;
+        color: var(--text-secondary); text-decoration: none;
+        margin-bottom: 30px; font-size: 0.95rem; transition: color 0.2s;
+    }
+    .back-link:hover { color: var(--gold-primary); }
+    .header {
+        text-align: center; margin-bottom: 40px; padding: 40px;
+        background: var(--bg-card); border-radius: 16px; border: 1px solid var(--border-color);
+    }
+    .stage-badge {
+        display: inline-block; font-family: 'Orbitron', sans-serif; font-size: 0.85rem;
+        background: var(--gold-primary); color: var(--bg-dark);
+        padding: 6px 16px; border-radius: 4px; font-weight: 700; margin-bottom: 16px;
+    }
+    .match-title {
+        font-family: 'Orbitron', sans-serif; font-size: 2rem; font-weight: 900;
+        color: var(--text-primary); margin-bottom: 12px; display: flex;
+        align-items: center; justify-content: center; gap: 16px; flex-wrap: wrap;
+    }
+    .team-logo { width: 48px; height: 48px; object-fit: contain; }
+    .team-with-logo { display: flex; align-items: center; gap: 8px; }
+    .vs-divider { color: var(--red-accent); margin: 0 12px; font-size: 1.2rem; }
+    .final-score {
+        font-family: 'Orbitron', sans-serif; font-size: 2.5rem; font-weight: 900;
+        color: var(--gold-primary); margin-top: 12px;
+    }
+    .keywords-container {
+        display: flex; flex-wrap: wrap; justify-content: center; gap: 12px;
+        margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--border-color);
+    }
+    .keyword-tag {
+        font-family: 'Orbitron', sans-serif; font-size: 1.1rem; font-weight: 700;
+        color: var(--blue-accent); background: rgba(10, 200, 185, 0.1);
+        padding: 8px 16px; border-radius: 24px; border: 1px solid rgba(10, 200, 185, 0.3);
+        transition: all 0.3s ease;
+    }
+    .keyword-tag::before { content: '#'; opacity: 0.7; }
+    .keyword-tag:hover {
+        background: rgba(10, 200, 185, 0.2); transform: translateY(-2px);
+    }
+    .overview-section {
+        background: var(--bg-card); border-radius: 16px; padding: 30px;
+        margin-bottom: 30px; border: 1px solid var(--border-color);
+    }
+    .overview-title {
+        display: flex; align-items: center; gap: 12px;
+        font-family: 'Orbitron', sans-serif; font-size: 1.2rem;
+        color: var(--gold-primary); margin-bottom: 16px;
+    }
+    .overview-text { color: var(--text-secondary); line-height: 1.9; }
+    .set-card {
+        background: var(--bg-card); border-radius: 16px; border: 1px solid var(--border-color);
+        margin-bottom: 24px; overflow: hidden; transition: border-color 0.3s ease;
+    }
+    .set-card:hover { border-color: var(--gold-primary); }
+    .set-header {
+        background: linear-gradient(180deg, #1a2332 0%, #111827 100%);
+        padding: 20px 24px; border-bottom: 1px solid var(--border-color);
+        display: flex; justify-content: space-between; align-items: center;
+    }
+    .set-number { font-family: 'Orbitron', sans-serif; font-size: 1.3rem; font-weight: 700; }
+    .set-winner {
+        font-size: 0.9rem; padding: 6px 16px; border-radius: 20px; font-weight: 600;
+    }
+    .set-winner.team-a { background: rgba(10, 200, 185, 0.2); color: var(--blue-accent); border: 1px solid var(--blue-accent); }
+    .set-winner.team-b { background: rgba(255, 70, 85, 0.2); color: var(--red-accent); border: 1px solid var(--red-accent); }
+    .set-body { padding: 24px; }
+    .analysis-section { margin-bottom: 24px; }
+    .analysis-label {
+        display: flex; align-items: center; gap: 8px;
+        font-family: 'Orbitron', sans-serif; font-size: 0.9rem;
+        color: var(--gold-primary); margin-bottom: 12px;
+    }
+    .analysis-content {
+        color: var(--text-secondary); line-height: 1.9; font-size: 0.95rem;
+        padding-left: 28px; border-left: 2px solid var(--border-color);
+    }
+    .key-champions { margin-bottom: 24px; }
+    .key-champions-title {
+        display: flex; align-items: center; gap: 8px;
+        font-size: 0.9rem; color: var(--gold-primary); margin-bottom: 12px;
+    }
+    .champions-grid { display: flex; flex-wrap: wrap; gap: 12px; }
+    .champion-item { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+    .champion-portrait {
+        width: 50px; height: 50px; border-radius: 50%; border: 2px solid var(--gold-primary);
+        background: var(--bg-hover); display: flex; align-items: center; justify-content: center;
+        font-size: 1.5rem; color: var(--gold-primary);
+    }
+    .champion-name { font-size: 0.7rem; color: var(--text-secondary); text-align: center; }
+    .nav-buttons { display: flex; justify-content: space-between; margin-top: 40px; gap: 16px; }
+    .nav-btn {
+        flex: 1; padding: 16px 24px; background: var(--bg-card);
+        border: 1px solid var(--border-color); border-radius: 8px;
+        color: var(--text-secondary); text-decoration: none; text-align: center;
+        font-weight: 500; transition: all 0.3s ease;
+    }
+    .nav-btn:hover { border-color: var(--gold-primary); color: var(--gold-primary); }
+    .footer {
+        text-align: center; margin-top: 60px; padding: 30px;
+        border-top: 1px solid var(--border-color); color: var(--text-secondary);
+    }
+    @media (max-width: 768px) {
+        .match-title { font-size: 1.4rem; }
+        .final-score { font-size: 2rem; }
+        .nav-buttons { flex-direction: column; }
+    }
+</style>
+</head>
+<body>
+    <div class="container">
+        <a href="../../" class="back-link">← 스토리 목록으로 돌아가기</a>
+        
+        <header class="header">
+            <span class="stage-badge">8강</span>
+            <h1 class="match-title">
+                <span class="team-with-logo">
+                    <img src="../../../static/images/teams/geng.svg" class="team-logo" onerror="this.style.display='none'">
+                    Gen.G
+                </span>
+                <span class="vs-divider">VS</span>
+                <span class="team-with-logo">
+                    <img src="../../../static/images/teams/hle.svg" class="team-logo" onerror="this.style.display='none'">
+                    Hanwha Life Esports
+                </span>
+            </h1>
+            <div class="final-score">3:1</div>
+            
+            <div class="keywords-container">
+                <span class="keyword-tag">LCK내전</span><span class="keyword-tag">사실상결승</span><span class="keyword-tag">월즈잔혹사</span><span class="keyword-tag">피넛라스트댄스</span><span class="keyword-tag">1시간혈전</span>
+            </div>
+            
+        </header>
+
+        
+        <section class="overview-section">
+            <h2 class="overview-title"><span>📋</span> 경기 총평</h2>
+            <p class="overview-text">8강 대진 추첨 결과, LCK의 두 거함 젠지와 한화생명의 내전이 성사되며 8강 최고의 빅매치가 탄생했습니다. 올 한 해 LCK 컵과 정규 리그에서 Bo5 2승 2패로 팽팽한 라이벌 관계를 형성했던 두 팀의 만남은 사실상의 결승전이라는 평가를 받을 만큼 엄청난 기대를 모았습니다. 젠지는 월즈 잔혹사를 끊기 위해, 한화생명은 '피넛' 한왕호의 라스트 댄스를 완성하기 위해 반드시 서로를 넘어서야만 했습니다.</p>
+        </section>
+        
+
+        
+            <article class="set-card">
+                <div class="set-header">
+                    <span class="set-number">1세트</span>
+                    <span class="set-winner team-a">🏆 Gen.G 승리</span>
+                </div>
+                <div class="set-body">
+                    
+                    <div class="key-champions">
+                        <h4 class="key-champions-title"><span>🎖️</span> 주요 챔피언</h4>
+                        <div class="champions-grid">
+                            <div class="champion-item"><div class="champion-portrait placeholder">⚔️</div><span class="champion-name">Pantheon</span></div><div class="champion-item"><div class="champion-portrait placeholder">⚔️</div><span class="champion-name">Sejuani</span></div><div class="champion-item"><div class="champion-portrait placeholder">⚔️</div><span class="champion-name">RekSai</span></div><div class="champion-item"><div class="champion-portrait placeholder">⚔️</div><span class="champion-name">Taliyah</span></div><div class="champion-item"><div class="champion-portrait placeholder">⚔️</div><span class="champion-name">Corki</span></div><div class="champion-item"><div class="champion-portrait placeholder">⚔️</div><span class="champion-name">Ryze</span></div><div class="champion-item"><div class="champion-portrait placeholder">⚔️</div><span class="champion-name">Neeko</span></div><div class="champion-item"><div class="champion-portrait placeholder">⚔️</div><span class="champion-name">Ezreal</span></div><div class="champion-item"><div class="champion-portrait placeholder">⚔️</div><span class="champion-name">Wukong</span></div>
+                        </div>
+                    </div>
+                    
+                    <div class="analysis-section">
+                        <h3 class="analysis-label"><span class="icon">🎯</span> 밴픽 전략 분석</h3>
+                        <p class="analysis-content">밴픽 전략 분석: 한화생명은 '딜라이트' 유환중의 서포터 판테온을 필두로 세주아니-렉사이-탈리야-코르키를 조합해 초반부터 강력한 스노우볼을 굴리겠다는 의도를 명확히 했습니다. 이에 맞서 젠지는 라이즈-니코라는 미드 중심의 밸류 높은 조합으로 대응했으며, 상대의 탱커 부재를 겨냥한 이즈리얼을 선택해 후반 안정성을 더했습니다.</p>
+                    </div>
+                    <div class="analysis-section">
+                        <h3 class="analysis-label"><span class="icon">⚔️</span> 경기 흐름 및 핵심 서사</h3>
+                        <p class="analysis-content">경기 흐름 및 핵심 서사: 한화생명은 초반 탑과 미드에서 다이브를 성공시키며 조합의 강점을 살리는 듯했습니다. 하지만 젠지는 쵸비의 라이즈가 쥔 미드 주도권을 바탕으로 상대의 설계를 침착하게 받아넘기며 버텼습니다. 경기의 향방을 가른 것은 마지막 바론 앞 대치 상황이었습니다. '캐니언' 김건부의 오공이 솔방울탄을 활용해 상대 '제우스' 최우제의 렉사이를 아군 진영 한복판으로 배달하는 경이로운 플레이를 선보였고, 고립된 렉사이가 순식간에 녹아내리면서 젠지가 그대로 넥서스까지 진격해 혈전의 막을 내렸습니다.</p>
+                    </div>
+                </div>
+            </article>
+            
+            <article class="set-card">
+                <div class="set-header">
+                    <span class="set-number">2세트</span>
+                    <span class="set-winner team-a">🏆 Gen.G 승리</span>
+                </div>
+                <div class="set-body">
+                    
+                    <div class="key-champions">
+                        <h4 class="key-champions-title"><span>🎖️</span> 주요 챔피언</h4>
+                        <div class="champions-grid">
+                            <div class="champion-item"><div class="champion-portrait placeholder">⚔️</div><span class="champion-name">Azir</span></div><div class="champion-item"><div class="champion-portrait placeholder">⚔️</div><span class="champion-name">Orianna</span></div><div class="champion-item"><div class="champion-portrait placeholder">⚔️</div><span class="champion-name">Ambessa</span></div><div class="champion-item"><div class="champion-portrait placeholder">⚔️</div><span class="champion-name">Ziggs</span></div><div class="champion-item"><div class="champion-portrait placeholder">⚔️</div><span class="champion-name">Gwen</span></div><div class="champion-item"><div class="champion-portrait placeholder">⚔️</div><span class="champion-name">Jarvan IV</span></div>
+                        </div>
+                    </div>
+                    
+                    <div class="analysis-section">
+                        <h3 class="analysis-label"><span class="icon">🎯</span> 밴픽 전략 분석</h3>
+                        <p class="analysis-content">밴픽 전략 분석: 양 팀은 아지르-오리아나라는 0티어 미드 챔피언을 모두 풀고 사이좋게 나눠 가졌습니다. 한화생명은 암베사-직스라는 독특한 조합을 꺼내 들었고, 젠지는 이를 상대하기 위해 '기인' 김기인의 조커 픽인 그웬을 선택하며 승부수를 띄웠습니다.</p>
+                    </div>
+                    <div class="analysis-section">
+                        <h3 class="analysis-label"><span class="icon">⚔️</span> 경기 흐름 및 핵심 서사</h3>
+                        <p class="analysis-content">경기 흐름 및 핵심 서사: 약 58분 51초. 이번 월즈 최장 시간이자, LoL e스포츠 역사에 길이 남을 명경기가 펼쳐졌습니다. 초반 기인의 그웬이 솔로킬을 기록하며 괴물처럼 성장해 구도를 파괴했지만, '바이퍼' 박도현의 직스는 경기 내내 단 한 번의 데스도 없이 버티며 게임을 지탱했습니다. 승부는 마지막 장로 드래곤 한타에서 갈렸습니다. 젠지가 먼저 장로 시야를 잡고 압박하는 과정에서 '캐니언' 김건부의 자르반이 깃창으로 '피넛' 한왕호의 신 짜오를 물었고, 수호 천사가 빠졌음에도 점멸 대격변으로 마무리당하며 뽀삐와 아지르까지 연달아 잡혔습니다. 결국 젠지가 한타에서 대승을 거두며 1시간에 가까운 혈투에 마침표를 찍었습니다.</p>
+                    </div>
+                </div>
+            </article>
+            
+            <article class="set-card">
+                <div class="set-header">
+                    <span class="set-number">3세트</span>
+                    <span class="set-winner team-b">🏆 Hanwha Life Esports 승리</span>
+                </div>
+                <div class="set-body">
+                    
+                    <div class="key-champions">
+                        <h4 class="key-champions-title"><span>🎖️</span> 주요 챔피언</h4>
+                        <div class="champions-grid">
+                            <div class="champion-item"><div class="champion-portrait placeholder">⚔️</div><span class="champion-name">Trundle</span></div><div class="champion-item"><div class="champion-portrait placeholder">⚔️</div><span class="champion-name">Sion</span></div><div class="champion-item"><div class="champion-portrait placeholder">⚔️</div><span class="champion-name">Skarner</span></div><div class="champion-item"><div class="champion-portrait placeholder">⚔️</div><span class="champion-name">Sivir</span></div><div class="champion-item"><div class="champion-portrait placeholder">⚔️</div><span class="champion-name">Yone</span></div>
+                        </div>
+                    </div>
+                    
+                    <div class="analysis-section">
+                        <h3 class="analysis-label"><span class="icon">🎯</span> 밴픽 전략 분석</h3>
+                        <p class="analysis-content">밴픽 전략 분석: 젠지의 이해하기 힘든 밴픽이 패배의 빌미를 제공했습니다. 탱커를 녹이는 데 탁월한 트런들이 풀려있는 상황에서 사이온-스카너라는 2탱커 조합을 선택하는 무리수를 두었습니다. 한화생명은 이를 놓치지 않고 트런들을 즉시 가져왔고, 시비르-요네를 더해 젠지의 앞라인을 손쉽게 무너뜨릴 수 있는 카운터 조합을 완성했습니다.</p>
+                    </div>
+                    <div class="analysis-section">
+                        <h3 class="analysis-label"><span class="icon">⚔️</span> 경기 흐름 및 핵심 서사</h3>
+                        <p class="analysis-content">경기 흐름 및 핵심 서사: 한화생명은 젠지의 조합적 약점을 영리하게 파고들었습니다. 라인전 단계부터 우위를 점했고, 조합의 힘이 채 갖춰지기도 전에 무리한 교전을 시도하는 젠지를 번번이 응징했습니다. 특히 '제카' 김건우의 요네가 종횡무진 활약하며 한타를 지배했고, 라인전부터 한타까지 시종일관 압도적인 모습을 보인 한화생명이 완승을 거두며 추격의 발판을 마련했습니다.</p>
+                    </div>
+                </div>
+            </article>
+            
+            <article class="set-card">
+                <div class="set-header">
+                    <span class="set-number">4세트</span>
+                    <span class="set-winner team-a">🏆 Gen.G 승리</span>
+                </div>
+                <div class="set-body">
+                    
+                    <div class="key-champions">
+                        <h4 class="key-champions-title"><span>🎖️</span> 주요 챔피언</h4>
+                        <div class="champions-grid">
+                            <div class="champion-item"><div class="champion-portrait placeholder">⚔️</div><span class="champion-name">KSante</span></div><div class="champion-item"><div class="champion-portrait placeholder">⚔️</div><span class="champion-name">Nidalee</span></div><div class="champion-item"><div class="champion-portrait placeholder">⚔️</div><span class="champion-name">Hwei</span></div><div class="champion-item"><div class="champion-portrait placeholder">⚔️</div><span class="champion-name">Smolder</span></div>
+                        </div>
+                    </div>
+                    
+                    <div class="analysis-section">
+                        <h3 class="analysis-label"><span class="icon">🎯</span> 밴픽 전략 분석</h3>
+                        <p class="analysis-content">밴픽 전략 분석: 3세트의 실수를 만회하려는 듯, 젠지는 '기인' 김기인의 시그니처 픽인 크산테를 중심으로 니달리-흐웨이라는 강력한 포킹 조합을 구성했습니다. 한화생명은 스몰더를 중심으로 후반을 도모하는 조합을 선택했으나, 젠지의 강력한 상체 압박을 버텨내는 것이 과제로 남았습니다.</p>
+                    </div>
+                    <div class="analysis-section">
+                        <h3 class="analysis-label"><span class="icon">⚔️</span> 경기 흐름 및 핵심 서사</h3>
+                        <p class="analysis-content">경기 흐름 및 핵심 서사: '기산테'의, 기산테에 의한, 기산테를 위한 경기였습니다. 기인의 크산테는 라인전 단계부터 한화생명의 상체를 완벽히 압도하며 격차를 벌려나갔습니다. 젠지의 상체가 눈덩이를 굴리는 동안 한화생명은 속수무책으로 끌려다녔고, 승기를 굳힌 결정적인 장면은 아타칸 앞에서 나왔습니다. 피넛의 녹턴과 딜라이트의 레오나가 흐웨이를 노렸으나, 쵸비의 침착한 대응에 막혀 역으로 에이스를 당하며 경기가 완전히 기울었습니다. 결국 젠지가 압도적인 경기력으로 4세트를 마무리하며 4강행 티켓을 거머쥐었습니다.</p>
+                    </div>
+                </div>
+            </article>
+            
+
+        <div class="nav-buttons">
+            <a href="../../" class="nav-btn">📖 전체 스토리 목록</a>
+            <a href="../../../" class="nav-btn">🏠 메인으로</a>
+        </div>
+
+        <footer class="footer">
+            <p>2025 롤드컵 벤픽 아카이브 | Data Storytelling Project</p>
+        </footer>
+    </div>
+</body>
+</html>

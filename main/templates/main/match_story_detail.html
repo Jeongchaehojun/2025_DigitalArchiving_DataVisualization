@@ -1,0 +1,513 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ title }}</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+    :root {
+        --bg-dark: #0a0e13;
+        --bg-card: #111827;
+        --bg-hover: #1f2937;
+        --gold-primary: #c89b3c;
+        --gold-secondary: #f0e6d2;
+        --blue-accent: #0ac8b9;
+        --red-accent: #ff4655;
+        --text-primary: #f0e6d2;
+        --text-secondary: #a09b8c;
+        --border-color: #3c3c41;
+        --gradient-gold: linear-gradient(135deg, #785a28 0%, #c8aa6e 50%, #c89b3c 100%);
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Noto Sans KR', sans-serif;
+        background: var(--bg-dark);
+        color: var(--text-primary);
+        min-height: 100vh;
+        background-image: 
+            radial-gradient(ellipse at top, rgba(200, 155, 60, 0.05) 0%, transparent 50%),
+            radial-gradient(ellipse at bottom right, rgba(10, 200, 185, 0.03) 0%, transparent 40%);
+    }
+
+    .container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 40px 20px;
+    }
+
+    /* Back Button */
+    .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--text-secondary);
+        text-decoration: none;
+        margin-bottom: 30px;
+        font-size: 0.95rem;
+        transition: color 0.2s;
+    }
+
+    .back-link:hover {
+        color: var(--gold-primary);
+    }
+
+    /* Header */
+    .header {
+        text-align: center;
+        margin-bottom: 40px;
+        padding: 40px;
+        background: var(--bg-card);
+        border-radius: 16px;
+        border: 1px solid var(--border-color);
+    }
+
+    .stage-badge {
+        display: inline-block;
+        font-family: 'Orbitron', sans-serif;
+        font-size: 0.85rem;
+        background: var(--gold-primary);
+        color: var(--bg-dark);
+        padding: 6px 16px;
+        border-radius: 4px;
+        font-weight: 700;
+        margin-bottom: 16px;
+        letter-spacing: 1px;
+    }
+
+    /* Hashtag Keywords */
+    .keywords-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 12px;
+        margin-top: 24px;
+        padding-top: 20px;
+        border-top: 1px solid var(--border-color);
+    }
+
+    .keyword-tag {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: var(--blue-accent);
+        background: rgba(10, 200, 185, 0.1);
+        padding: 8px 16px;
+        border-radius: 24px;
+        border: 1px solid rgba(10, 200, 185, 0.3);
+        transition: all 0.3s ease;
+        letter-spacing: 0.5px;
+    }
+
+    .keyword-tag:hover {
+        background: rgba(10, 200, 185, 0.2);
+        border-color: var(--blue-accent);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(10, 200, 185, 0.2);
+    }
+
+    .keyword-tag::before {
+        content: '#';
+        opacity: 0.7;
+    }
+
+    .match-title {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 2rem;
+        font-weight: 900;
+        color: var(--text-primary);
+        margin-bottom: 12px;
+        letter-spacing: 2px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 16px;
+        flex-wrap: wrap;
+    }
+
+    .team-logo {
+        width: 48px;
+        height: 48px;
+        object-fit: contain;
+        filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.5));
+    }
+
+    .team-logo-small {
+        width: 24px;
+        height: 24px;
+        object-fit: contain;
+        vertical-align: middle;
+        margin-right: 6px;
+    }
+
+    .team-with-logo {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .vs-divider {
+        color: var(--red-accent);
+        margin: 0 12px;
+        font-size: 1.2rem;
+    }
+
+    .final-score {
+        font-size: 2.5rem;
+        font-weight: 900;
+        background: var(--gradient-gold);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        font-family: 'Orbitron', sans-serif;
+    }
+
+    /* Match Overview */
+    .overview-section {
+        background: var(--bg-card);
+        border-radius: 12px;
+        border: 1px solid var(--border-color);
+        padding: 30px;
+        margin-bottom: 30px;
+    }
+
+    .overview-title {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 1.2rem;
+        color: var(--gold-primary);
+        margin-bottom: 16px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .overview-text {
+        color: var(--text-secondary);
+        line-height: 1.9;
+        font-size: 1rem;
+    }
+
+    /* Set Cards */
+    .set-card {
+        background: var(--bg-card);
+        border-radius: 16px;
+        border: 1px solid var(--border-color);
+        margin-bottom: 24px;
+        overflow: hidden;
+        transition: border-color 0.3s ease;
+    }
+
+    .set-card:hover {
+        border-color: var(--gold-primary);
+    }
+
+    .set-header {
+        background: linear-gradient(180deg, #1a2332 0%, #111827 100%);
+        padding: 20px 24px;
+        border-bottom: 1px solid var(--border-color);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .set-number {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: var(--text-primary);
+    }
+
+    .set-winner {
+        font-size: 0.9rem;
+        padding: 6px 16px;
+        border-radius: 20px;
+        font-weight: 600;
+    }
+
+    .set-winner.team-a {
+        background: rgba(10, 200, 185, 0.2);
+        color: var(--blue-accent);
+        border: 1px solid var(--blue-accent);
+    }
+
+    .set-winner.team-b {
+        background: rgba(255, 70, 85, 0.2);
+        color: var(--red-accent);
+        border: 1px solid var(--red-accent);
+    }
+
+    .set-body {
+        padding: 24px;
+    }
+
+    .analysis-section {
+        margin-bottom: 24px;
+    }
+
+    .analysis-section:last-child {
+        margin-bottom: 0;
+    }
+
+    .analysis-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-family: 'Orbitron', sans-serif;
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: var(--gold-primary);
+        margin-bottom: 12px;
+        letter-spacing: 1px;
+    }
+
+    .analysis-label .icon {
+        font-size: 1.2rem;
+    }
+
+    .analysis-content {
+        color: var(--text-secondary);
+        line-height: 1.9;
+        font-size: 0.95rem;
+        padding-left: 28px;
+        border-left: 2px solid var(--border-color);
+    }
+
+    /* Timeline dots */
+    .set-card::before {
+        content: '';
+        position: absolute;
+        left: -30px;
+        top: 50%;
+        width: 12px;
+        height: 12px;
+        background: var(--gold-primary);
+        border-radius: 50%;
+        transform: translateY(-50%);
+    }
+
+    /* Key Champions Section */
+    .key-champions {
+        margin-bottom: 24px;
+        padding: 20px;
+        background: linear-gradient(135deg, rgba(200, 155, 60, 0.1) 0%, rgba(10, 200, 185, 0.05) 100%);
+        border-radius: 12px;
+        border: 1px solid rgba(200, 155, 60, 0.3);
+    }
+
+    .key-champions-title {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-family: 'Orbitron', sans-serif;
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: var(--gold-primary);
+        margin-bottom: 16px;
+        letter-spacing: 1px;
+    }
+
+    .champions-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        justify-content: center;
+    }
+
+    .champion-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+        transition: transform 0.2s ease;
+    }
+
+    .champion-item:hover {
+        transform: scale(1.1);
+    }
+
+    .champion-portrait {
+        width: 56px;
+        height: 56px;
+        border-radius: 8px;
+        border: 2px solid var(--gold-primary);
+        background: var(--bg-hover);
+        object-fit: cover;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    }
+
+    .champion-portrait.placeholder {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        color: var(--gold-primary);
+    }
+
+    .champion-name {
+        font-size: 0.7rem;
+        color: var(--text-secondary);
+        text-align: center;
+        max-width: 60px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    /* Navigation */
+    .nav-buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 40px;
+        gap: 16px;
+    }
+
+    .nav-btn {
+        flex: 1;
+        padding: 16px 24px;
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        color: var(--text-secondary);
+        text-decoration: none;
+        text-align: center;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+
+    .nav-btn:hover {
+        border-color: var(--gold-primary);
+        color: var(--gold-primary);
+    }
+
+    /* Footer */
+    .footer {
+        text-align: center;
+        margin-top: 60px;
+        padding: 30px;
+        border-top: 1px solid var(--border-color);
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .match-title { font-size: 1.4rem; }
+        .final-score { font-size: 2rem; }
+        .nav-buttons { flex-direction: column; }
+    }
+</style>
+</head>
+<body>
+    <div class="container">
+        <!-- Back Link -->
+        <a href="{% url 'match_stories' %}" class="back-link">← 스토리 목록으로 돌아가기</a>
+
+        <!-- Header -->
+        <header class="header">
+            <span class="stage-badge">{{ stage }}</span>
+            <h1 class="match-title">
+                <span class="team-with-logo">
+                    <img src="{% static 'main/images/teams/' %}{{ team_a_logo }}" alt="{{ team_a }}" class="team-logo" onerror="this.style.display='none'">
+                    {{ team_a }}
+                </span>
+                <span class="vs-divider">VS</span>
+                <span class="team-with-logo">
+                    <img src="{% static 'main/images/teams/' %}{{ team_b_logo }}" alt="{{ team_b }}" class="team-logo" onerror="this.style.display='none'">
+                    {{ team_b }}
+                </span>
+            </h1>
+            <div class="final-score">{{ final_score }}</div>
+            
+            {% if keywords %}
+            <div class="keywords-container">
+                {% for keyword in keywords %}
+                <span class="keyword-tag">{{ keyword }}</span>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </header>
+
+        <!-- Match Overview -->
+        {% if match_overview %}
+        <section class="overview-section">
+            <h2 class="overview-title">
+                <span class="icon">📋</span>
+                경기 총평
+            </h2>
+            <p class="overview-text">{{ match_overview }}</p>
+        </section>
+        {% endif %}
+
+        <!-- Set Cards -->
+        {% for story in stories %}
+        <article class="set-card">
+            <div class="set-header">
+                <span class="set-number">{{ story.set_number }}세트</span>
+                <span class="set-winner {% if story.winner == team_a %}team-a{% else %}team-b{% endif %}">
+                    🏆 {{ story.winner }} 승리
+                </span>
+            </div>
+            <div class="set-body">
+                <!-- 주요 챔피언 -->
+                {% if story.key_champions %}
+                <div class="key-champions">
+                    <h4 class="key-champions-title">
+                        <span>🎖️</span>
+                        주요 챔피언
+                    </h4>
+                    <div class="champions-grid">
+                        {% for champion in story.get_key_champions_list %}
+                        <div class="champion-item">
+                            <img 
+                                src="{% static 'main/images/champions/' %}{{ champion }}.png" 
+                                alt="{{ champion }}"
+                                class="champion-portrait"
+                                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                            >
+                            <div class="champion-portrait placeholder" style="display: none;">⚔️</div>
+                            <span class="champion-name">{{ champion }}</span>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+
+                <div class="analysis-section">
+                    <h3 class="analysis-label">
+                        <span class="icon">🎯</span>
+                        밴픽 전략 분석
+                    </h3>
+                    <p class="analysis-content">{{ story.banpick_analysis|linebreaksbr }}</p>
+                </div>
+                <div class="analysis-section">
+                    <h3 class="analysis-label">
+                        <span class="icon">⚔️</span>
+                        경기 흐름 및 핵심 서사
+                    </h3>
+                    <p class="analysis-content">{{ story.game_narrative|linebreaksbr }}</p>
+                </div>
+            </div>
+        </article>
+        {% endfor %}
+
+        <!-- Navigation -->
+        <div class="nav-buttons">
+            <a href="{% url 'match_stories' %}" class="nav-btn">📖 전체 스토리 목록</a>
+            <a href="{% url 'index' %}" class="nav-btn">🏠 메인으로</a>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>2025 롤드컵 벤픽 아카이브 | Data Storytelling Project</p>
+        </footer>
+    </div>
+</body>
+</html>
+

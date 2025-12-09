@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>결승 - kt Rolster vs T1</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+    :root {
+        --bg-dark: #0a0e13;
+        --bg-card: #111827;
+        --bg-hover: #1f2937;
+        --gold-primary: #c89b3c;
+        --gold-secondary: #f0e6d2;
+        --blue-accent: #0ac8b9;
+        --red-accent: #ff4655;
+        --text-primary: #f0e6d2;
+        --text-secondary: #a09b8c;
+        --border-color: #3c3c41;
+        --gradient-gold: linear-gradient(135deg, #785a28 0%, #c8aa6e 50%, #c89b3c 100%);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+        font-family: 'Noto Sans KR', sans-serif;
+        background: var(--bg-dark);
+        color: var(--text-primary);
+        min-height: 100vh;
+        background-image: radial-gradient(ellipse at top, rgba(200, 155, 60, 0.05) 0%, transparent 50%);
+    }
+    .container { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
+    .back-link {
+        display: inline-flex; align-items: center; gap: 8px;
+        color: var(--text-secondary); text-decoration: none;
+        margin-bottom: 30px; font-size: 0.95rem; transition: color 0.2s;
+    }
+    .back-link:hover { color: var(--gold-primary); }
+    .header {
+        text-align: center; margin-bottom: 40px; padding: 40px;
+        background: var(--bg-card); border-radius: 16px; border: 1px solid var(--border-color);
+    }
+    .stage-badge {
+        display: inline-block; font-family: 'Orbitron', sans-serif; font-size: 0.85rem;
+        background: var(--gold-primary); color: var(--bg-dark);
+        padding: 6px 16px; border-radius: 4px; font-weight: 700; margin-bottom: 16px;
+    }
+    .match-title {
+        font-family: 'Orbitron', sans-serif; font-size: 2rem; font-weight: 900;
+        color: var(--text-primary); margin-bottom: 12px; display: flex;
+        align-items: center; justify-content: center; gap: 16px; flex-wrap: wrap;
+    }
+    .team-logo { width: 48px; height: 48px; object-fit: contain; }
+    .team-with-logo { display: flex; align-items: center; gap: 8px; }
+    .vs-divider { color: var(--red-accent); margin: 0 12px; font-size: 1.2rem; }
+    .final-score {
+        font-family: 'Orbitron', sans-serif; font-size: 2.5rem; font-weight: 900;
+        color: var(--gold-primary); margin-top: 12px;
+    }
+    .keywords-container {
+        display: flex; flex-wrap: wrap; justify-content: center; gap: 12px;
+        margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--border-color);
+    }
+    .keyword-tag {
+        font-family: 'Orbitron', sans-serif; font-size: 1.1rem; font-weight: 700;
+        color: var(--blue-accent); background: rgba(10, 200, 185, 0.1);
+        padding: 8px 16px; border-radius: 24px; border: 1px solid rgba(10, 200, 185, 0.3);
+        transition: all 0.3s ease;
+    }
+    .keyword-tag::before { content: '#'; opacity: 0.7; }
+    .keyword-tag:hover {
+        background: rgba(10, 200, 185, 0.2); transform: translateY(-2px);
+    }
+    .overview-section {
+        background: var(--bg-card); border-radius: 16px; padding: 30px;
+        margin-bottom: 30px; border: 1px solid var(--border-color);
+    }
+    .overview-title {
+        display: flex; align-items: center; gap: 12px;
+        font-family: 'Orbitron', sans-serif; font-size: 1.2rem;
+        color: var(--gold-primary); margin-bottom: 16px;
+    }
+    .overview-text { color: var(--text-secondary); line-height: 1.9; }
+    .set-card {
+        background: var(--bg-card); border-radius: 16px; border: 1px solid var(--border-color);
+        margin-bottom: 24px; overflow: hidden; transition: border-color 0.3s ease;
+    }
+    .set-card:hover { border-color: var(--gold-primary); }
+    .set-header {
+        background: linear-gradient(180deg, #1a2332 0%, #111827 100%);
+        padding: 20px 24px; border-bottom: 1px solid var(--border-color);
+        display: flex; justify-content: space-between; align-items: center;
+    }
+    .set-number { font-family: 'Orbitron', sans-serif; font-size: 1.3rem; font-weight: 700; }
+    .set-winner {
+        font-size: 0.9rem; padding: 6px 16px; border-radius: 20px; font-weight: 600;
+    }
+    .set-winner.team-a { background: rgba(10, 200, 185, 0.2); color: var(--blue-accent); border: 1px solid var(--blue-accent); }
+    .set-winner.team-b { background: rgba(255, 70, 85, 0.2); color: var(--red-accent); border: 1px solid var(--red-accent); }
+    .set-body { padding: 24px; }
+    .analysis-section { margin-bottom: 24px; }
+    .analysis-label {
+        display: flex; align-items: center; gap: 8px;
+        font-family: 'Orbitron', sans-serif; font-size: 0.9rem;
+        color: var(--gold-primary); margin-bottom: 12px;
+    }
+    .analysis-content {
+        color: var(--text-secondary); line-height: 1.9; font-size: 0.95rem;
+        padding-left: 28px; border-left: 2px solid var(--border-color);
+    }
+    .key-champions { margin-bottom: 24px; }
+    .key-champions-title {
+        display: flex; align-items: center; gap: 8px;
+        font-size: 0.9rem; color: var(--gold-primary); margin-bottom: 12px;
+    }
+    .champions-grid { display: flex; flex-wrap: wrap; gap: 12px; }
+    .champion-item { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+    .champion-portrait {
+        width: 50px; height: 50px; border-radius: 50%; border: 2px solid var(--gold-primary);
+        background: var(--bg-hover); display: flex; align-items: center; justify-content: center;
+        font-size: 1.5rem; color: var(--gold-primary);
+    }
+    .champion-name { font-size: 0.7rem; color: var(--text-secondary); text-align: center; }
+    .nav-buttons { display: flex; justify-content: space-between; margin-top: 40px; gap: 16px; }
+    .nav-btn {
+        flex: 1; padding: 16px 24px; background: var(--bg-card);
+        border: 1px solid var(--border-color); border-radius: 8px;
+        color: var(--text-secondary); text-decoration: none; text-align: center;
+        font-weight: 500; transition: all 0.3s ease;
+    }
+    .nav-btn:hover { border-color: var(--gold-primary); color: var(--gold-primary); }
+    .footer {
+        text-align: center; margin-top: 60px; padding: 30px;
+        border-top: 1px solid var(--border-color); color: var(--text-secondary);
+    }
+    @media (max-width: 768px) {
+        .match-title { font-size: 1.4rem; }
+        .final-score { font-size: 2rem; }
+        .nav-buttons { flex-direction: column; }
+    }
+</style>
+</head>
+<body>
+    <div class="container">
+        <a href="../../" class="back-link">← 스토리 목록으로 돌아가기</a>
+        
+        <header class="header">
+            <span class="stage-badge">결승</span>
+            <h1 class="match-title">
+                <span class="team-with-logo">
+                    <img src="../../../static/images/teams/kt.svg" class="team-logo" onerror="this.style.display='none'">
+                    kt Rolster
+                </span>
+                <span class="vs-divider">VS</span>
+                <span class="team-with-logo">
+                    <img src="../../../static/images/teams/t1.svg" class="team-logo" onerror="this.style.display='none'">
+                    T1
+                </span>
+            </h1>
+            <div class="final-score">2:3</div>
+            
+            <div class="keywords-container">
+                <span class="keyword-tag">월즈3연패</span><span class="keyword-tag">쓰리핏</span><span class="keyword-tag">왕조vsunderdog</span><span class="keyword-tag">신데렐라스토리</span><span class="keyword-tag">레전드</span>
+            </div>
+            
+        </header>
+
+        
+        <section class="overview-section">
+            <h2 class="overview-title"><span>📋</span> 경기 총평</h2>
+            <p class="overview-text">2025 월드 챔피언십 결승은 두 팀의 극명하게 대비되는 서사가 충돌하는 무대였습니다.</p>
+        </section>
+        
+
+        
+            <article class="set-card">
+                <div class="set-header">
+                    <span class="set-number">1세트</span>
+                    <span class="set-winner team-b">🏆 T1 승리</span>
+                </div>
+                <div class="set-body">
+                    
+                    <div class="analysis-section">
+                        <h3 class="analysis-label"><span class="icon">🎯</span> 밴픽 전략 분석</h3>
+                        <p class="analysis-content">KT의 서사:
+kt Rolster: LCK 정규시즌 공동 9위까지 추락하며 암흑기를 겪었던 KT는 '비디디' 곽보성을 중심으로 끈끈하게 뭉쳐 기적을 써 내려왔습니다. 스위스 스테이지 무실세트 전승, 4강에서 절대 강자 젠지를 꺾는 파란을 일으키며 창단 13년 만에 처음으로 월즈 결승 무대를 밟았습니다. 그들의 여정은 패배가 익숙했던 팀이 최고의 자리에 도전하는 감동적인 '신데렐라 런' 그 자체였습니다.
+
+T1의 서사:
+T1: 반면 T1은 '왕조'의 길을 걸어왔습니다. 스위스 스테이지에서 잠시 흔들렸지만, 녹아웃 스테이지에 들어서자 LPL 팀들을 모조리 격파하며 자신들의 월즈 DNA를 증명했습니다. 월즈 3연속 우승이라는 전무후무한 '쓰리핏' 대기록을 눈앞에 둔 T1의 서사는 흔들리지 않는 챔피언의 왕좌를 지키기 위한 투쟁이었습니다.</p>
+                    </div>
+                    <div class="analysis-section">
+                        <h3 class="analysis-label"><span class="icon">⚔️</span> 경기 흐름 및 핵심 서사</h3>
+                        <p class="analysis-content">치열한 접전 끝에 소환사의 컵은 T1의 품에 안겼습니다. 이로써 T1은 리그 오브 레전드 e스포츠 역사상 전례 없는 월즈 3연속 우승(Three-peat) 이라는 위업을 달성했습니다.
+
+이번 우승은 선수 개개인에게도 특별한 의미를 남겼습니다. '페이커' 이상혁은 전례 없는 4년 재계약 이후 팀을 다시 한번 정상에 올려놓으며 살아있는 전설임을 재확인했고, '도란' 최현준은 수많은 도전 끝에 마침내 개인 통산 첫 월즈 우승이라는 감격을 누렸습니다. KT는 비록 준우승에 머물렀지만, 그들이 보여준 기적 같은 여정은 오랫동안 팬들의 기억 속에 남을 것입니다. T1은 다시 한번 자신들의 유산을 쟁취하며 새로운 역사의 한 페이지를 장식했습니다.</p>
+                    </div>
+                </div>
+            </article>
+            
+
+        <div class="nav-buttons">
+            <a href="../../" class="nav-btn">📖 전체 스토리 목록</a>
+            <a href="../../../" class="nav-btn">🏠 메인으로</a>
+        </div>
+
+        <footer class="footer">
+            <p>2025 롤드컵 벤픽 아카이브 | Data Storytelling Project</p>
+        </footer>
+    </div>
+</body>
+</html>

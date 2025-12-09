@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>8강 - G2 Esports vs Top Esports</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+    :root {
+        --bg-dark: #0a0e13;
+        --bg-card: #111827;
+        --bg-hover: #1f2937;
+        --gold-primary: #c89b3c;
+        --gold-secondary: #f0e6d2;
+        --blue-accent: #0ac8b9;
+        --red-accent: #ff4655;
+        --text-primary: #f0e6d2;
+        --text-secondary: #a09b8c;
+        --border-color: #3c3c41;
+        --gradient-gold: linear-gradient(135deg, #785a28 0%, #c8aa6e 50%, #c89b3c 100%);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+        font-family: 'Noto Sans KR', sans-serif;
+        background: var(--bg-dark);
+        color: var(--text-primary);
+        min-height: 100vh;
+        background-image: radial-gradient(ellipse at top, rgba(200, 155, 60, 0.05) 0%, transparent 50%);
+    }
+    .container { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
+    .back-link {
+        display: inline-flex; align-items: center; gap: 8px;
+        color: var(--text-secondary); text-decoration: none;
+        margin-bottom: 30px; font-size: 0.95rem; transition: color 0.2s;
+    }
+    .back-link:hover { color: var(--gold-primary); }
+    .header {
+        text-align: center; margin-bottom: 40px; padding: 40px;
+        background: var(--bg-card); border-radius: 16px; border: 1px solid var(--border-color);
+    }
+    .stage-badge {
+        display: inline-block; font-family: 'Orbitron', sans-serif; font-size: 0.85rem;
+        background: var(--gold-primary); color: var(--bg-dark);
+        padding: 6px 16px; border-radius: 4px; font-weight: 700; margin-bottom: 16px;
+    }
+    .match-title {
+        font-family: 'Orbitron', sans-serif; font-size: 2rem; font-weight: 900;
+        color: var(--text-primary); margin-bottom: 12px; display: flex;
+        align-items: center; justify-content: center; gap: 16px; flex-wrap: wrap;
+    }
+    .team-logo { width: 48px; height: 48px; object-fit: contain; }
+    .team-with-logo { display: flex; align-items: center; gap: 8px; }
+    .vs-divider { color: var(--red-accent); margin: 0 12px; font-size: 1.2rem; }
+    .final-score {
+        font-family: 'Orbitron', sans-serif; font-size: 2.5rem; font-weight: 900;
+        color: var(--gold-primary); margin-top: 12px;
+    }
+    .keywords-container {
+        display: flex; flex-wrap: wrap; justify-content: center; gap: 12px;
+        margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--border-color);
+    }
+    .keyword-tag {
+        font-family: 'Orbitron', sans-serif; font-size: 1.1rem; font-weight: 700;
+        color: var(--blue-accent); background: rgba(10, 200, 185, 0.1);
+        padding: 8px 16px; border-radius: 24px; border: 1px solid rgba(10, 200, 185, 0.3);
+        transition: all 0.3s ease;
+    }
+    .keyword-tag::before { content: '#'; opacity: 0.7; }
+    .keyword-tag:hover {
+        background: rgba(10, 200, 185, 0.2); transform: translateY(-2px);
+    }
+    .overview-section {
+        background: var(--bg-card); border-radius: 16px; padding: 30px;
+        margin-bottom: 30px; border: 1px solid var(--border-color);
+    }
+    .overview-title {
+        display: flex; align-items: center; gap: 12px;
+        font-family: 'Orbitron', sans-serif; font-size: 1.2rem;
+        color: var(--gold-primary); margin-bottom: 16px;
+    }
+    .overview-text { color: var(--text-secondary); line-height: 1.9; }
+    .set-card {
+        background: var(--bg-card); border-radius: 16px; border: 1px solid var(--border-color);
+        margin-bottom: 24px; overflow: hidden; transition: border-color 0.3s ease;
+    }
+    .set-card:hover { border-color: var(--gold-primary); }
+    .set-header {
+        background: linear-gradient(180deg, #1a2332 0%, #111827 100%);
+        padding: 20px 24px; border-bottom: 1px solid var(--border-color);
+        display: flex; justify-content: space-between; align-items: center;
+    }
+    .set-number { font-family: 'Orbitron', sans-serif; font-size: 1.3rem; font-weight: 700; }
+    .set-winner {
+        font-size: 0.9rem; padding: 6px 16px; border-radius: 20px; font-weight: 600;
+    }
+    .set-winner.team-a { background: rgba(10, 200, 185, 0.2); color: var(--blue-accent); border: 1px solid var(--blue-accent); }
+    .set-winner.team-b { background: rgba(255, 70, 85, 0.2); color: var(--red-accent); border: 1px solid var(--red-accent); }
+    .set-body { padding: 24px; }
+    .analysis-section { margin-bottom: 24px; }
+    .analysis-label {
+        display: flex; align-items: center; gap: 8px;
+        font-family: 'Orbitron', sans-serif; font-size: 0.9rem;
+        color: var(--gold-primary); margin-bottom: 12px;
+    }
+    .analysis-content {
+        color: var(--text-secondary); line-height: 1.9; font-size: 0.95rem;
+        padding-left: 28px; border-left: 2px solid var(--border-color);
+    }
+    .key-champions { margin-bottom: 24px; }
+    .key-champions-title {
+        display: flex; align-items: center; gap: 8px;
+        font-size: 0.9rem; color: var(--gold-primary); margin-bottom: 12px;
+    }
+    .champions-grid { display: flex; flex-wrap: wrap; gap: 12px; }
+    .champion-item { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+    .champion-portrait {
+        width: 50px; height: 50px; border-radius: 50%; border: 2px solid var(--gold-primary);
+        background: var(--bg-hover); display: flex; align-items: center; justify-content: center;
+        font-size: 1.5rem; color: var(--gold-primary);
+    }
+    .champion-name { font-size: 0.7rem; color: var(--text-secondary); text-align: center; }
+    .nav-buttons { display: flex; justify-content: space-between; margin-top: 40px; gap: 16px; }
+    .nav-btn {
+        flex: 1; padding: 16px 24px; background: var(--bg-card);
+        border: 1px solid var(--border-color); border-radius: 8px;
+        color: var(--text-secondary); text-decoration: none; text-align: center;
+        font-weight: 500; transition: all 0.3s ease;
+    }
+    .nav-btn:hover { border-color: var(--gold-primary); color: var(--gold-primary); }
+    .footer {
+        text-align: center; margin-top: 60px; padding: 30px;
+        border-top: 1px solid var(--border-color); color: var(--text-secondary);
+    }
+    @media (max-width: 768px) {
+        .match-title { font-size: 1.4rem; }
+        .final-score { font-size: 2rem; }
+        .nav-buttons { flex-direction: column; }
+    }
+</style>
+</head>
+<body>
+    <div class="container">
+        <a href="../../" class="back-link">← 스토리 목록으로 돌아가기</a>
+        
+        <header class="header">
+            <span class="stage-badge">8강</span>
+            <h1 class="match-title">
+                <span class="team-with-logo">
+                    <img src="../../../static/images/teams/g2.svg" class="team-logo" onerror="this.style.display='none'">
+                    G2 Esports
+                </span>
+                <span class="vs-divider">VS</span>
+                <span class="team-with-logo">
+                    <img src="../../../static/images/teams/tes.webp" class="team-logo" onerror="this.style.display='none'">
+                    Top Esports
+                </span>
+            </h1>
+            <div class="final-score">1:3</div>
+            
+            <div class="keywords-container">
+                <span class="keyword-tag">동서대결</span><span class="keyword-tag">서양의마지막희망</span><span class="keyword-tag">TES홈그라운드</span><span class="keyword-tag">3전3패</span>
+            </div>
+            
+        </header>
+
+        
+        <section class="overview-section">
+            <h2 class="overview-title"><span>📋</span> 경기 총평</h2>
+            <p class="overview-text">8강 유일의 비 LCK 팀 매치업이자, MSI와 EWC에서 맞붙었던 G2와 TES의 세 번째 맞대결이 성사되었습니다. 서양의 마지막 희망으로 남은 G2와 홈그라운드의 이점을 안은 TES의 대결은 각 리그의 자존심이 걸린 치열한 승부가 될 것으로 예상되었습니다.</p>
+        </section>
+        
+
+        
+            <article class="set-card">
+                <div class="set-header">
+                    <span class="set-number">1세트</span>
+                    <span class="set-winner team-b">🏆 Top Esports 승리</span>
+                </div>
+                <div class="set-body">
+                    
+                    <div class="key-champions">
+                        <h4 class="key-champions-title"><span>🎖️</span> 주요 챔피언</h4>
+                        <div class="champions-grid">
+                            <div class="champion-item"><div class="champion-portrait placeholder">⚔️</div><span class="champion-name">Orianna</span></div><div class="champion-item"><div class="champion-portrait placeholder">⚔️</div><span class="champion-name">Wukong</span></div><div class="champion-item"><div class="champion-portrait placeholder">⚔️</div><span class="champion-name">Akali</span></div><div class="champion-item"><div class="champion-portrait placeholder">⚔️</div><span class="champion-name">Ambessa</span></div>
+                        </div>
+                    </div>
+                    
+                    <div class="analysis-section">
+                        <h3 class="analysis-label"><span class="icon">🎯</span> 밴픽 전략 분석</h3>
+                        <p class="analysis-content">밴픽 전략 분석: G2는 레드 진영에서 오리아나를 가져오는 정석적인 선택을 했습니다. TES는 이를 오공-아칼리-암베사로 이어지는 강력한 돌진 조합으로 카운터치며 오리아나를 집중 공략하겠다는 의도를 분명히 했습니다.</p>
+                    </div>
+                    <div class="analysis-section">
+                        <h3 class="analysis-label"><span class="icon">⚔️</span> 경기 흐름 및 핵심 서사</h3>
+                        <p class="analysis-content">경기 흐름 및 핵심 서사: TES가 모든 라인에서 압도적인 '체급' 차이를 보여주며 G2를 완파했습니다. 특히 미드에서는 '크렘'의 아칼리가 '캡스'의 오리아나를 상대로 솔로킬을 기록하는 등, TES는 라인전 단계부터 승기를 굳혔고, 이후 단 한 번의 위기 없이 무난하게 승리하며 기선제압에 성공했습니다.</p>
+                    </div>
+                </div>
+            </article>
+            
+            <article class="set-card">
+                <div class="set-header">
+                    <span class="set-number">2세트</span>
+                    <span class="set-winner team-a">🏆 G2 Esports 승리</span>
+                </div>
+                <div class="set-body">
+                    
+                    <div class="key-champions">
+                        <h4 class="key-champions-title"><span>🎖️</span> 주요 챔피언</h4>
+                        <div class="champions-grid">
+                            <div class="champion-item"><div class="champion-portrait placeholder">⚔️</div><span class="champion-name">DrMundo</span></div><div class="champion-item"><div class="champion-portrait placeholder">⚔️</div><span class="champion-name">Qiyana</span></div><div class="champion-item"><div class="champion-portrait placeholder">⚔️</div><span class="champion-name">Sivir</span></div>
+                        </div>
+                    </div>
+                    
+                    <div class="analysis-section">
+                        <h3 class="analysis-label"><span class="icon">🎯</span> 밴픽 전략 분석</h3>
+                        <p class="analysis-content">밴픽 전략 분석: G2는 레드 진영에서 '정글 문도'라는 누구도 예상치 못한 조커 픽을 꺼내드는 도박수를 두었습니다. TES는 LPL에서 선호도가 높은 키아나를 선픽하며 대응했지만, 문도의 존재감을 예측하지 못했습니다.</p>
+                    </div>
+                    <div class="analysis-section">
+                        <h3 class="analysis-label"><span class="icon">⚔️</span> 경기 흐름 및 핵심 서사</h3>
+                        <p class="analysis-content">경기 흐름 및 핵심 서사: G2의 승부수가 완벽하게 적중했습니다. 초반 G2 바텀 듀오가 상대 원딜 시비르를 상대로 다이브를 성공시키며 완전히 망가뜨렸고, 이 이득을 바탕으로 정글 문도가 엄청난 성장 탄력을 받았습니다. 잘 큰 문도는 '태산'이 되어 TES를 체급으로 짓눌렀고, 불리한 상황에 조급해진 TES는 감정적인 플레이를 연발하며 자멸했습니다.</p>
+                    </div>
+                </div>
+            </article>
+            
+            <article class="set-card">
+                <div class="set-header">
+                    <span class="set-number">3세트</span>
+                    <span class="set-winner team-b">🏆 Top Esports 승리</span>
+                </div>
+                <div class="set-body">
+                    
+                    <div class="key-champions">
+                        <h4 class="key-champions-title"><span>🎖️</span> 주요 챔피언</h4>
+                        <div class="champions-grid">
+                            <div class="champion-item"><div class="champion-portrait placeholder">⚔️</div><span class="champion-name">Ivern</span></div><div class="champion-item"><div class="champion-portrait placeholder">⚔️</div><span class="champion-name">Thresh</span></div><div class="champion-item"><div class="champion-portrait placeholder">⚔️</div><span class="champion-name">Hwei</span></div><div class="champion-item"><div class="champion-portrait placeholder">⚔️</div><span class="champion-name">Ezreal</span></div><div class="champion-item"><div class="champion-portrait placeholder">⚔️</div><span class="champion-name">Karma</span></div>
+                        </div>
+                    </div>
+                    
+                    <div class="analysis-section">
+                        <h3 class="analysis-label"><span class="icon">🎯</span> 밴픽 전략 분석</h3>
+                        <p class="analysis-content">밴픽 전략 분석: G2는 정글 아이번, 서포터 쓰레쉬 등 연이은 조커 픽으로 변수를 창출하려 했습니다. 하지만 TES는 흐웨이-이즈리얼-카르마로 이어지는 안정적인 포킹 조합을 구성하며 G2의 변수를 원천 봉쇄했습니다. 밴픽 단계에서부터 TES가 우위를 점한 경기였습니다.</p>
+                    </div>
+                    <div class="analysis-section">
+                        <h3 class="analysis-label"><span class="icon">⚔️</span> 경기 흐름 및 핵심 서사</h3>
+                        <p class="analysis-content">경기 흐름 및 핵심 서사: G2의 조커 픽들은 아무런 힘을 쓰지 못하고 무력화되었습니다. TES는 긴 사거리를 활용한 포킹으로 대치 구도를 지배했고, G2는 TES의 단단한 방어선을 뚫지 못한 채 무기력하게 패배했습니다.</p>
+                    </div>
+                </div>
+            </article>
+            
+            <article class="set-card">
+                <div class="set-header">
+                    <span class="set-number">4세트</span>
+                    <span class="set-winner team-b">🏆 Top Esports 승리</span>
+                </div>
+                <div class="set-body">
+                    
+                    <div class="key-champions">
+                        <h4 class="key-champions-title"><span>🎖️</span> 주요 챔피언</h4>
+                        <div class="champions-grid">
+                            <div class="champion-item"><div class="champion-portrait placeholder">⚔️</div><span class="champion-name">Draven</span></div><div class="champion-item"><div class="champion-portrait placeholder">⚔️</div><span class="champion-name">Syndra</span></div>
+                        </div>
+                    </div>
+                    
+                    <div class="analysis-section">
+                        <h3 class="analysis-label"><span class="icon">🎯</span> 밴픽 전략 분석</h3>
+                        <p class="analysis-content">밴픽 전략 분석: G2는 마지막 승부수로 블루 1픽 드레이븐과 미드 신드라라는 또 다른 조커 픽을 꺼내 들었습니다. 초반 스노우볼을 굴려 경기를 끝내겠다는 의도였습니다.</p>
+                    </div>
+                    <div class="analysis-section">
+                        <h3 class="analysis-label"><span class="icon">⚔️</span> 경기 흐름 및 핵심 서사</h3>
+                        <p class="analysis-content">경기 흐름 및 핵심 서사: 경기 초반은 G2의 변종 라인 스왑 전략이 성공하며 팽팽하게 흘러갔습니다. 하지만 승부를 가른 것은 G2의 치명적인 판단 미스였습니다. G2는 무리하게 아타칸을 시도하다가 TES에게 스틸당했고, 이어진 한타에서 대패하며 게임이 완전히 터져버렸습니다. 이 결정적인 전환점을 놓치지 않은 TES는 노련하게 경기를 굳히며 4강 진출을 확정 지었습니다.</p>
+                    </div>
+                </div>
+            </article>
+            
+
+        <div class="nav-buttons">
+            <a href="../../" class="nav-btn">📖 전체 스토리 목록</a>
+            <a href="../../../" class="nav-btn">🏠 메인으로</a>
+        </div>
+
+        <footer class="footer">
+            <p>2025 롤드컵 벤픽 아카이브 | Data Storytelling Project</p>
+        </footer>
+    </div>
+</body>
+</html>

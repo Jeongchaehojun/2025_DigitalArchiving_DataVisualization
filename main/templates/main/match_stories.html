@@ -1,0 +1,443 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ title }}</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+    :root {
+        --bg-dark: #0a0e13;
+        --bg-card: #111827;
+        --bg-hover: #1f2937;
+        --gold-primary: #c89b3c;
+        --gold-secondary: #f0e6d2;
+        --blue-accent: #0ac8b9;
+        --red-accent: #ff4655;
+        --text-primary: #f0e6d2;
+        --text-secondary: #a09b8c;
+        --border-color: #3c3c41;
+        --gradient-gold: linear-gradient(135deg, #785a28 0%, #c8aa6e 50%, #c89b3c 100%);
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Noto Sans KR', sans-serif;
+        background: var(--bg-dark);
+        color: var(--text-primary);
+        min-height: 100vh;
+        background-image: 
+            radial-gradient(ellipse at top, rgba(200, 155, 60, 0.05) 0%, transparent 50%),
+            radial-gradient(ellipse at bottom right, rgba(10, 200, 185, 0.03) 0%, transparent 40%);
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 40px 20px;
+    }
+
+    /* Back Button */
+    .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--text-secondary);
+        text-decoration: none;
+        margin-bottom: 30px;
+        font-size: 0.95rem;
+        transition: color 0.2s;
+    }
+
+    .back-link:hover {
+        color: var(--gold-primary);
+    }
+
+    /* Header */
+    .header {
+        text-align: center;
+        margin-bottom: 60px;
+    }
+
+    .title {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 2.5rem;
+        font-weight: 900;
+        background: var(--gradient-gold);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        margin-bottom: 15px;
+    }
+
+    .subtitle {
+        font-size: 1.1rem;
+        color: var(--text-secondary);
+        letter-spacing: 1px;
+    }
+
+    /* Stage Section */
+    .stage-section {
+        margin-bottom: 50px;
+    }
+
+    .stage-title {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 1.5rem;
+        color: var(--gold-primary);
+        margin-bottom: 24px;
+        padding-bottom: 12px;
+        border-bottom: 2px solid var(--gold-primary);
+        letter-spacing: 2px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .stage-badge {
+        font-size: 0.75rem;
+        background: var(--gold-primary);
+        color: var(--bg-dark);
+        padding: 4px 12px;
+        border-radius: 4px;
+        font-weight: 700;
+    }
+
+    /* Match Cards */
+    .match-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 24px;
+    }
+
+    .match-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+
+    .match-card:hover {
+        border-color: var(--gold-primary);
+        transform: translateY(-5px);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+    }
+
+    .match-header {
+        background: linear-gradient(180deg, #1a2332 0%, #111827 100%);
+        padding: 20px;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .match-teams {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+    }
+
+    .team-with-logo {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .team-logo {
+        width: 32px;
+        height: 32px;
+        object-fit: contain;
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
+    }
+
+    .vs-text {
+        color: var(--red-accent);
+        font-size: 0.9rem;
+    }
+
+    .match-score {
+        text-align: center;
+        font-size: 1.8rem;
+        font-weight: 900;
+        color: var(--gold-primary);
+        font-family: 'Orbitron', sans-serif;
+    }
+
+    .match-body {
+        padding: 20px;
+    }
+
+    .match-overview {
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+        line-height: 1.7;
+        margin-bottom: 20px;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .set-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 20px;
+    }
+
+    .set-badge {
+        padding: 6px 12px;
+        border-radius: 6px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        background: var(--bg-hover);
+        border: 1px solid var(--border-color);
+    }
+
+    .set-badge.winner-a {
+        border-color: var(--blue-accent);
+        color: var(--blue-accent);
+    }
+
+    .set-badge.winner-b {
+        border-color: var(--red-accent);
+        color: var(--red-accent);
+    }
+
+    .view-story-btn {
+        display: block;
+        width: 100%;
+        padding: 14px;
+        background: linear-gradient(135deg, rgba(200, 155, 60, 0.2) 0%, rgba(10, 200, 185, 0.1) 100%);
+        border: 1px solid var(--gold-primary);
+        border-radius: 8px;
+        color: var(--gold-primary);
+        text-decoration: none;
+        text-align: center;
+        font-weight: 600;
+        font-size: 0.95rem;
+        transition: all 0.3s ease;
+    }
+
+    .view-story-btn:hover {
+        background: var(--gold-primary);
+        color: var(--bg-dark);
+    }
+
+    /* Empty State */
+    .empty-state {
+        text-align: center;
+        padding: 80px 20px;
+        background: var(--bg-card);
+        border-radius: 16px;
+        border: 1px solid var(--border-color);
+    }
+
+    .empty-state h3 {
+        font-size: 1.5rem;
+        margin-bottom: 16px;
+        color: var(--text-primary);
+    }
+
+    .empty-state p {
+        color: var(--text-secondary);
+        margin-bottom: 24px;
+    }
+
+    .empty-state a {
+        color: var(--blue-accent);
+        text-decoration: none;
+    }
+
+    .empty-state a:hover {
+        text-decoration: underline;
+    }
+
+    /* Footer */
+    .footer {
+        text-align: center;
+        margin-top: 60px;
+        padding: 30px;
+        border-top: 1px solid var(--border-color);
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .title { font-size: 1.8rem; }
+        .match-grid { grid-template-columns: 1fr; }
+    }
+</style>
+</head>
+<body>
+    <div class="container">
+        <!-- Back Link -->
+        <a href="{% url 'index' %}" class="back-link">← 메인으로 돌아가기</a>
+
+        <!-- Header -->
+        <header class="header">
+            <h1 class="title">📖 {{ title }}</h1>
+            <p class="subtitle">2025 월드 챔피언십 녹아웃 스테이지 밴픽 전략과 경기 서사</p>
+        </header>
+
+        {% if qf_matches or sf_matches or f_matches %}
+        
+        <!-- 8강 Section -->
+        {% if qf_matches %}
+        <section class="stage-section">
+            <h2 class="stage-title">
+                🏆 8강 (Quarter Finals)
+                <span class="stage-badge">{{ qf_matches|length }} 경기</span>
+            </h2>
+            <div class="match-grid">
+                {% for match in qf_matches %}
+                <div class="match-card">
+                    <div class="match-header">
+                        <div class="match-teams">
+                            <span class="team-with-logo">
+                                <img src="{% static 'main/images/teams/' %}{{ match.team_a_logo }}" alt="{{ match.team_a }}" class="team-logo" onerror="this.style.display='none'">
+                                {{ match.team_a }}
+                            </span>
+                            <span class="vs-text">VS</span>
+                            <span class="team-with-logo">
+                                <img src="{% static 'main/images/teams/' %}{{ match.team_b_logo }}" alt="{{ match.team_b }}" class="team-logo" onerror="this.style.display='none'">
+                                {{ match.team_b }}
+                            </span>
+                        </div>
+                        <div class="match-score">{{ match.final_score }}</div>
+                    </div>
+                    <div class="match-body">
+                        {% if match.match_overview %}
+                        <p class="match-overview">{{ match.match_overview }}</p>
+                        {% endif %}
+                        <div class="set-list">
+                            {% for set in match.sets %}
+                            <span class="set-badge {% if set.winner == match.team_a %}winner-a{% else %}winner-b{% endif %}">
+                                {{ set.set_number }}세트: {{ set.winner }}
+                            </span>
+                            {% endfor %}
+                        </div>
+                        <a href="{% url 'match_story_detail' stage='QF' match_number=match.match_number %}" class="view-story-btn">
+                            📖 스토리 보기
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+        {% endif %}
+
+        <!-- 4강 Section -->
+        {% if sf_matches %}
+        <section class="stage-section">
+            <h2 class="stage-title">
+                🥇 4강 (Semi Finals)
+                <span class="stage-badge">{{ sf_matches|length }} 경기</span>
+            </h2>
+            <div class="match-grid">
+                {% for match in sf_matches %}
+                <div class="match-card">
+                    <div class="match-header">
+                        <div class="match-teams">
+                            <span class="team-with-logo">
+                                <img src="{% static 'main/images/teams/' %}{{ match.team_a_logo }}" alt="{{ match.team_a }}" class="team-logo" onerror="this.style.display='none'">
+                                {{ match.team_a }}
+                            </span>
+                            <span class="vs-text">VS</span>
+                            <span class="team-with-logo">
+                                <img src="{% static 'main/images/teams/' %}{{ match.team_b_logo }}" alt="{{ match.team_b }}" class="team-logo" onerror="this.style.display='none'">
+                                {{ match.team_b }}
+                            </span>
+                        </div>
+                        <div class="match-score">{{ match.final_score }}</div>
+                    </div>
+                    <div class="match-body">
+                        {% if match.match_overview %}
+                        <p class="match-overview">{{ match.match_overview }}</p>
+                        {% endif %}
+                        <div class="set-list">
+                            {% for set in match.sets %}
+                            <span class="set-badge {% if set.winner == match.team_a %}winner-a{% else %}winner-b{% endif %}">
+                                {{ set.set_number }}세트: {{ set.winner }}
+                            </span>
+                            {% endfor %}
+                        </div>
+                        <a href="{% url 'match_story_detail' stage='SF' match_number=match.match_number %}" class="view-story-btn">
+                            📖 스토리 보기
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+        {% endif %}
+
+        <!-- 결승 Section -->
+        {% if f_matches %}
+        <section class="stage-section">
+            <h2 class="stage-title">
+                👑 결승 (Finals)
+                <span class="stage-badge">{{ f_matches|length }} 경기</span>
+            </h2>
+            <div class="match-grid">
+                {% for match in f_matches %}
+                <div class="match-card">
+                    <div class="match-header">
+                        <div class="match-teams">
+                            <span class="team-with-logo">
+                                <img src="{% static 'main/images/teams/' %}{{ match.team_a_logo }}" alt="{{ match.team_a }}" class="team-logo" onerror="this.style.display='none'">
+                                {{ match.team_a }}
+                            </span>
+                            <span class="vs-text">VS</span>
+                            <span class="team-with-logo">
+                                <img src="{% static 'main/images/teams/' %}{{ match.team_b_logo }}" alt="{{ match.team_b }}" class="team-logo" onerror="this.style.display='none'">
+                                {{ match.team_b }}
+                            </span>
+                        </div>
+                        <div class="match-score">{{ match.final_score }}</div>
+                    </div>
+                    <div class="match-body">
+                        {% if match.match_overview %}
+                        <p class="match-overview">{{ match.match_overview }}</p>
+                        {% endif %}
+                        <a href="{% url 'match_story_detail' stage='F' match_number=match.match_number %}" class="view-story-btn">
+                            📖 스토리 보기
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+        {% endif %}
+
+        {% else %}
+        <!-- Empty State -->
+        <div class="empty-state">
+            <h3>📭 아직 등록된 스토리가 없습니다</h3>
+            <p>경기 스토리 데이터를 먼저 로드해주세요.</p>
+            <p><code>python manage.py load_match_stories</code></p>
+        </div>
+        {% endif %}
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>2025 롤드컵 벤픽 아카이브 | Data Storytelling Project</p>
+        </footer>
+    </div>
+</body>
+</html>
+
