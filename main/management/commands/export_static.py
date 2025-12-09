@@ -418,6 +418,25 @@ class Command(BaseCommand):
         border: 1px solid var(--border-color); border-radius: 4px; transition: all 0.3s ease;
     }}
     .nav-link:hover, .nav-link.active {{ color: var(--gold-primary); border-color: var(--gold-primary); background: rgba(200, 155, 60, 0.1); }}
+    .filter-controls {{
+        display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-bottom: 30px;
+    }}
+    .filter-btn {{
+        padding: 10px 20px; border: 1px solid var(--border-color); border-radius: 25px;
+        background: transparent; color: var(--text-secondary); cursor: pointer;
+        transition: all 0.3s ease; font-family: 'Noto Sans KR', sans-serif; font-size: 0.9rem;
+    }}
+    .filter-btn:hover, .filter-btn.active {{
+        border-color: var(--blue-accent); color: var(--blue-accent); background: rgba(10, 200, 185, 0.1);
+    }}
+    .filter-btn.blue {{ border-color: #4a90d9; color: #4a90d9; }}
+    .filter-btn.blue:hover, .filter-btn.blue.active {{ background: rgba(74, 144, 217, 0.2); }}
+    .filter-btn.red {{ border-color: #d94a4a; color: #d94a4a; }}
+    .filter-btn.red:hover, .filter-btn.red.active {{ background: rgba(217, 74, 74, 0.2); }}
+    .filter-btn.balanced {{ border-color: #7a7a7a; color: #7a7a7a; }}
+    .filter-btn.balanced:hover, .filter-btn.balanced.active {{ background: rgba(122, 122, 122, 0.2); }}
+    .champion-table th {{ cursor: pointer; }}
+    .champion-table th:hover {{ background: #1f2d40; }}
     .stats-summary {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 40px; }}
     .stat-card {{
         background: var(--bg-card); border: 1px solid var(--border-color);
@@ -532,6 +551,18 @@ class Command(BaseCommand):
             <a href="./" class="nav-link active">📊 챔피언 통계</a>
         </nav>
 
+        <!-- 필터 버튼 -->
+        <section class="filter-controls">
+            <button class="filter-btn active" data-filter="all">전체</button>
+            <button class="filter-btn blue" data-filter="BLUE_MUST">블루 필수</button>
+            <button class="filter-btn blue" data-filter="BLUE_PREF">블루 선호</button>
+            <button class="filter-btn blue" data-filter="BLUE_WEAK">약한 블루</button>
+            <button class="filter-btn balanced" data-filter="BALANCED">균형</button>
+            <button class="filter-btn red" data-filter="RED_WEAK">약한 레드</button>
+            <button class="filter-btn red" data-filter="RED_PREF">레드 선호</button>
+            <button class="filter-btn red" data-filter="RED_MUST">레드 필수</button>
+        </section>
+
         <section class="stats-summary">
             <div class="stat-card">
                 <div class="stat-value">{stats_count}</div>
@@ -610,6 +641,92 @@ class Command(BaseCommand):
             <p>2025 롤드컵 벤픽 아카이브 | <a href="../">메인으로 돌아가기</a></p>
         </footer>
     </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {{
+        // 필터 기능
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const rows = document.querySelectorAll('.champion-table tbody tr');
+        
+        filterBtns.forEach(btn => {{
+            btn.addEventListener('click', function() {{
+                filterBtns.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                const filter = this.dataset.filter;
+                let visibleIndex = 0;
+                
+                rows.forEach(row => {{
+                    const sideBadge = row.querySelector('.side-badge');
+                    if (!sideBadge) return;
+                    
+                    const sideClass = Array.from(sideBadge.classList).find(c => 
+                        ['BLUE_MUST', 'BLUE_PREF', 'BLUE_WEAK', 'BALANCED', 'RED_WEAK', 'RED_PREF', 'RED_MUST'].includes(c)
+                    );
+                    
+                    if (filter === 'all' || sideClass === filter) {{
+                        row.style.display = '';
+                        visibleIndex++;
+                        // 순위 업데이트
+                        const rankBadge = row.querySelector('.rank-badge');
+                        if (rankBadge) {{
+                            rankBadge.textContent = visibleIndex;
+                            rankBadge.className = 'rank-badge ' + (visibleIndex <= 3 ? 'rank-' + visibleIndex : 'rank-default');
+                        }}
+                    }} else {{
+                        row.style.display = 'none';
+                    }}
+                }});
+            }});
+        }});
+        
+        // 정렬 기능
+        const headers = document.querySelectorAll('.champion-table th');
+        let sortDir = {{}};
+        
+        headers.forEach((header, index) => {{
+            if (index === 0) return; // 순위 컬럼 제외
+            
+            header.addEventListener('click', function() {{
+                const tbody = document.querySelector('.champion-table tbody');
+                const rowsArray = Array.from(tbody.querySelectorAll('tr'));
+                
+                sortDir[index] = !sortDir[index];
+                
+                rowsArray.sort((a, b) => {{
+                    let aVal, bVal;
+                    
+                    if (index === 1) {{ // 챔피언명
+                        aVal = a.cells[index].textContent.trim();
+                        bVal = b.cells[index].textContent.trim();
+                        return sortDir[index] ? aVal.localeCompare(bVal, 'ko') : bVal.localeCompare(aVal, 'ko');
+                    }} else if (index === 2) {{ // Tier Score
+                        aVal = parseFloat(a.querySelector('.tier-value')?.textContent || 0);
+                        bVal = parseFloat(b.querySelector('.tier-value')?.textContent || 0);
+                    }} else if (index === 3) {{ // 픽 횟수
+                        aVal = parseInt(a.querySelector('.pick-stat.total')?.textContent || 0);
+                        bVal = parseInt(b.querySelector('.pick-stat.total')?.textContent || 0);
+                    }} else if (index === 4) {{ // Side Index
+                        aVal = parseFloat(a.querySelector('.side-index')?.textContent || 0);
+                        bVal = parseFloat(b.querySelector('.side-index')?.textContent || 0);
+                    }}
+                    
+                    return sortDir[index] ? aVal - bVal : bVal - aVal;
+                }});
+                
+                // 순위 재할당
+                rowsArray.forEach((row, i) => {{
+                    tbody.appendChild(row);
+                    const rankBadge = row.querySelector('.rank-badge');
+                    if (rankBadge) {{
+                        rankBadge.textContent = i + 1;
+                        rankBadge.className = 'rank-badge ' + (i < 3 ? 'rank-' + (i + 1) : 'rank-default');
+                    }}
+                }});
+            }});
+        }});
+    }});
+    </script>
 </body>
 </html>'''
 
