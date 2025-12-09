@@ -122,8 +122,4 @@ http://localhost:8000
 
 ---
 
-<p align="center">
-  <strong>2025 디지털 아카이빙 & 데이터 시각화 프로젝트</strong><br>
-  <em>Data Storytelling Project</em>
-</p>
 
