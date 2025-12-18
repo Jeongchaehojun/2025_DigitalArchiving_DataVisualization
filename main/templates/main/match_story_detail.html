@@ -1,4 +1,4 @@
-{% load static %}
+{% load static champion_filters %}
 <!DOCTYPE html>
 <html lang="ko">
 
@@ -448,8 +448,8 @@
                     <div class="champions-grid">
                         {% for champion in story.get_key_champions_list %}
                         <div class="champion-item">
-                            <img src="{% static 'main/images/champions/' %}{{ champion }}.png" alt="{{ champion }}"
-                                class="champion-portrait"
+                            <img src="{% static 'main/images/champions/' %}{{ champion|champion_filename }}.webp"
+                                alt="{{ champion }}" class="champion-portrait"
                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                             <div class="champion-portrait placeholder" style="display: none;">⚔️</div>
                             <span class="champion-name">{{ champion }}</span>

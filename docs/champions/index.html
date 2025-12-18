@@ -1,532 +1,164 @@
 <!DOCTYPE html>
 <html lang="ko">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2025 롤드컵 챔피언 통계</title>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Orbitron:wght@400;700;900&display=swap"
-        rel="stylesheet">
-    <style>
-        :root {
-            --bg-dark: #0a0e13;
-            --bg-card: #111827;
-            --bg-hover: #1f2937;
-            --gold-primary: #c89b3c;
-            --blue-accent: #0ac8b9;
-            --red-accent: #ff4655;
-            --text-primary: #f0e6d2;
-            --text-secondary: #a09b8c;
-            --border-color: #3c3c41;
-            --gradient-gold: linear-gradient(135deg, #785a28 0%, #c8aa6e 50%, #c89b3c 100%);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Noto Sans KR', sans-serif;
-            background: var(--bg-dark);
-            color: var(--text-primary);
-            min-height: 100vh;
-            background-image: radial-gradient(ellipse at top, rgba(200, 155, 60, 0.05) 0%, transparent 50%);
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 40px 20px;
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 50px;
-            position: relative;
-        }
-
-        .header::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--gold-primary), transparent);
-        }
-
-        .header-content {
-            display: inline-block;
-            background: var(--bg-dark);
-            padding: 0 40px;
-            position: relative;
-        }
-
-        .title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2.8rem;
-            font-weight: 900;
-            background: var(--gradient-gold);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-        }
-
-        .subtitle {
-            font-size: 1rem;
-            color: var(--text-secondary);
-            letter-spacing: 2px;
-        }
-
-        .nav-bar {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-bottom: 40px;
-        }
-
-        .nav-link {
-            color: var(--text-secondary);
-            text-decoration: none;
-            padding: 12px 24px;
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            transition: all 0.3s ease;
-        }
-
-        .nav-link:hover,
-        .nav-link.active {
-            color: var(--gold-primary);
-            border-color: var(--gold-primary);
-            background: rgba(200, 155, 60, 0.1);
-        }
-
-        .filter-controls {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 30px;
-        }
-
-        .filter-btn {
-            padding: 10px 20px;
-            border: 1px solid var(--border-color);
-            border-radius: 25px;
-            background: transparent;
-            color: var(--text-secondary);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-family: 'Noto Sans KR', sans-serif;
-            font-size: 0.9rem;
-        }
-
-        .filter-btn:hover,
-        .filter-btn.active {
-            border-color: var(--blue-accent);
-            color: var(--blue-accent);
-            background: rgba(10, 200, 185, 0.1);
-        }
-
-        .filter-btn.blue {
-            border-color: #4a90d9;
-            color: #4a90d9;
-        }
-
-        .filter-btn.blue:hover,
-        .filter-btn.blue.active {
-            background: rgba(74, 144, 217, 0.2);
-        }
-
-        .filter-btn.red {
-            border-color: #d94a4a;
-            color: #d94a4a;
-        }
-
-        .filter-btn.red:hover,
-        .filter-btn.red.active {
-            background: rgba(217, 74, 74, 0.2);
-        }
-
-        .filter-btn.balanced {
-            border-color: #7a7a7a;
-            color: #7a7a7a;
-        }
-
-        .filter-btn.balanced:hover,
-        .filter-btn.balanced.active {
-            background: rgba(122, 122, 122, 0.2);
-        }
-
-        .champion-table th {
-            cursor: pointer;
-        }
-
-        .champion-table th:hover {
-            background: #1f2d40;
-        }
-
-        .stats-summary {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 40px;
-        }
-
-        .stat-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 24px;
-            text-align: center;
-            transition: all 0.3s ease;
-        }
-
-        .stat-card:hover {
-            border-color: var(--gold-primary);
-            transform: translateY(-3px);
-        }
-
-        .stat-value {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--gold-primary);
-        }
-
-        .stat-label {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .table-container {
-            background: var(--bg-card);
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-            overflow: hidden;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-        }
-
-        .champion-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .champion-table th {
-            background: linear-gradient(180deg, #1a2332 0%, #111827 100%);
-            padding: 18px 16px;
-            text-align: left;
-            font-weight: 600;
-            color: var(--gold-primary);
-            text-transform: uppercase;
-            font-size: 0.85rem;
-            letter-spacing: 1px;
-            border-bottom: 2px solid var(--gold-primary);
-        }
-
-        .champion-table td {
-            padding: 16px;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .champion-table tbody tr {
-            transition: all 0.2s ease;
-        }
-
-        .champion-table tbody tr:hover {
-            background: var(--bg-hover);
-        }
-
-        .rank-badge {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 700;
-            font-size: 0.85rem;
-        }
-
-        .rank-1 {
-            background: linear-gradient(135deg, #ffd700, #b8860b);
-            color: #000;
-        }
-
-        .rank-2 {
-            background: linear-gradient(135deg, #c0c0c0, #808080);
-            color: #000;
-        }
-
-        .rank-3 {
-            background: linear-gradient(135deg, #cd7f32, #8b4513);
-            color: #fff;
-        }
-
-        .rank-default {
-            background: var(--bg-dark);
-            color: var(--text-secondary);
-            border: 1px solid var(--border-color);
-        }
-
-        .champion-name {
-            font-weight: 600;
-            font-size: 1.05rem;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .champion-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: var(--bg-dark);
-            border: 2px solid var(--gold-primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-        }
-
-        img.champion-icon {
-            object-fit: cover;
-        }
-
-        .champion-icon.placeholder {
-            display: none;
-        }
-
-        .tier-bar-container {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .tier-bar {
-            width: 120px;
-            height: 8px;
-            background: var(--bg-dark);
-            border-radius: 4px;
-            overflow: hidden;
-        }
-
-        .tier-bar-fill {
-            height: 100%;
-            border-radius: 4px;
-        }
-
-        .tier-value {
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 600;
-            color: var(--gold-primary);
-            min-width: 40px;
-        }
-
-        .pick-stats {
-            display: flex;
-            gap: 8px;
-        }
-
-        .pick-stat {
-            padding: 4px 12px;
-            border-radius: 4px;
-            font-size: 0.9rem;
-            font-weight: 500;
-        }
-
-        .pick-stat.total {
-            background: rgba(200, 155, 60, 0.2);
-            color: var(--gold-primary);
-        }
-
-        .pick-stat.blue {
-            background: rgba(74, 144, 217, 0.2);
-            color: #4a90d9;
-        }
-
-        .pick-stat.red {
-            background: rgba(217, 74, 74, 0.2);
-            color: #d94a4a;
-        }
-
-        .side-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 500;
-        }
-
-        .side-badge.BLUE_MUST {
-            background: rgba(74, 144, 217, 0.3);
-            color: #6db3f2;
-            border: 1px solid #4a90d9;
-        }
-
-        .side-badge.BLUE_PREF {
-            background: rgba(74, 144, 217, 0.2);
-            color: #4a90d9;
-        }
-
-        .side-badge.BLUE_WEAK {
-            background: rgba(74, 144, 217, 0.1);
-            color: #4a90d9;
-        }
-
-        .side-badge.BALANCED {
-            background: rgba(160, 155, 140, 0.2);
-            color: var(--text-secondary);
-        }
-
-        .side-badge.RED_WEAK {
-            background: rgba(217, 74, 74, 0.1);
-            color: #d94a4a;
-        }
-
-        .side-badge.RED_PREF {
-            background: rgba(217, 74, 74, 0.2);
-            color: #d94a4a;
-        }
-
-        .side-badge.RED_MUST {
-            background: rgba(217, 74, 74, 0.3);
-            color: #f26d6d;
-            border: 1px solid #d94a4a;
-        }
-
-        .side-index {
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 600;
-        }
-
-        .analysis-principles {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 30px;
-            margin-top: 40px;
-        }
-
-        .analysis-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.3rem;
-            color: #28a745;
-            margin-bottom: 24px;
-            padding-bottom: 12px;
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .principles-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-            margin-bottom: 24px;
-        }
-
-        .principle-card {
-            background: var(--bg-dark);
-            border: 1px solid #28a745;
-            border-radius: 8px;
-            padding: 20px;
-        }
-
-        .principle-card h4 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1rem;
-            color: var(--gold-primary);
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .principle-card p {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-            line-height: 1.7;
-        }
-
-        .principle-card ul {
-            list-style: none;
-            padding-left: 0;
-            margin-top: 10px;
-        }
-
-        .principle-card ul li {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            margin-bottom: 5px;
-            padding-left: 1em;
-        }
-
-        .principle-card ul li::before {
-            content: '•';
-            color: #28a745;
-            display: inline-block;
-            width: 1em;
-            margin-left: -1em;
-        }
-
-        .caution-box {
-            background: rgba(255, 70, 85, 0.1);
-            border: 1px solid var(--red-accent);
-            border-radius: 8px;
-            padding: 20px;
-            color: var(--red-accent);
-            font-size: 0.9rem;
-            line-height: 1.6;
-        }
-
-        .caution-box strong {
-            color: var(--gold-primary);
-        }
-
-        .footer {
-            text-align: center;
-            margin-top: 60px;
-            padding: 30px;
-            border-top: 1px solid var(--border-color);
-            color: var(--text-secondary);
-        }
-
-        .footer a {
-            color: var(--gold-primary);
-            text-decoration: none;
-        }
-
-        @media (max-width: 768px) {
-            .title {
-                font-size: 1.8rem;
-            }
-
-            .stats-summary {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .champion-table {
-                font-size: 0.85rem;
-            }
-
-            .tier-bar {
-                width: 60px;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2025 롤드컵 챔피언 통계</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+    :root {
+        --bg-dark: #0a0e13; --bg-card: #111827; --bg-hover: #1f2937;
+        --gold-primary: #c89b3c; --blue-accent: #0ac8b9; --red-accent: #ff4655;
+        --text-primary: #f0e6d2; --text-secondary: #a09b8c; --border-color: #3c3c41;
+        --gradient-gold: linear-gradient(135deg, #785a28 0%, #c8aa6e 50%, #c89b3c 100%);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+        font-family: 'Noto Sans KR', sans-serif; background: var(--bg-dark);
+        color: var(--text-primary); min-height: 100vh;
+        background-image: radial-gradient(ellipse at top, rgba(200, 155, 60, 0.05) 0%, transparent 50%);
+    }
+    .container { max-width: 1400px; margin: 0 auto; padding: 40px 20px; }
+    .header { text-align: center; margin-bottom: 50px; position: relative; }
+    .header::before {
+        content: ''; position: absolute; top: 50%; left: 0; right: 0; height: 1px;
+        background: linear-gradient(90deg, transparent, var(--gold-primary), transparent);
+    }
+    .header-content { display: inline-block; background: var(--bg-dark); padding: 0 40px; position: relative; }
+    .title {
+        font-family: 'Orbitron', sans-serif; font-size: 2.8rem; font-weight: 900;
+        background: var(--gradient-gold); -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent; letter-spacing: 3px; text-transform: uppercase;
+    }
+    .subtitle { font-size: 1rem; color: var(--text-secondary); letter-spacing: 2px; }
+    .nav-bar { display: flex; justify-content: center; gap: 20px; margin-bottom: 40px; }
+    .nav-link {
+        color: var(--text-secondary); text-decoration: none; padding: 12px 24px;
+        border: 1px solid var(--border-color); border-radius: 4px; transition: all 0.3s ease;
+    }
+    .nav-link:hover, .nav-link.active { color: var(--gold-primary); border-color: var(--gold-primary); background: rgba(200, 155, 60, 0.1); }
+    .filter-controls {
+        display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-bottom: 30px;
+    }
+    .filter-btn {
+        padding: 10px 20px; border: 1px solid var(--border-color); border-radius: 25px;
+        background: transparent; color: var(--text-secondary); cursor: pointer;
+        transition: all 0.3s ease; font-family: 'Noto Sans KR', sans-serif; font-size: 0.9rem;
+    }
+    .filter-btn:hover, .filter-btn.active {
+        border-color: var(--blue-accent); color: var(--blue-accent); background: rgba(10, 200, 185, 0.1);
+    }
+    .filter-btn.blue { border-color: #4a90d9; color: #4a90d9; }
+    .filter-btn.blue:hover, .filter-btn.blue.active { background: rgba(74, 144, 217, 0.2); }
+    .filter-btn.red { border-color: #d94a4a; color: #d94a4a; }
+    .filter-btn.red:hover, .filter-btn.red.active { background: rgba(217, 74, 74, 0.2); }
+    .filter-btn.balanced { border-color: #7a7a7a; color: #7a7a7a; }
+    .filter-btn.balanced:hover, .filter-btn.balanced.active { background: rgba(122, 122, 122, 0.2); }
+    .champion-table th { cursor: pointer; }
+    .champion-table th:hover { background: #1f2d40; }
+    .stats-summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 40px; }
+    .stat-card {
+        background: var(--bg-card); border: 1px solid var(--border-color);
+        border-radius: 8px; padding: 24px; text-align: center; transition: all 0.3s ease;
+    }
+    .stat-card:hover { border-color: var(--gold-primary); transform: translateY(-3px); }
+    .stat-value { font-family: 'Orbitron', sans-serif; font-size: 2.5rem; font-weight: 700; color: var(--gold-primary); }
+    .stat-label { font-size: 0.9rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
+    .table-container {
+        background: var(--bg-card); border-radius: 12px; border: 1px solid var(--border-color);
+        overflow: hidden; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+    .champion-table { width: 100%; border-collapse: collapse; }
+    .champion-table th {
+        background: linear-gradient(180deg, #1a2332 0%, #111827 100%);
+        padding: 18px 16px; text-align: left; font-weight: 600; color: var(--gold-primary);
+        text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px;
+        border-bottom: 2px solid var(--gold-primary);
+    }
+    .champion-table td { padding: 16px; border-bottom: 1px solid var(--border-color); }
+    .champion-table tbody tr { transition: all 0.2s ease; }
+    .champion-table tbody tr:hover { background: var(--bg-hover); }
+    .rank-badge {
+        display: inline-flex; align-items: center; justify-content: center;
+        width: 32px; height: 32px; border-radius: 50%;
+        font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 0.85rem;
+    }
+    .rank-1 { background: linear-gradient(135deg, #ffd700, #b8860b); color: #000; }
+    .rank-2 { background: linear-gradient(135deg, #c0c0c0, #808080); color: #000; }
+    .rank-3 { background: linear-gradient(135deg, #cd7f32, #8b4513); color: #fff; }
+    .rank-default { background: var(--bg-dark); color: var(--text-secondary); border: 1px solid var(--border-color); }
+    .champion-name { font-weight: 600; font-size: 1.05rem; display: flex; align-items: center; gap: 12px; }
+    .champion-icon {
+        width: 40px; height: 40px; border-radius: 50%; background: var(--bg-dark);
+        border: 2px solid var(--gold-primary); object-fit: cover;
+    }
+    img.champion-icon { display: block; }
+    .champion-icon.placeholder {
+        display: flex; align-items: center; justify-content: center; font-size: 1.2rem;
+    }
+    .tier-bar-container { display: flex; align-items: center; gap: 12px; }
+    .tier-bar { width: 120px; height: 8px; background: var(--bg-dark); border-radius: 4px; overflow: hidden; }
+    .tier-bar-fill { height: 100%; border-radius: 4px; }
+    .tier-value { font-family: 'Orbitron', sans-serif; font-weight: 600; color: var(--gold-primary); min-width: 40px; }
+    .pick-stats { display: flex; gap: 8px; }
+    .pick-stat { padding: 4px 12px; border-radius: 4px; font-size: 0.9rem; font-weight: 500; }
+    .pick-stat.total { background: rgba(200, 155, 60, 0.2); color: var(--gold-primary); }
+    .pick-stat.blue { background: rgba(74, 144, 217, 0.2); color: #4a90d9; }
+    .pick-stat.red { background: rgba(217, 74, 74, 0.2); color: #d94a4a; }
+    .side-badge {
+        display: inline-flex; align-items: center; gap: 6px;
+        padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 500;
+    }
+    .side-badge.BLUE_MUST { background: rgba(74, 144, 217, 0.3); color: #6db3f2; border: 1px solid #4a90d9; }
+    .side-badge.BLUE_PREF { background: rgba(74, 144, 217, 0.2); color: #4a90d9; }
+    .side-badge.BLUE_WEAK { background: rgba(74, 144, 217, 0.1); color: #4a90d9; }
+    .side-badge.BALANCED { background: rgba(160, 155, 140, 0.2); color: var(--text-secondary); }
+    .side-badge.RED_WEAK { background: rgba(217, 74, 74, 0.1); color: #d94a4a; }
+    .side-badge.RED_PREF { background: rgba(217, 74, 74, 0.2); color: #d94a4a; }
+    .side-badge.RED_MUST { background: rgba(217, 74, 74, 0.3); color: #f26d6d; border: 1px solid #d94a4a; }
+    .side-index { font-family: 'Orbitron', sans-serif; font-weight: 600; }
+    .analysis-principles {
+        background: var(--bg-card); border: 1px solid var(--border-color);
+        border-radius: 12px; padding: 30px; margin-top: 40px;
+    }
+    .analysis-title {
+        font-family: 'Orbitron', sans-serif; font-size: 1.3rem; color: #28a745;
+        margin-bottom: 24px; padding-bottom: 12px; border-bottom: 1px solid var(--border-color);
+        display: flex; align-items: center; gap: 10px;
+    }
+    .principles-grid {
+        display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 20px; margin-bottom: 24px;
+    }
+    .principle-card {
+        background: var(--bg-dark); border: 1px solid #28a745; border-radius: 8px; padding: 20px;
+    }
+    .principle-card h4 {
+        font-family: 'Orbitron', sans-serif; font-size: 1rem; color: var(--gold-primary);
+        margin-bottom: 10px; display: flex; align-items: center; gap: 8px;
+    }
+    .principle-card p { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.7; }
+    .principle-card ul { list-style: none; padding-left: 0; margin-top: 10px; }
+    .principle-card ul li { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 5px; padding-left: 1em; }
+    .principle-card ul li::before { content: '•'; color: #28a745; display: inline-block; width: 1em; margin-left: -1em; }
+    .caution-box {
+        background: rgba(255, 70, 85, 0.1); border: 1px solid var(--red-accent);
+        border-radius: 8px; padding: 20px; color: var(--red-accent); font-size: 0.9rem; line-height: 1.6;
+    }
+    .caution-box strong { color: var(--gold-primary); }
+    .footer {
+        text-align: center; margin-top: 60px; padding: 30px;
+        border-top: 1px solid var(--border-color); color: var(--text-secondary);
+    }
+    .footer a { color: var(--gold-primary); text-decoration: none; }
+    @media (max-width: 768px) {
+        .title { font-size: 1.8rem; }
+        .stats-summary { grid-template-columns: repeat(2, 1fr); }
+        .champion-table { font-size: 0.85rem; }
+        .tier-bar { width: 60px; }
+    }
+</style>
 </head>
-
 <body>
     <div class="container">
         <header class="header">
@@ -584,844 +216,782 @@
                     </tr>
                 </thead>
                 <tbody>
-
-                    <tr>
-                        <td><span class="rank-badge rank-1">1</span></td>
-                        <td>
-                            <div class="champion-name">
-                                <div class="champion-icon">⚔️</div>라이즈
-                            </div>
-                        </td>
-                        <td>
-                            <div class="tier-bar-container">
-                                <div class="tier-bar">
-                                    <div class="tier-bar-fill"
-                                        style="width: 13.2%; background: linear-gradient(90deg, #785a28, #c8aa6e);">
-                                    </div>
-                                </div>
-                                <span class="tier-value">13.2</span>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="pick-stats">
-                                <span class="pick-stat total">6</span>
-                                <span class="pick-stat blue">B4</span>
-                                <span class="pick-stat red">R1</span>
-                            </div>
-                        </td>
-                        <td><span class="side-badge BLUE_PREF"><span class="side-index">0.67</span> 블루 선호</span></td>
-                    </tr>
-
-                    <tr>
-                        <td><span class="rank-badge rank-2">2</span></td>
-                        <td>
-                            <div class="champion-name">
-                                <div class="champion-icon">⚔️</div>요네
-                            </div>
-                        </td>
-                        <td>
-                            <div class="tier-bar-container">
-                                <div class="tier-bar">
-                                    <div class="tier-bar-fill"
-                                        style="width: 12.2%; background: linear-gradient(90deg, #785a28, #c8aa6e);">
-                                    </div>
-                                </div>
-                                <span class="tier-value">12.2</span>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="pick-stats">
-                                <span class="pick-stat total">5</span>
-                                <span class="pick-stat blue">B4</span>
-                                <span class="pick-stat red">R1</span>
-                            </div>
-                        </td>
-                        <td><span class="side-badge BLUE_PREF"><span class="side-index">0.6</span> 블루 선호</span></td>
-                    </tr>
-
-                    <tr>
-                        <td><span class="rank-badge rank-3">3</span></td>
-                        <td>
-                            <div class="champion-name">
-                                <div class="champion-icon">⚔️</div>암베사
-                            </div>
-                        </td>
-                        <td>
-                            <div class="tier-bar-container">
-                                <div class="tier-bar">
-                                    <div class="tier-bar-fill"
-                                        style="width: 11.4%; background: linear-gradient(90deg, #785a28, #c8aa6e);">
-                                    </div>
-                                </div>
-                                <span class="tier-value">11.4</span>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="pick-stats">
-                                <span class="pick-stat total">6</span>
-                                <span class="pick-stat blue">B2</span>
-                                <span class="pick-stat red">R2</span>
-                            </div>
-                        </td>
-                        <td><span class="side-badge BLUE_WEAK"><span class="side-index">0.33</span> 약한 블루</span></td>
-                    </tr>
-
-                    <tr>
-                        <td><span class="rank-badge rank-default">4</span></td>
-                        <td>
-                            <div class="champion-name">
-                                <div class="champion-icon">⚔️</div>갈리오
-                            </div>
-                        </td>
-                        <td>
-                            <div class="tier-bar-container">
-                                <div class="tier-bar">
-                                    <div class="tier-bar-fill"
-                                        style="width: 10.4%; background: linear-gradient(90deg, #785a28, #c8aa6e);">
-                                    </div>
-                                </div>
-                                <span class="tier-value">10.4</span>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="pick-stats">
-                                <span class="pick-stat total">5</span>
-                                <span class="pick-stat blue">B2</span>
-                                <span class="pick-stat red">R2</span>
-                            </div>
-                        </td>
-                        <td><span class="side-badge BALANCED"><span class="side-index">0.2</span> 균형</span></td>
-                    </tr>
-
-                    <tr>
-                        <td><span class="rank-badge rank-default">5</span></td>
-                        <td>
-                            <div class="champion-name">
-                                <div class="champion-icon">⚔️</div>카이사
-                            </div>
-                        </td>
-                        <td>
-                            <div class="tier-bar-container">
-                                <div class="tier-bar">
-                                    <div class="tier-bar-fill"
-                                        style="width: 9.9%; background: linear-gradient(90deg, #785a28, #c8aa6e);">
-                                    </div>
-                                </div>
-                                <span class="tier-value">9.9</span>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="pick-stats">
-                                <span class="pick-stat total">6</span>
-                                <span class="pick-stat blue">B1</span>
-                                <span class="pick-stat red">R2</span>
-                            </div>
-                        </td>
-                        <td><span class="side-badge RED_PREF"><span class="side-index">-0.33</span> 레드 선호</span></td>
-                    </tr>
-
-                    <tr>
-                        <td><span class="rank-badge rank-default">6</span></td>
-                        <td>
-                            <div class="champion-name">
-                                <div class="champion-icon">⚔️</div>럼블
-                            </div>
-                        </td>
-                        <td>
-                            <div class="tier-bar-container">
-                                <div class="tier-bar">
-                                    <div class="tier-bar-fill"
-                                        style="width: 8.7%; background: linear-gradient(90deg, #785a28, #c8aa6e);">
-                                    </div>
-                                </div>
-                                <span class="tier-value">8.7</span>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="pick-stats">
-                                <span class="pick-stat total">6</span>
-                                <span class="pick-stat blue">B1</span>
-                                <span class="pick-stat red">R1</span>
-                            </div>
-                        </td>
-                        <td><span class="side-badge BLUE_WEAK"><span class="side-index">0.33</span> 약한 블루</span></td>
-                    </tr>
-
-                    <tr>
-                        <td><span class="rank-badge rank-default">7</span></td>
-                        <td>
-                            <div class="champion-name">
-                                <div class="champion-icon">⚔️</div>크산테
-                            </div>
-                        </td>
-                        <td>
-                            <div class="tier-bar-container">
-                                <div class="tier-bar">
-                                    <div class="tier-bar-fill"
-                                        style="width: 8.5%; background: linear-gradient(90deg, #785a28, #c8aa6e);">
-                                    </div>
-                                </div>
-                                <span class="tier-value">8.5</span>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="pick-stats">
-                                <span class="pick-stat total">7</span>
-                                <span class="pick-stat blue">B1</span>
-                                <span class="pick-stat red">R0</span>
-                            </div>
-                        </td>
-                        <td><span class="side-badge BALANCED"><span class="side-index">0.14</span> 균형</span></td>
-                    </tr>
-
-                    <tr>
-                        <td><span class="rank-badge rank-default">8</span></td>
-                        <td>
-                            <div class="champion-name">
-                                <div class="champion-icon">⚔️</div>오로라
-                            </div>
-                        </td>
-                        <td>
-                            <div class="tier-bar-container">
-                                <div class="tier-bar">
-                                    <div class="tier-bar-fill"
-                                        style="width: 7.9%; background: linear-gradient(90deg, #785a28, #c8aa6e);">
-                                    </div>
-                                </div>
-                                <span class="tier-value">7.9</span>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="pick-stats">
-                                <span class="pick-stat total">4</span>
-                                <span class="pick-stat blue">B1</span>
-                                <span class="pick-stat red">R2</span>
-                            </div>
-                        </td>
-                        <td><span class="side-badge BALANCED"><span class="side-index">0.0</span> 균형</span></td>
-                    </tr>
-
-                    <tr>
-                        <td><span class="rank-badge rank-default">9</span></td>
-                        <td>
-                            <div class="champion-name">
-                                <div class="champion-icon">⚔️</div>레넥톤
-                            </div>
-                        </td>
-                        <td>
-                            <div class="tier-bar-container">
-                                <div class="tier-bar">
-                                    <div class="tier-bar-fill"
-                                        style="width: 7.6%; background: linear-gradient(90deg, #785a28, #c8aa6e);">
-                                    </div>
-                                </div>
-                                <span class="tier-value">7.6</span>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="pick-stats">
-                                <span class="pick-stat total">4</span>
-                                <span class="pick-stat blue">B0</span>
-                                <span class="pick-stat red">R3</span>
-                            </div>
-                        </td>
-                        <td><span class="side-badge RED_MUST"><span class="side-index">-1.0</span> 레드 필수</span></td>
-                    </tr>
-
-                    <tr>
-                        <td><span class="rank-badge rank-default">10</span></td>
-                        <td>
-                            <div class="champion-name">
-                                <div class="champion-icon">⚔️</div>오공
-                            </div>
-                        </td>
-                        <td>
-                            <div class="tier-bar-container">
-                                <div class="tier-bar">
-                                    <div class="tier-bar-fill"
-                                        style="width: 7.5%; background: linear-gradient(90deg, #785a28, #c8aa6e);">
-                                    </div>
-                                </div>
-                                <span class="tier-value">7.5</span>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="pick-stats">
-                                <span class="pick-stat total">6</span>
-                                <span class="pick-stat blue">B1</span>
-                                <span class="pick-stat red">R0</span>
-                            </div>
-                        </td>
-                        <td><span class="side-badge BLUE_MUST"><span class="side-index">1.0</span> 블루 필수</span></td>
-                    </tr>
-
-                    <tr>
-                        <td><span class="rank-badge rank-default">11</span></td>
-                        <td>
-                            <div class="champion-name">
-                                <div class="champion-icon">⚔️</div>사이온
-                            </div>
-                        </td>
-                        <td>
-                            <div class="tier-bar-container">
-                                <div class="tier-bar">
-                                    <div class="tier-bar-fill"
-                                        style="width: 7.5%; background: linear-gradient(90deg, #785a28, #c8aa6e);">
-                                    </div>
-                                </div>
-                                <span class="tier-value">7.5</span>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="pick-stats">
-                                <span class="pick-stat total">6</span>
-                                <span class="pick-stat blue">B1</span>
-                                <span class="pick-stat red">R0</span>
-                            </div>
-                        </td>
-                        <td><span class="side-badge RED_PREF"><span class="side-index">-0.67</span> 레드 선호</span></td>
-                    </tr>
-
-                    <tr>
-                        <td><span class="rank-badge rank-default">12</span></td>
-                        <td>
-                            <div class="champion-name">
-                                <div class="champion-icon">⚔️</div>자르반4세
-                            </div>
-                        </td>
-                        <td>
-                            <div class="tier-bar-container">
-                                <div class="tier-bar">
-                                    <div class="tier-bar-fill"
-                                        style="width: 7.5%; background: linear-gradient(90deg, #785a28, #c8aa6e);">
-                                    </div>
-                                </div>
-                                <span class="tier-value">7.5</span>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="pick-stats">
-                                <span class="pick-stat total">6</span>
-                                <span class="pick-stat blue">B1</span>
-                                <span class="pick-stat red">R0</span>
-                            </div>
-                        </td>
-                        <td><span class="side-badge BLUE_PREF"><span class="side-index">0.67</span> 블루 선호</span></td>
-                    </tr>
-
-                    <tr>
-                        <td><span class="rank-badge rank-default">13</span></td>
-                        <td>
-                            <div class="champion-name">
-                                <div class="champion-icon">⚔️</div>오리아나
-                            </div>
-                        </td>
-                        <td>
-                            <div class="tier-bar-container">
-                                <div class="tier-bar">
-                                    <div class="tier-bar-fill"
-                                        style="width: 7.4%; background: linear-gradient(90deg, #785a28, #c8aa6e);">
-                                    </div>
-                                </div>
-                                <span class="tier-value">7.4</span>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="pick-stats">
-                                <span class="pick-stat total">5</span>
-                                <span class="pick-stat blue">B0</span>
-                                <span class="pick-stat red">R2</span>
-                            </div>
-                        </td>
-                        <td><span class="side-badge BALANCED"><span class="side-index">-0.2</span> 균형</span></td>
-                    </tr>
-
-                    <tr>
-                        <td><span class="rank-badge rank-default">14</span></td>
-                        <td>
-                            <div class="champion-name">
-                                <div class="champion-icon">⚔️</div>노틸러스
-                            </div>
-                        </td>
-                        <td>
-                            <div class="tier-bar-container">
-                                <div class="tier-bar">
-                                    <div class="tier-bar-fill"
-                                        style="width: 7.0%; background: linear-gradient(90deg, #785a28, #c8aa6e);">
-                                    </div>
-                                </div>
-                                <span class="tier-value">7.0</span>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="pick-stats">
-                                <span class="pick-stat total">7</span>
-                                <span class="pick-stat blue">B0</span>
-                                <span class="pick-stat red">R0</span>
-                            </div>
-                        </td>
-                        <td><span class="side-badge BLUE_WEAK"><span class="side-index">0.43</span> 약한 블루</span></td>
-                    </tr>
-
-                    <tr>
-                        <td><span class="rank-badge rank-default">15</span></td>
-                        <td>
-                            <div class="champion-name">
-                                <div class="champion-icon">⚔️</div>아트록스
-                            </div>
-                        </td>
-                        <td>
-                            <div class="tier-bar-container">
-                                <div class="tier-bar">
-                                    <div class="tier-bar-fill"
-                                        style="width: 7.0%; background: linear-gradient(90deg, #785a28, #c8aa6e);">
-                                    </div>
-                                </div>
-                                <span class="tier-value">7.0</span>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="pick-stats">
-                                <span class="pick-stat total">4</span>
-                                <span class="pick-stat blue">B2</span>
-                                <span class="pick-stat red">R0</span>
-                            </div>
-                        </td>
-                        <td><span class="side-badge BALANCED"><span class="side-index">0.0</span> 균형</span></td>
-                    </tr>
-
-                    <tr>
-                        <td><span class="rank-badge rank-default">16</span></td>
-                        <td>
-                            <div class="champion-name">
-                                <div class="champion-icon">⚔️</div>코르키
-                            </div>
-                        </td>
-                        <td>
-                            <div class="tier-bar-container">
-                                <div class="tier-bar">
-                                    <div class="tier-bar-fill"
-                                        style="width: 6.5%; background: linear-gradient(90deg, #785a28, #c8aa6e);">
-                                    </div>
-                                </div>
-                                <span class="tier-value">6.5</span>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="pick-stats">
-                                <span class="pick-stat total">5</span>
-                                <span class="pick-stat blue">B1</span>
-                                <span class="pick-stat red">R0</span>
-                            </div>
-                        </td>
-                        <td><span class="side-badge BALANCED"><span class="side-index">-0.2</span> 균형</span></td>
-                    </tr>
-
-                    <tr>
-                        <td><span class="rank-badge rank-default">17</span></td>
-                        <td>
-                            <div class="champion-name">
-                                <div class="champion-icon">⚔️</div>바이
-                            </div>
-                        </td>
-                        <td>
-                            <div class="tier-bar-container">
-                                <div class="tier-bar">
-                                    <div class="tier-bar-fill"
-                                        style="width: 6.4%; background: linear-gradient(90deg, #785a28, #c8aa6e);">
-                                    </div>
-                                </div>
-                                <span class="tier-value">6.4</span>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="pick-stats">
-                                <span class="pick-stat total">4</span>
-                                <span class="pick-stat blue">B0</span>
-                                <span class="pick-stat red">R2</span>
-                            </div>
-                        </td>
-                        <td><span class="side-badge RED_MUST"><span class="side-index">-1.0</span> 레드 필수</span></td>
-                    </tr>
-
-                    <tr>
-                        <td><span class="rank-badge rank-default">18</span></td>
-                        <td>
-                            <div class="champion-name">
-                                <div class="champion-icon">⚔️</div>오른
-                            </div>
-                        </td>
-                        <td>
-                            <div class="tier-bar-container">
-                                <div class="tier-bar">
-                                    <div class="tier-bar-fill"
-                                        style="width: 6.4%; background: linear-gradient(90deg, #785a28, #c8aa6e);">
-                                    </div>
-                                </div>
-                                <span class="tier-value">6.4</span>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="pick-stats">
-                                <span class="pick-stat total">4</span>
-                                <span class="pick-stat blue">B0</span>
-                                <span class="pick-stat red">R2</span>
-                            </div>
-                        </td>
-                        <td><span class="side-badge RED_PREF"><span class="side-index">-0.5</span> 레드 선호</span></td>
-                    </tr>
-
-                    <tr>
-                        <td><span class="rank-badge rank-default">19</span></td>
-                        <td>
-                            <div class="champion-name">
-                                <div class="champion-icon">⚔️</div>탈리야
-                            </div>
-                        </td>
-                        <td>
-                            <div class="tier-bar-container">
-                                <div class="tier-bar">
-                                    <div class="tier-bar-fill"
-                                        style="width: 6.2%; background: linear-gradient(90deg, #785a28, #c8aa6e);">
-                                    </div>
-                                </div>
-                                <span class="tier-value">6.2</span>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="pick-stats">
-                                <span class="pick-stat total">5</span>
-                                <span class="pick-stat blue">B0</span>
-                                <span class="pick-stat red">R1</span>
-                            </div>
-                        </td>
-                        <td><span class="side-badge RED_PREF"><span class="side-index">-0.6</span> 레드 선호</span></td>
-                    </tr>
-
-                    <tr>
-                        <td><span class="rank-badge rank-default">20</span></td>
-                        <td>
-                            <div class="champion-name">
-                                <div class="champion-icon">⚔️</div>이즈리얼
-                            </div>
-                        </td>
-                        <td>
-                            <div class="tier-bar-container">
-                                <div class="tier-bar">
-                                    <div class="tier-bar-fill"
-                                        style="width: 6.0%; background: linear-gradient(90deg, #785a28, #c8aa6e);">
-                                    </div>
-                                </div>
-                                <span class="tier-value">6.0</span>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="pick-stats">
-                                <span class="pick-stat total">6</span>
-                                <span class="pick-stat blue">B0</span>
-                                <span class="pick-stat red">R0</span>
-                            </div>
-                        </td>
-                        <td><span class="side-badge BLUE_PREF"><span class="side-index">0.67</span> 블루 선호</span></td>
-                    </tr>
-
-                    <tr>
-                        <td><span class="rank-badge rank-default">21</span></td>
-                        <td>
-                            <div class="champion-name">
-                                <div class="champion-icon">⚔️</div>신짜오
-                            </div>
-                        </td>
-                        <td>
-                            <div class="tier-bar-container">
-                                <div class="tier-bar">
-                                    <div class="tier-bar-fill"
-                                        style="width: 6.0%; background: linear-gradient(90deg, #785a28, #c8aa6e);">
-                                    </div>
-                                </div>
-                                <span class="tier-value">6.0</span>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="pick-stats">
-                                <span class="pick-stat total">6</span>
-                                <span class="pick-stat blue">B0</span>
-                                <span class="pick-stat red">R0</span>
-                            </div>
-                        </td>
-                        <td><span class="side-badge RED_PREF"><span class="side-index">-0.67</span> 레드 선호</span></td>
-                    </tr>
-
-                    <tr>
-                        <td><span class="rank-badge rank-default">22</span></td>
-                        <td>
-                            <div class="champion-name">
-                                <div class="champion-icon">⚔️</div>바루스
-                            </div>
-                        </td>
-                        <td>
-                            <div class="tier-bar-container">
-                                <div class="tier-bar">
-                                    <div class="tier-bar-fill"
-                                        style="width: 6.0%; background: linear-gradient(90deg, #785a28, #c8aa6e);">
-                                    </div>
-                                </div>
-                                <span class="tier-value">6.0</span>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="pick-stats">
-                                <span class="pick-stat total">6</span>
-                                <span class="pick-stat blue">B0</span>
-                                <span class="pick-stat red">R0</span>
-                            </div>
-                        </td>
-                        <td><span class="side-badge RED_PREF"><span class="side-index">-0.33</span> 레드 선호</span></td>
-                    </tr>
-
-                    <tr>
-                        <td><span class="rank-badge rank-default">23</span></td>
-                        <td>
-                            <div class="champion-name">
-                                <div class="champion-icon">⚔️</div>라칸
-                            </div>
-                        </td>
-                        <td>
-                            <div class="tier-bar-container">
-                                <div class="tier-bar">
-                                    <div class="tier-bar-fill"
-                                        style="width: 6.0%; background: linear-gradient(90deg, #785a28, #c8aa6e);">
-                                    </div>
-                                </div>
-                                <span class="tier-value">6.0</span>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="pick-stats">
-                                <span class="pick-stat total">6</span>
-                                <span class="pick-stat blue">B0</span>
-                                <span class="pick-stat red">R0</span>
-                            </div>
-                        </td>
-                        <td><span class="side-badge BALANCED"><span class="side-index">0.0</span> 균형</span></td>
-                    </tr>
-
-                    <tr>
-                        <td><span class="rank-badge rank-default">24</span></td>
-                        <td>
-                            <div class="champion-name">
-                                <div class="champion-icon">⚔️</div>니코
-                            </div>
-                        </td>
-                        <td>
-                            <div class="tier-bar-container">
-                                <div class="tier-bar">
-                                    <div class="tier-bar-fill"
-                                        style="width: 6.0%; background: linear-gradient(90deg, #785a28, #c8aa6e);">
-                                    </div>
-                                </div>
-                                <span class="tier-value">6.0</span>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="pick-stats">
-                                <span class="pick-stat total">6</span>
-                                <span class="pick-stat blue">B0</span>
-                                <span class="pick-stat red">R0</span>
-                            </div>
-                        </td>
-                        <td><span class="side-badge BALANCED"><span class="side-index">0.0</span> 균형</span></td>
-                    </tr>
-
-                    <tr>
-                        <td><span class="rank-badge rank-default">25</span></td>
-                        <td>
-                            <div class="champion-name">
-                                <div class="champion-icon">⚔️</div>뽀삐
-                            </div>
-                        </td>
-                        <td>
-                            <div class="tier-bar-container">
-                                <div class="tier-bar">
-                                    <div class="tier-bar-fill"
-                                        style="width: 6.0%; background: linear-gradient(90deg, #785a28, #c8aa6e);">
-                                    </div>
-                                </div>
-                                <span class="tier-value">6.0</span>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="pick-stats">
-                                <span class="pick-stat total">6</span>
-                                <span class="pick-stat blue">B0</span>
-                                <span class="pick-stat red">R0</span>
-                            </div>
-                        </td>
-                        <td><span class="side-badge RED_PREF"><span class="side-index">-0.33</span> 레드 선호</span></td>
-                    </tr>
-
-                    <tr>
-                        <td><span class="rank-badge rank-default">26</span></td>
-                        <td>
-                            <div class="champion-name">
-                                <div class="champion-icon">⚔️</div>시비르
-                            </div>
-                        </td>
-                        <td>
-                            <div class="tier-bar-container">
-                                <div class="tier-bar">
-                                    <div class="tier-bar-fill"
-                                        style="width: 6.0%; background: linear-gradient(90deg, #785a28, #c8aa6e);">
-                                    </div>
-                                </div>
-                                <span class="tier-value">6.0</span>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="pick-stats">
-                                <span class="pick-stat total">6</span>
-                                <span class="pick-stat blue">B0</span>
-                                <span class="pick-stat red">R0</span>
-                            </div>
-                        </td>
-                        <td><span class="side-badge BALANCED"><span class="side-index">0.0</span> 균형</span></td>
-                    </tr>
-
-                    <tr>
-                        <td><span class="rank-badge rank-default">27</span></td>
-                        <td>
-                            <div class="champion-name">
-                                <div class="champion-icon">⚔️</div>스카너
-                            </div>
-                        </td>
-                        <td>
-                            <div class="tier-bar-container">
-                                <div class="tier-bar">
-                                    <div class="tier-bar-fill"
-                                        style="width: 5.7%; background: linear-gradient(90deg, #785a28, #c8aa6e);">
-                                    </div>
-                                </div>
-                                <span class="tier-value">5.7</span>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="pick-stats">
-                                <span class="pick-stat total">3</span>
-                                <span class="pick-stat blue">B1</span>
-                                <span class="pick-stat red">R1</span>
-                            </div>
-                        </td>
-                        <td><span class="side-badge BLUE_WEAK"><span class="side-index">0.33</span> 약한 블루</span></td>
-                    </tr>
-
-                    <tr>
-                        <td><span class="rank-badge rank-default">28</span></td>
-                        <td>
-                            <div class="champion-name">
-                                <div class="champion-icon">⚔️</div>아지르
-                            </div>
-                        </td>
-                        <td>
-                            <div class="tier-bar-container">
-                                <div class="tier-bar">
-                                    <div class="tier-bar-fill"
-                                        style="width: 5.5%; background: linear-gradient(90deg, #785a28, #c8aa6e);">
-                                    </div>
-                                </div>
-                                <span class="tier-value">5.5</span>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="pick-stats">
-                                <span class="pick-stat total">4</span>
-                                <span class="pick-stat blue">B1</span>
-                                <span class="pick-stat red">R0</span>
-                            </div>
-                        </td>
-                        <td><span class="side-badge BALANCED"><span class="side-index">0.0</span> 균형</span></td>
-                    </tr>
-
-                    <tr>
-                        <td><span class="rank-badge rank-default">29</span></td>
-                        <td>
-                            <div class="champion-name">
-                                <div class="champion-icon">⚔️</div>애쉬
-                            </div>
-                        </td>
-                        <td>
-                            <div class="tier-bar-container">
-                                <div class="tier-bar">
-                                    <div class="tier-bar-fill"
-                                        style="width: 5.2%; background: linear-gradient(90deg, #785a28, #c8aa6e);">
-                                    </div>
-                                </div>
-                                <span class="tier-value">5.2</span>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="pick-stats">
-                                <span class="pick-stat total">4</span>
-                                <span class="pick-stat blue">B0</span>
-                                <span class="pick-stat red">R1</span>
-                            </div>
-                        </td>
-                        <td><span class="side-badge BALANCED"><span class="side-index">0.0</span> 균형</span></td>
-                    </tr>
-
-                    <tr>
-                        <td><span class="rank-badge rank-default">30</span></td>
-                        <td>
-                            <div class="champion-name">
-                                <div class="champion-icon">⚔️</div>판테온
-                            </div>
-                        </td>
-                        <td>
-                            <div class="tier-bar-container">
-                                <div class="tier-bar">
-                                    <div class="tier-bar-fill"
-                                        style="width: 5.0%; background: linear-gradient(90deg, #785a28, #c8aa6e);">
-                                    </div>
-                                </div>
-                                <span class="tier-value">5.0</span>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="pick-stats">
-                                <span class="pick-stat total">5</span>
-                                <span class="pick-stat blue">B0</span>
-                                <span class="pick-stat red">R0</span>
-                            </div>
-                        </td>
-                        <td><span class="side-badge RED_MUST"><span class="side-index">-1.0</span> 레드 필수</span></td>
-                    </tr>
-
-                    <tr>
-                        <td><span class="rank-badge rank-default">31</span></td>
-                        <td>
-                            <div class="champion-name">
-                                <div class="champion-icon">⚔️</div>알리스타
-                            </div>
-                        </td>
-                        <td>
-                            <div class="tier-bar-container">
-                                <div class="tier-bar">
-                                    <div class="tier-bar-fill"
-                                        style="width: 5.0%; background: linear-gradient(90deg, #785a28, #c8aa6e);">
-                                    </div>
-                                </div>
-                                <span class="tier-value">5.0</span>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="pick-stats">
-                                <span class="pick-stat total">5</span>
-                                <span class="pick-stat blue">B0</span>
-                                <span class="pick-stat red">R0</span>
-                            </div>
-                        </td>
-                        <td><span class="side-badge RED_PREF"><span class="side-index">-0.6</span> 레드 선호</span></td>
-                    </tr>
-
+                    
+            <tr>
+                <td><span class="rank-badge rank-1">1</span></td>
+                <td>
+                    <div class="champion-name">
+                        <img src="../static/images/champions/ryze.webp" alt="라이즈" class="champion-icon" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="champion-icon placeholder" style="display: none;">⚔️</div>
+                        라이즈
+                    </div>
+                </td>
+                <td>
+                    <div class="tier-bar-container">
+                        <div class="tier-bar"><div class="tier-bar-fill" style="width: 13.2%; background: linear-gradient(90deg, #785a28, #c8aa6e);"></div></div>
+                        <span class="tier-value">13.2</span>
+                    </div>
+                </td>
+                <td>
+                    <div class="pick-stats">
+                        <span class="pick-stat total">6</span>
+                        <span class="pick-stat blue">B4</span>
+                        <span class="pick-stat red">R1</span>
+                    </div>
+                </td>
+                <td><span class="side-badge BLUE_PREF"><span class="side-index">0.67</span> 블루 선호</span></td>
+            </tr>
+            
+            <tr>
+                <td><span class="rank-badge rank-2">2</span></td>
+                <td>
+                    <div class="champion-name">
+                        <img src="../static/images/champions/yone.webp" alt="요네" class="champion-icon" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="champion-icon placeholder" style="display: none;">⚔️</div>
+                        요네
+                    </div>
+                </td>
+                <td>
+                    <div class="tier-bar-container">
+                        <div class="tier-bar"><div class="tier-bar-fill" style="width: 12.2%; background: linear-gradient(90deg, #785a28, #c8aa6e);"></div></div>
+                        <span class="tier-value">12.2</span>
+                    </div>
+                </td>
+                <td>
+                    <div class="pick-stats">
+                        <span class="pick-stat total">5</span>
+                        <span class="pick-stat blue">B4</span>
+                        <span class="pick-stat red">R1</span>
+                    </div>
+                </td>
+                <td><span class="side-badge BLUE_PREF"><span class="side-index">0.6</span> 블루 선호</span></td>
+            </tr>
+            
+            <tr>
+                <td><span class="rank-badge rank-3">3</span></td>
+                <td>
+                    <div class="champion-name">
+                        <img src="../static/images/champions/ambessa.webp" alt="암베사" class="champion-icon" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="champion-icon placeholder" style="display: none;">⚔️</div>
+                        암베사
+                    </div>
+                </td>
+                <td>
+                    <div class="tier-bar-container">
+                        <div class="tier-bar"><div class="tier-bar-fill" style="width: 11.4%; background: linear-gradient(90deg, #785a28, #c8aa6e);"></div></div>
+                        <span class="tier-value">11.4</span>
+                    </div>
+                </td>
+                <td>
+                    <div class="pick-stats">
+                        <span class="pick-stat total">6</span>
+                        <span class="pick-stat blue">B2</span>
+                        <span class="pick-stat red">R2</span>
+                    </div>
+                </td>
+                <td><span class="side-badge BLUE_WEAK"><span class="side-index">0.33</span> 약한 블루</span></td>
+            </tr>
+            
+            <tr>
+                <td><span class="rank-badge rank-default">4</span></td>
+                <td>
+                    <div class="champion-name">
+                        <img src="../static/images/champions/galio.webp" alt="갈리오" class="champion-icon" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="champion-icon placeholder" style="display: none;">⚔️</div>
+                        갈리오
+                    </div>
+                </td>
+                <td>
+                    <div class="tier-bar-container">
+                        <div class="tier-bar"><div class="tier-bar-fill" style="width: 10.4%; background: linear-gradient(90deg, #785a28, #c8aa6e);"></div></div>
+                        <span class="tier-value">10.4</span>
+                    </div>
+                </td>
+                <td>
+                    <div class="pick-stats">
+                        <span class="pick-stat total">5</span>
+                        <span class="pick-stat blue">B2</span>
+                        <span class="pick-stat red">R2</span>
+                    </div>
+                </td>
+                <td><span class="side-badge BALANCED"><span class="side-index">0.2</span> 균형</span></td>
+            </tr>
+            
+            <tr>
+                <td><span class="rank-badge rank-default">5</span></td>
+                <td>
+                    <div class="champion-name">
+                        <img src="../static/images/champions/kaisa.webp" alt="카이사" class="champion-icon" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="champion-icon placeholder" style="display: none;">⚔️</div>
+                        카이사
+                    </div>
+                </td>
+                <td>
+                    <div class="tier-bar-container">
+                        <div class="tier-bar"><div class="tier-bar-fill" style="width: 9.9%; background: linear-gradient(90deg, #785a28, #c8aa6e);"></div></div>
+                        <span class="tier-value">9.9</span>
+                    </div>
+                </td>
+                <td>
+                    <div class="pick-stats">
+                        <span class="pick-stat total">6</span>
+                        <span class="pick-stat blue">B1</span>
+                        <span class="pick-stat red">R2</span>
+                    </div>
+                </td>
+                <td><span class="side-badge RED_PREF"><span class="side-index">-0.33</span> 레드 선호</span></td>
+            </tr>
+            
+            <tr>
+                <td><span class="rank-badge rank-default">6</span></td>
+                <td>
+                    <div class="champion-name">
+                        <img src="../static/images/champions/rumble.webp" alt="럼블" class="champion-icon" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="champion-icon placeholder" style="display: none;">⚔️</div>
+                        럼블
+                    </div>
+                </td>
+                <td>
+                    <div class="tier-bar-container">
+                        <div class="tier-bar"><div class="tier-bar-fill" style="width: 8.7%; background: linear-gradient(90deg, #785a28, #c8aa6e);"></div></div>
+                        <span class="tier-value">8.7</span>
+                    </div>
+                </td>
+                <td>
+                    <div class="pick-stats">
+                        <span class="pick-stat total">6</span>
+                        <span class="pick-stat blue">B1</span>
+                        <span class="pick-stat red">R1</span>
+                    </div>
+                </td>
+                <td><span class="side-badge BLUE_WEAK"><span class="side-index">0.33</span> 약한 블루</span></td>
+            </tr>
+            
+            <tr>
+                <td><span class="rank-badge rank-default">7</span></td>
+                <td>
+                    <div class="champion-name">
+                        <img src="../static/images/champions/ksante.webp" alt="크산테" class="champion-icon" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="champion-icon placeholder" style="display: none;">⚔️</div>
+                        크산테
+                    </div>
+                </td>
+                <td>
+                    <div class="tier-bar-container">
+                        <div class="tier-bar"><div class="tier-bar-fill" style="width: 8.5%; background: linear-gradient(90deg, #785a28, #c8aa6e);"></div></div>
+                        <span class="tier-value">8.5</span>
+                    </div>
+                </td>
+                <td>
+                    <div class="pick-stats">
+                        <span class="pick-stat total">7</span>
+                        <span class="pick-stat blue">B1</span>
+                        <span class="pick-stat red">R0</span>
+                    </div>
+                </td>
+                <td><span class="side-badge BALANCED"><span class="side-index">0.14</span> 균형</span></td>
+            </tr>
+            
+            <tr>
+                <td><span class="rank-badge rank-default">8</span></td>
+                <td>
+                    <div class="champion-name">
+                        <img src="../static/images/champions/aurora.webp" alt="오로라" class="champion-icon" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="champion-icon placeholder" style="display: none;">⚔️</div>
+                        오로라
+                    </div>
+                </td>
+                <td>
+                    <div class="tier-bar-container">
+                        <div class="tier-bar"><div class="tier-bar-fill" style="width: 7.9%; background: linear-gradient(90deg, #785a28, #c8aa6e);"></div></div>
+                        <span class="tier-value">7.9</span>
+                    </div>
+                </td>
+                <td>
+                    <div class="pick-stats">
+                        <span class="pick-stat total">4</span>
+                        <span class="pick-stat blue">B1</span>
+                        <span class="pick-stat red">R2</span>
+                    </div>
+                </td>
+                <td><span class="side-badge BALANCED"><span class="side-index">0.0</span> 균형</span></td>
+            </tr>
+            
+            <tr>
+                <td><span class="rank-badge rank-default">9</span></td>
+                <td>
+                    <div class="champion-name">
+                        <img src="../static/images/champions/renekton.webp" alt="레넥톤" class="champion-icon" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="champion-icon placeholder" style="display: none;">⚔️</div>
+                        레넥톤
+                    </div>
+                </td>
+                <td>
+                    <div class="tier-bar-container">
+                        <div class="tier-bar"><div class="tier-bar-fill" style="width: 7.6%; background: linear-gradient(90deg, #785a28, #c8aa6e);"></div></div>
+                        <span class="tier-value">7.6</span>
+                    </div>
+                </td>
+                <td>
+                    <div class="pick-stats">
+                        <span class="pick-stat total">4</span>
+                        <span class="pick-stat blue">B0</span>
+                        <span class="pick-stat red">R3</span>
+                    </div>
+                </td>
+                <td><span class="side-badge RED_MUST"><span class="side-index">-1.0</span> 레드 필수</span></td>
+            </tr>
+            
+            <tr>
+                <td><span class="rank-badge rank-default">10</span></td>
+                <td>
+                    <div class="champion-name">
+                        <img src="../static/images/champions/wukong.webp" alt="오공" class="champion-icon" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="champion-icon placeholder" style="display: none;">⚔️</div>
+                        오공
+                    </div>
+                </td>
+                <td>
+                    <div class="tier-bar-container">
+                        <div class="tier-bar"><div class="tier-bar-fill" style="width: 7.5%; background: linear-gradient(90deg, #785a28, #c8aa6e);"></div></div>
+                        <span class="tier-value">7.5</span>
+                    </div>
+                </td>
+                <td>
+                    <div class="pick-stats">
+                        <span class="pick-stat total">6</span>
+                        <span class="pick-stat blue">B1</span>
+                        <span class="pick-stat red">R0</span>
+                    </div>
+                </td>
+                <td><span class="side-badge BLUE_MUST"><span class="side-index">1.0</span> 블루 필수</span></td>
+            </tr>
+            
+            <tr>
+                <td><span class="rank-badge rank-default">11</span></td>
+                <td>
+                    <div class="champion-name">
+                        <img src="../static/images/champions/sion.webp" alt="사이온" class="champion-icon" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="champion-icon placeholder" style="display: none;">⚔️</div>
+                        사이온
+                    </div>
+                </td>
+                <td>
+                    <div class="tier-bar-container">
+                        <div class="tier-bar"><div class="tier-bar-fill" style="width: 7.5%; background: linear-gradient(90deg, #785a28, #c8aa6e);"></div></div>
+                        <span class="tier-value">7.5</span>
+                    </div>
+                </td>
+                <td>
+                    <div class="pick-stats">
+                        <span class="pick-stat total">6</span>
+                        <span class="pick-stat blue">B1</span>
+                        <span class="pick-stat red">R0</span>
+                    </div>
+                </td>
+                <td><span class="side-badge RED_PREF"><span class="side-index">-0.67</span> 레드 선호</span></td>
+            </tr>
+            
+            <tr>
+                <td><span class="rank-badge rank-default">12</span></td>
+                <td>
+                    <div class="champion-name">
+                        <img src="../static/images/champions/jarvaniv.webp" alt="자르반4세" class="champion-icon" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="champion-icon placeholder" style="display: none;">⚔️</div>
+                        자르반4세
+                    </div>
+                </td>
+                <td>
+                    <div class="tier-bar-container">
+                        <div class="tier-bar"><div class="tier-bar-fill" style="width: 7.5%; background: linear-gradient(90deg, #785a28, #c8aa6e);"></div></div>
+                        <span class="tier-value">7.5</span>
+                    </div>
+                </td>
+                <td>
+                    <div class="pick-stats">
+                        <span class="pick-stat total">6</span>
+                        <span class="pick-stat blue">B1</span>
+                        <span class="pick-stat red">R0</span>
+                    </div>
+                </td>
+                <td><span class="side-badge BLUE_PREF"><span class="side-index">0.67</span> 블루 선호</span></td>
+            </tr>
+            
+            <tr>
+                <td><span class="rank-badge rank-default">13</span></td>
+                <td>
+                    <div class="champion-name">
+                        <img src="../static/images/champions/orianna.webp" alt="오리아나" class="champion-icon" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="champion-icon placeholder" style="display: none;">⚔️</div>
+                        오리아나
+                    </div>
+                </td>
+                <td>
+                    <div class="tier-bar-container">
+                        <div class="tier-bar"><div class="tier-bar-fill" style="width: 7.4%; background: linear-gradient(90deg, #785a28, #c8aa6e);"></div></div>
+                        <span class="tier-value">7.4</span>
+                    </div>
+                </td>
+                <td>
+                    <div class="pick-stats">
+                        <span class="pick-stat total">5</span>
+                        <span class="pick-stat blue">B0</span>
+                        <span class="pick-stat red">R2</span>
+                    </div>
+                </td>
+                <td><span class="side-badge BALANCED"><span class="side-index">-0.2</span> 균형</span></td>
+            </tr>
+            
+            <tr>
+                <td><span class="rank-badge rank-default">14</span></td>
+                <td>
+                    <div class="champion-name">
+                        <img src="../static/images/champions/nautilus.webp" alt="노틸러스" class="champion-icon" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="champion-icon placeholder" style="display: none;">⚔️</div>
+                        노틸러스
+                    </div>
+                </td>
+                <td>
+                    <div class="tier-bar-container">
+                        <div class="tier-bar"><div class="tier-bar-fill" style="width: 7.0%; background: linear-gradient(90deg, #785a28, #c8aa6e);"></div></div>
+                        <span class="tier-value">7.0</span>
+                    </div>
+                </td>
+                <td>
+                    <div class="pick-stats">
+                        <span class="pick-stat total">7</span>
+                        <span class="pick-stat blue">B0</span>
+                        <span class="pick-stat red">R0</span>
+                    </div>
+                </td>
+                <td><span class="side-badge BLUE_WEAK"><span class="side-index">0.43</span> 약한 블루</span></td>
+            </tr>
+            
+            <tr>
+                <td><span class="rank-badge rank-default">15</span></td>
+                <td>
+                    <div class="champion-name">
+                        <img src="../static/images/champions/aatrox.webp" alt="아트록스" class="champion-icon" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="champion-icon placeholder" style="display: none;">⚔️</div>
+                        아트록스
+                    </div>
+                </td>
+                <td>
+                    <div class="tier-bar-container">
+                        <div class="tier-bar"><div class="tier-bar-fill" style="width: 7.0%; background: linear-gradient(90deg, #785a28, #c8aa6e);"></div></div>
+                        <span class="tier-value">7.0</span>
+                    </div>
+                </td>
+                <td>
+                    <div class="pick-stats">
+                        <span class="pick-stat total">4</span>
+                        <span class="pick-stat blue">B2</span>
+                        <span class="pick-stat red">R0</span>
+                    </div>
+                </td>
+                <td><span class="side-badge BALANCED"><span class="side-index">0.0</span> 균형</span></td>
+            </tr>
+            
+            <tr>
+                <td><span class="rank-badge rank-default">16</span></td>
+                <td>
+                    <div class="champion-name">
+                        <img src="../static/images/champions/corki.webp" alt="코르키" class="champion-icon" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="champion-icon placeholder" style="display: none;">⚔️</div>
+                        코르키
+                    </div>
+                </td>
+                <td>
+                    <div class="tier-bar-container">
+                        <div class="tier-bar"><div class="tier-bar-fill" style="width: 6.5%; background: linear-gradient(90deg, #785a28, #c8aa6e);"></div></div>
+                        <span class="tier-value">6.5</span>
+                    </div>
+                </td>
+                <td>
+                    <div class="pick-stats">
+                        <span class="pick-stat total">5</span>
+                        <span class="pick-stat blue">B1</span>
+                        <span class="pick-stat red">R0</span>
+                    </div>
+                </td>
+                <td><span class="side-badge BALANCED"><span class="side-index">-0.2</span> 균형</span></td>
+            </tr>
+            
+            <tr>
+                <td><span class="rank-badge rank-default">17</span></td>
+                <td>
+                    <div class="champion-name">
+                        <img src="../static/images/champions/vi.webp" alt="바이" class="champion-icon" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="champion-icon placeholder" style="display: none;">⚔️</div>
+                        바이
+                    </div>
+                </td>
+                <td>
+                    <div class="tier-bar-container">
+                        <div class="tier-bar"><div class="tier-bar-fill" style="width: 6.4%; background: linear-gradient(90deg, #785a28, #c8aa6e);"></div></div>
+                        <span class="tier-value">6.4</span>
+                    </div>
+                </td>
+                <td>
+                    <div class="pick-stats">
+                        <span class="pick-stat total">4</span>
+                        <span class="pick-stat blue">B0</span>
+                        <span class="pick-stat red">R2</span>
+                    </div>
+                </td>
+                <td><span class="side-badge RED_MUST"><span class="side-index">-1.0</span> 레드 필수</span></td>
+            </tr>
+            
+            <tr>
+                <td><span class="rank-badge rank-default">18</span></td>
+                <td>
+                    <div class="champion-name">
+                        <img src="../static/images/champions/ornn.webp" alt="오른" class="champion-icon" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="champion-icon placeholder" style="display: none;">⚔️</div>
+                        오른
+                    </div>
+                </td>
+                <td>
+                    <div class="tier-bar-container">
+                        <div class="tier-bar"><div class="tier-bar-fill" style="width: 6.4%; background: linear-gradient(90deg, #785a28, #c8aa6e);"></div></div>
+                        <span class="tier-value">6.4</span>
+                    </div>
+                </td>
+                <td>
+                    <div class="pick-stats">
+                        <span class="pick-stat total">4</span>
+                        <span class="pick-stat blue">B0</span>
+                        <span class="pick-stat red">R2</span>
+                    </div>
+                </td>
+                <td><span class="side-badge RED_PREF"><span class="side-index">-0.5</span> 레드 선호</span></td>
+            </tr>
+            
+            <tr>
+                <td><span class="rank-badge rank-default">19</span></td>
+                <td>
+                    <div class="champion-name">
+                        <img src="../static/images/champions/taliyah.webp" alt="탈리야" class="champion-icon" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="champion-icon placeholder" style="display: none;">⚔️</div>
+                        탈리야
+                    </div>
+                </td>
+                <td>
+                    <div class="tier-bar-container">
+                        <div class="tier-bar"><div class="tier-bar-fill" style="width: 6.2%; background: linear-gradient(90deg, #785a28, #c8aa6e);"></div></div>
+                        <span class="tier-value">6.2</span>
+                    </div>
+                </td>
+                <td>
+                    <div class="pick-stats">
+                        <span class="pick-stat total">5</span>
+                        <span class="pick-stat blue">B0</span>
+                        <span class="pick-stat red">R1</span>
+                    </div>
+                </td>
+                <td><span class="side-badge RED_PREF"><span class="side-index">-0.6</span> 레드 선호</span></td>
+            </tr>
+            
+            <tr>
+                <td><span class="rank-badge rank-default">20</span></td>
+                <td>
+                    <div class="champion-name">
+                        <img src="../static/images/champions/ezreal.webp" alt="이즈리얼" class="champion-icon" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="champion-icon placeholder" style="display: none;">⚔️</div>
+                        이즈리얼
+                    </div>
+                </td>
+                <td>
+                    <div class="tier-bar-container">
+                        <div class="tier-bar"><div class="tier-bar-fill" style="width: 6.0%; background: linear-gradient(90deg, #785a28, #c8aa6e);"></div></div>
+                        <span class="tier-value">6.0</span>
+                    </div>
+                </td>
+                <td>
+                    <div class="pick-stats">
+                        <span class="pick-stat total">6</span>
+                        <span class="pick-stat blue">B0</span>
+                        <span class="pick-stat red">R0</span>
+                    </div>
+                </td>
+                <td><span class="side-badge BLUE_PREF"><span class="side-index">0.67</span> 블루 선호</span></td>
+            </tr>
+            
+            <tr>
+                <td><span class="rank-badge rank-default">21</span></td>
+                <td>
+                    <div class="champion-name">
+                        <img src="../static/images/champions/xinzhao.webp" alt="신짜오" class="champion-icon" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="champion-icon placeholder" style="display: none;">⚔️</div>
+                        신짜오
+                    </div>
+                </td>
+                <td>
+                    <div class="tier-bar-container">
+                        <div class="tier-bar"><div class="tier-bar-fill" style="width: 6.0%; background: linear-gradient(90deg, #785a28, #c8aa6e);"></div></div>
+                        <span class="tier-value">6.0</span>
+                    </div>
+                </td>
+                <td>
+                    <div class="pick-stats">
+                        <span class="pick-stat total">6</span>
+                        <span class="pick-stat blue">B0</span>
+                        <span class="pick-stat red">R0</span>
+                    </div>
+                </td>
+                <td><span class="side-badge RED_PREF"><span class="side-index">-0.67</span> 레드 선호</span></td>
+            </tr>
+            
+            <tr>
+                <td><span class="rank-badge rank-default">22</span></td>
+                <td>
+                    <div class="champion-name">
+                        <img src="../static/images/champions/varus.webp" alt="바루스" class="champion-icon" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="champion-icon placeholder" style="display: none;">⚔️</div>
+                        바루스
+                    </div>
+                </td>
+                <td>
+                    <div class="tier-bar-container">
+                        <div class="tier-bar"><div class="tier-bar-fill" style="width: 6.0%; background: linear-gradient(90deg, #785a28, #c8aa6e);"></div></div>
+                        <span class="tier-value">6.0</span>
+                    </div>
+                </td>
+                <td>
+                    <div class="pick-stats">
+                        <span class="pick-stat total">6</span>
+                        <span class="pick-stat blue">B0</span>
+                        <span class="pick-stat red">R0</span>
+                    </div>
+                </td>
+                <td><span class="side-badge RED_PREF"><span class="side-index">-0.33</span> 레드 선호</span></td>
+            </tr>
+            
+            <tr>
+                <td><span class="rank-badge rank-default">23</span></td>
+                <td>
+                    <div class="champion-name">
+                        <img src="../static/images/champions/rakan.webp" alt="라칸" class="champion-icon" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="champion-icon placeholder" style="display: none;">⚔️</div>
+                        라칸
+                    </div>
+                </td>
+                <td>
+                    <div class="tier-bar-container">
+                        <div class="tier-bar"><div class="tier-bar-fill" style="width: 6.0%; background: linear-gradient(90deg, #785a28, #c8aa6e);"></div></div>
+                        <span class="tier-value">6.0</span>
+                    </div>
+                </td>
+                <td>
+                    <div class="pick-stats">
+                        <span class="pick-stat total">6</span>
+                        <span class="pick-stat blue">B0</span>
+                        <span class="pick-stat red">R0</span>
+                    </div>
+                </td>
+                <td><span class="side-badge BALANCED"><span class="side-index">0.0</span> 균형</span></td>
+            </tr>
+            
+            <tr>
+                <td><span class="rank-badge rank-default">24</span></td>
+                <td>
+                    <div class="champion-name">
+                        <img src="../static/images/champions/neeko.webp" alt="니코" class="champion-icon" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="champion-icon placeholder" style="display: none;">⚔️</div>
+                        니코
+                    </div>
+                </td>
+                <td>
+                    <div class="tier-bar-container">
+                        <div class="tier-bar"><div class="tier-bar-fill" style="width: 6.0%; background: linear-gradient(90deg, #785a28, #c8aa6e);"></div></div>
+                        <span class="tier-value">6.0</span>
+                    </div>
+                </td>
+                <td>
+                    <div class="pick-stats">
+                        <span class="pick-stat total">6</span>
+                        <span class="pick-stat blue">B0</span>
+                        <span class="pick-stat red">R0</span>
+                    </div>
+                </td>
+                <td><span class="side-badge BALANCED"><span class="side-index">0.0</span> 균형</span></td>
+            </tr>
+            
+            <tr>
+                <td><span class="rank-badge rank-default">25</span></td>
+                <td>
+                    <div class="champion-name">
+                        <img src="../static/images/champions/poppy.webp" alt="뽀삐" class="champion-icon" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="champion-icon placeholder" style="display: none;">⚔️</div>
+                        뽀삐
+                    </div>
+                </td>
+                <td>
+                    <div class="tier-bar-container">
+                        <div class="tier-bar"><div class="tier-bar-fill" style="width: 6.0%; background: linear-gradient(90deg, #785a28, #c8aa6e);"></div></div>
+                        <span class="tier-value">6.0</span>
+                    </div>
+                </td>
+                <td>
+                    <div class="pick-stats">
+                        <span class="pick-stat total">6</span>
+                        <span class="pick-stat blue">B0</span>
+                        <span class="pick-stat red">R0</span>
+                    </div>
+                </td>
+                <td><span class="side-badge RED_PREF"><span class="side-index">-0.33</span> 레드 선호</span></td>
+            </tr>
+            
+            <tr>
+                <td><span class="rank-badge rank-default">26</span></td>
+                <td>
+                    <div class="champion-name">
+                        <img src="../static/images/champions/sivir.webp" alt="시비르" class="champion-icon" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="champion-icon placeholder" style="display: none;">⚔️</div>
+                        시비르
+                    </div>
+                </td>
+                <td>
+                    <div class="tier-bar-container">
+                        <div class="tier-bar"><div class="tier-bar-fill" style="width: 6.0%; background: linear-gradient(90deg, #785a28, #c8aa6e);"></div></div>
+                        <span class="tier-value">6.0</span>
+                    </div>
+                </td>
+                <td>
+                    <div class="pick-stats">
+                        <span class="pick-stat total">6</span>
+                        <span class="pick-stat blue">B0</span>
+                        <span class="pick-stat red">R0</span>
+                    </div>
+                </td>
+                <td><span class="side-badge BALANCED"><span class="side-index">0.0</span> 균형</span></td>
+            </tr>
+            
+            <tr>
+                <td><span class="rank-badge rank-default">27</span></td>
+                <td>
+                    <div class="champion-name">
+                        <img src="../static/images/champions/skarner.webp" alt="스카너" class="champion-icon" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="champion-icon placeholder" style="display: none;">⚔️</div>
+                        스카너
+                    </div>
+                </td>
+                <td>
+                    <div class="tier-bar-container">
+                        <div class="tier-bar"><div class="tier-bar-fill" style="width: 5.7%; background: linear-gradient(90deg, #785a28, #c8aa6e);"></div></div>
+                        <span class="tier-value">5.7</span>
+                    </div>
+                </td>
+                <td>
+                    <div class="pick-stats">
+                        <span class="pick-stat total">3</span>
+                        <span class="pick-stat blue">B1</span>
+                        <span class="pick-stat red">R1</span>
+                    </div>
+                </td>
+                <td><span class="side-badge BLUE_WEAK"><span class="side-index">0.33</span> 약한 블루</span></td>
+            </tr>
+            
+            <tr>
+                <td><span class="rank-badge rank-default">28</span></td>
+                <td>
+                    <div class="champion-name">
+                        <img src="../static/images/champions/azir.webp" alt="아지르" class="champion-icon" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="champion-icon placeholder" style="display: none;">⚔️</div>
+                        아지르
+                    </div>
+                </td>
+                <td>
+                    <div class="tier-bar-container">
+                        <div class="tier-bar"><div class="tier-bar-fill" style="width: 5.5%; background: linear-gradient(90deg, #785a28, #c8aa6e);"></div></div>
+                        <span class="tier-value">5.5</span>
+                    </div>
+                </td>
+                <td>
+                    <div class="pick-stats">
+                        <span class="pick-stat total">4</span>
+                        <span class="pick-stat blue">B1</span>
+                        <span class="pick-stat red">R0</span>
+                    </div>
+                </td>
+                <td><span class="side-badge BALANCED"><span class="side-index">0.0</span> 균형</span></td>
+            </tr>
+            
+            <tr>
+                <td><span class="rank-badge rank-default">29</span></td>
+                <td>
+                    <div class="champion-name">
+                        <img src="../static/images/champions/ashe.webp" alt="애쉬" class="champion-icon" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="champion-icon placeholder" style="display: none;">⚔️</div>
+                        애쉬
+                    </div>
+                </td>
+                <td>
+                    <div class="tier-bar-container">
+                        <div class="tier-bar"><div class="tier-bar-fill" style="width: 5.2%; background: linear-gradient(90deg, #785a28, #c8aa6e);"></div></div>
+                        <span class="tier-value">5.2</span>
+                    </div>
+                </td>
+                <td>
+                    <div class="pick-stats">
+                        <span class="pick-stat total">4</span>
+                        <span class="pick-stat blue">B0</span>
+                        <span class="pick-stat red">R1</span>
+                    </div>
+                </td>
+                <td><span class="side-badge BALANCED"><span class="side-index">0.0</span> 균형</span></td>
+            </tr>
+            
+            <tr>
+                <td><span class="rank-badge rank-default">30</span></td>
+                <td>
+                    <div class="champion-name">
+                        <img src="../static/images/champions/pantheon.webp" alt="판테온" class="champion-icon" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="champion-icon placeholder" style="display: none;">⚔️</div>
+                        판테온
+                    </div>
+                </td>
+                <td>
+                    <div class="tier-bar-container">
+                        <div class="tier-bar"><div class="tier-bar-fill" style="width: 5.0%; background: linear-gradient(90deg, #785a28, #c8aa6e);"></div></div>
+                        <span class="tier-value">5.0</span>
+                    </div>
+                </td>
+                <td>
+                    <div class="pick-stats">
+                        <span class="pick-stat total">5</span>
+                        <span class="pick-stat blue">B0</span>
+                        <span class="pick-stat red">R0</span>
+                    </div>
+                </td>
+                <td><span class="side-badge RED_MUST"><span class="side-index">-1.0</span> 레드 필수</span></td>
+            </tr>
+            
+            <tr>
+                <td><span class="rank-badge rank-default">31</span></td>
+                <td>
+                    <div class="champion-name">
+                        <img src="../static/images/champions/alistar.webp" alt="알리스타" class="champion-icon" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="champion-icon placeholder" style="display: none;">⚔️</div>
+                        알리스타
+                    </div>
+                </td>
+                <td>
+                    <div class="tier-bar-container">
+                        <div class="tier-bar"><div class="tier-bar-fill" style="width: 5.0%; background: linear-gradient(90deg, #785a28, #c8aa6e);"></div></div>
+                        <span class="tier-value">5.0</span>
+                    </div>
+                </td>
+                <td>
+                    <div class="pick-stats">
+                        <span class="pick-stat total">5</span>
+                        <span class="pick-stat blue">B0</span>
+                        <span class="pick-stat red">R0</span>
+                    </div>
+                </td>
+                <td><span class="side-badge RED_PREF"><span class="side-index">-0.6</span> 레드 선호</span></td>
+            </tr>
+            
                 </tbody>
             </table>
         </div>
@@ -1460,8 +1030,7 @@
                 </div>
             </div>
             <div class="caution-box">
-                <strong>⚠️ 주의사항:</strong> 이 통계는 2025 월드 챔피언십 녹아웃 스테이지의 제한된 데이터만을 기반으로 합니다. 실제 게임 플레이 및 패치 상황에 따라 챔피언의
-                티어와 선호도는 언제든지 변동될 수 있으므로, 참고 지표로 활용하시기 바랍니다.
+                <strong>⚠️ 주의사항:</strong> 이 통계는 2025 월드 챔피언십 녹아웃 스테이지의 제한된 데이터만을 기반으로 합니다. 실제 게임 플레이 및 패치 상황에 따라 챔피언의 티어와 선호도는 언제든지 변동될 수 있으므로, 참고 지표로 활용하시기 바랍니다.
             </div>
         </section>
 
@@ -1471,145 +1040,89 @@
     </div>
 
     <script>
-        // 한글 챔피언 이름 → 영문 파일명 매핑
-        const CHAMPION_FILENAME_MAP = {
-            '라이즈': 'ryze', '요네': 'yone', '암베사': 'ambessa', '갈리오': 'galio',
-            '카이사': 'kaisa', '럼블': 'rumble', '크산테': 'ksante', '오로라': 'aurora',
-            '레넥톤': 'renekton', '오공': 'wukong', '사이온': 'sion', '자르반4세': 'jarvaniv',
-            '오리아나': 'orianna', '노틸러스': 'nautilus', '아트록스': 'aatrox', '코르키': 'corki',
-            '바이': 'vi', '오른': 'ornn', '탈리야': 'taliyah', '이즈리얼': 'ezreal',
-            '신짜오': 'xinzhao', '바루스': 'varus', '라칸': 'rakan', '니코': 'neeko',
-            '뽀삐': 'poppy', '시비르': 'sivir', '스카너': 'skarner', '아지르': 'azir',
-            '애쉬': 'ashe', '판테온': 'pantheon', '알리스타': 'alistar', '아칼리': 'akali',
-            '애니비아': 'anivia', '바드': 'bard', '블리츠크랭크': 'blitzcrank', '케이틀린': 'caitlyn',
-            '카밀': 'camille', '카시오페아': 'cassiopeia', '드레이븐': 'draven', '문도': 'drmundo',
-            '그웬': 'gwen', '흐웨이': 'hwei', '아이번': 'ivern', '징크스': 'jinx',
-            '칼리스타': 'kalista', '카르마': 'karma', '멜': 'mel', '모데카이저': 'mordekaiser',
-            '니달리': 'nidalee', '녹턴': 'nocturne', '키아나': 'qiyana', '레나타': 'renata',
-            '렉사이': 'reksai', '세주아니': 'sejuani', '스몰더': 'smolder', '신드라': 'syndra',
-            '쓰레쉬': 'thresh', '트런들': 'trundle', '비에고': 'viego', '빅토르': 'viktor',
-            '직스': 'ziggs', '조이': 'zoe'
-        };
-
-        function getChampionFilename(koreanName) {
-            const name = koreanName.trim();
-            if (CHAMPION_FILENAME_MAP[name]) {
-                return CHAMPION_FILENAME_MAP[name];
-            }
-            // 영문 이름인 경우 소문자로 변환하고 공백/특수문자 제거
-            return name.toLowerCase().replace(/\s+/g, '').replace(/'/g, '').replace(/\./g, '');
-        }
-
-        document.addEventListener('DOMContentLoaded', function () {
-            // 챔피언 이미지 동적 로드
-            document.querySelectorAll('.champion-name').forEach(nameDiv => {
-                const iconDiv = nameDiv.querySelector('.champion-icon');
-                if (!iconDiv) return;
-
-                // 챔피언 이름 추출 (아이콘 div 다음의 텍스트)
-                const textContent = nameDiv.textContent.trim();
-                const championName = textContent.replace('⚔️', '').trim();
-                const filename = getChampionFilename(championName);
-
-                // 이미지로 교체
-                const img = document.createElement('img');
-                img.src = `../static/images/champions/${filename}.webp`;
-                img.alt = championName;
-                img.className = 'champion-icon';
-                img.onerror = function () {
-                    this.style.display = 'none';
-                    iconDiv.style.display = 'flex';
-                };
-                img.onload = function () {
-                    iconDiv.style.display = 'none';
-                };
-
-                nameDiv.insertBefore(img, iconDiv);
-            });
-
-            // 필터 기능
-            const filterBtns = document.querySelectorAll('.filter-btn');
-            const rows = document.querySelectorAll('.champion-table tbody tr');
-
-            filterBtns.forEach(btn => {
-                btn.addEventListener('click', function () {
-                    filterBtns.forEach(b => b.classList.remove('active'));
-                    this.classList.add('active');
-
-                    const filter = this.dataset.filter;
-                    let visibleIndex = 0;
-
-                    rows.forEach(row => {
-                        const sideBadge = row.querySelector('.side-badge');
-                        if (!sideBadge) return;
-
-                        const sideClass = Array.from(sideBadge.classList).find(c =>
-                            ['BLUE_MUST', 'BLUE_PREF', 'BLUE_WEAK', 'BALANCED', 'RED_WEAK', 'RED_PREF', 'RED_MUST'].includes(c)
-                        );
-
-                        if (filter === 'all' || sideClass === filter) {
-                            row.style.display = '';
-                            visibleIndex++;
-                            // 순위 업데이트
-                            const rankBadge = row.querySelector('.rank-badge');
-                            if (rankBadge) {
-                                rankBadge.textContent = visibleIndex;
-                                rankBadge.className = 'rank-badge ' + (visibleIndex <= 3 ? 'rank-' + visibleIndex : 'rank-default');
-                            }
-                        } else {
-                            row.style.display = 'none';
-                        }
-                    });
-                });
-            });
-
-            // 정렬 기능
-            const headers = document.querySelectorAll('.champion-table th');
-            let sortDir = {};
-
-            headers.forEach((header, index) => {
-                if (index === 0) return; // 순위 컬럼 제외
-
-                header.addEventListener('click', function () {
-                    const tbody = document.querySelector('.champion-table tbody');
-                    const rowsArray = Array.from(tbody.querySelectorAll('tr'));
-
-                    sortDir[index] = !sortDir[index];
-
-                    rowsArray.sort((a, b) => {
-                        let aVal, bVal;
-
-                        if (index === 1) { // 챔피언명
-                            aVal = a.cells[index].textContent.trim();
-                            bVal = b.cells[index].textContent.trim();
-                            return sortDir[index] ? aVal.localeCompare(bVal, 'ko') : bVal.localeCompare(aVal, 'ko');
-                        } else if (index === 2) { // Tier Score
-                            aVal = parseFloat(a.querySelector('.tier-value')?.textContent || 0);
-                            bVal = parseFloat(b.querySelector('.tier-value')?.textContent || 0);
-                        } else if (index === 3) { // 픽 횟수
-                            aVal = parseInt(a.querySelector('.pick-stat.total')?.textContent || 0);
-                            bVal = parseInt(b.querySelector('.pick-stat.total')?.textContent || 0);
-                        } else if (index === 4) { // Side Index
-                            aVal = parseFloat(a.querySelector('.side-index')?.textContent || 0);
-                            bVal = parseFloat(b.querySelector('.side-index')?.textContent || 0);
-                        }
-
-                        return sortDir[index] ? aVal - bVal : bVal - aVal;
-                    });
-
-                    // 순위 재할당
-                    rowsArray.forEach((row, i) => {
-                        tbody.appendChild(row);
+    document.addEventListener('DOMContentLoaded', function() {
+        // 필터 기능
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const rows = document.querySelectorAll('.champion-table tbody tr');
+        
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                const filter = this.dataset.filter;
+                let visibleIndex = 0;
+                
+                rows.forEach(row => {
+                    const sideBadge = row.querySelector('.side-badge');
+                    if (!sideBadge) return;
+                    
+                    const sideClass = Array.from(sideBadge.classList).find(c => 
+                        ['BLUE_MUST', 'BLUE_PREF', 'BLUE_WEAK', 'BALANCED', 'RED_WEAK', 'RED_PREF', 'RED_MUST'].includes(c)
+                    );
+                    
+                    if (filter === 'all' || sideClass === filter) {
+                        row.style.display = '';
+                        visibleIndex++;
+                        // 순위 업데이트
                         const rankBadge = row.querySelector('.rank-badge');
                         if (rankBadge) {
-                            rankBadge.textContent = i + 1;
-                            rankBadge.className = 'rank-badge ' + (i < 3 ? 'rank-' + (i + 1) : 'rank-default');
+                            rankBadge.textContent = visibleIndex;
+                            rankBadge.className = 'rank-badge ' + (visibleIndex <= 3 ? 'rank-' + visibleIndex : 'rank-default');
                         }
-                    });
+                    } else {
+                        row.style.display = 'none';
+                    }
                 });
             });
         });
+        
+        // 정렬 기능
+        const headers = document.querySelectorAll('.champion-table th');
+        let sortDir = {};
+        
+        headers.forEach((header, index) => {
+            if (index === 0) return; // 순위 컬럼 제외
+            
+            header.addEventListener('click', function() {
+                const tbody = document.querySelector('.champion-table tbody');
+                const rowsArray = Array.from(tbody.querySelectorAll('tr'));
+                
+                sortDir[index] = !sortDir[index];
+                
+                rowsArray.sort((a, b) => {
+                    let aVal, bVal;
+                    
+                    if (index === 1) { // 챔피언명
+                        aVal = a.cells[index].textContent.trim();
+                        bVal = b.cells[index].textContent.trim();
+                        return sortDir[index] ? aVal.localeCompare(bVal, 'ko') : bVal.localeCompare(aVal, 'ko');
+                    } else if (index === 2) { // Tier Score
+                        aVal = parseFloat(a.querySelector('.tier-value')?.textContent || 0);
+                        bVal = parseFloat(b.querySelector('.tier-value')?.textContent || 0);
+                    } else if (index === 3) { // 픽 횟수
+                        aVal = parseInt(a.querySelector('.pick-stat.total')?.textContent || 0);
+                        bVal = parseInt(b.querySelector('.pick-stat.total')?.textContent || 0);
+                    } else if (index === 4) { // Side Index
+                        aVal = parseFloat(a.querySelector('.side-index')?.textContent || 0);
+                        bVal = parseFloat(b.querySelector('.side-index')?.textContent || 0);
+                    }
+                    
+                    return sortDir[index] ? aVal - bVal : bVal - aVal;
+                });
+                
+                // 순위 재할당
+                rowsArray.forEach((row, i) => {
+                    tbody.appendChild(row);
+                    const rankBadge = row.querySelector('.rank-badge');
+                    if (rankBadge) {
+                        rankBadge.textContent = i + 1;
+                        rankBadge.className = 'rank-badge ' + (i < 3 ? 'rank-' + (i + 1) : 'rank-default');
+                    }
+                });
+            });
+        });
+    });
     </script>
 </body>
-
 </html>

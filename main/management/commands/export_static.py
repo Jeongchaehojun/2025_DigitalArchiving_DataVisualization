@@ -5,6 +5,7 @@ GitHub Pages 배포용 docs 폴더에 정적 HTML을 생성합니다.
 from django.core.management.base import BaseCommand
 from django.template.loader import render_to_string
 from main.models import MatchStory, ChampionStat
+from main.templatetags.champion_filters import champion_filename
 import os
 
 # 팀 로고 매핑
@@ -105,11 +106,19 @@ class Command(BaseCommand):
             if story.key_champions:
                 champions = [c.strip() for c in story.key_champions.split(',') if c.strip()]
                 if champions:
+                    champions_items = []
+                    for c in champions:
+                        filename = champion_filename(c)
+                        champions_items.append(f'''<div class="champion-item">
+                                <img src="../../../static/images/champions/{filename}.webp" alt="{c}" class="champion-portrait" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div class="champion-portrait placeholder" style="display: none;">⚔️</div>
+                                <span class="champion-name">{c}</span>
+                            </div>''')
                     key_champions_html = f'''
                     <div class="key-champions">
                         <h4 class="key-champions-title"><span>🎖️</span> 주요 챔피언</h4>
                         <div class="champions-grid">
-                            {"".join([f'<div class="champion-item"><div class="champion-portrait placeholder">⚔️</div><span class="champion-name">{c}</span></div>' for c in champions])}
+                            {"".join(champions_items)}
                         </div>
                     </div>
                     '''
@@ -256,14 +265,19 @@ class Command(BaseCommand):
         display: flex; align-items: center; gap: 8px;
         font-size: 0.9rem; color: var(--gold-primary); margin-bottom: 12px;
     }}
-    .champions-grid {{ display: flex; flex-wrap: wrap; gap: 12px; }}
-    .champion-item {{ display: flex; flex-direction: column; align-items: center; gap: 6px; }}
+    .champions-grid {{ display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }}
+    .champion-item {{ display: flex; flex-direction: column; align-items: center; gap: 6px; transition: transform 0.2s ease; }}
+    .champion-item:hover {{ transform: scale(1.1); }}
     .champion-portrait {{
-        width: 50px; height: 50px; border-radius: 50%; border: 2px solid var(--gold-primary);
-        background: var(--bg-hover); display: flex; align-items: center; justify-content: center;
+        width: 56px; height: 56px; border-radius: 8px; border: 2px solid var(--gold-primary);
+        background: var(--bg-hover); object-fit: cover; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    }}
+    .champion-portrait.placeholder {{
+        display: flex; align-items: center; justify-content: center;
         font-size: 1.5rem; color: var(--gold-primary);
     }}
-    .champion-name {{ font-size: 0.7rem; color: var(--text-secondary); text-align: center; }}
+    img.champion-portrait {{ display: block; }}
+    .champion-name {{ font-size: 0.7rem; color: var(--text-secondary); text-align: center; max-width: 60px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }}
     .nav-buttons {{ display: flex; justify-content: space-between; margin-top: 40px; gap: 16px; }}
     .nav-btn {{
         flex: 1; padding: 16px 24px; background: var(--bg-card);
@@ -342,10 +356,19 @@ class Command(BaseCommand):
             # 진영 선호도 뱃지 클래스
             side_class = stat.side_preference if stat.side_preference else 'BALANCED'
             
+            # 챔피언 이미지 파일명
+            champ_filename = champion_filename(stat.champion.name)
+            
             rows_html += f'''
             <tr>
                 <td><span class="rank-badge {rank_class}">{i}</span></td>
-                <td><div class="champion-name"><div class="champion-icon">⚔️</div>{stat.champion.name}</div></td>
+                <td>
+                    <div class="champion-name">
+                        <img src="../static/images/champions/{champ_filename}.webp" alt="{stat.champion.name}" class="champion-icon" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="champion-icon placeholder" style="display: none;">⚔️</div>
+                        {stat.champion.name}
+                    </div>
+                </td>
                 <td>
                     <div class="tier-bar-container">
                         <div class="tier-bar"><div class="tier-bar-fill" style="width: {stat.tier_score}%; background: linear-gradient(90deg, #785a28, #c8aa6e);"></div></div>
@@ -471,8 +494,11 @@ class Command(BaseCommand):
     .champion-name {{ font-weight: 600; font-size: 1.05rem; display: flex; align-items: center; gap: 12px; }}
     .champion-icon {{
         width: 40px; height: 40px; border-radius: 50%; background: var(--bg-dark);
-        border: 2px solid var(--gold-primary); display: flex; align-items: center;
-        justify-content: center; font-size: 1.2rem;
+        border: 2px solid var(--gold-primary); object-fit: cover;
+    }}
+    img.champion-icon {{ display: block; }}
+    .champion-icon.placeholder {{
+        display: flex; align-items: center; justify-content: center; font-size: 1.2rem;
     }}
     .tier-bar-container {{ display: flex; align-items: center; gap: 12px; }}
     .tier-bar {{ width: 120px; height: 8px; background: var(--bg-dark); border-radius: 4px; overflow: hidden; }}

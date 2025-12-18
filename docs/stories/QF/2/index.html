@@ -4,102 +4,318 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>8강 - kt Rolster vs CTBC Flying Oyster</title>
-<script src="https://d3js.org/d3.v7.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
 <style>
-    :root { --bg-dark: #0a0e13; --bg-card: #111827; --bg-hover: #1f2937; --gold-primary: #c89b3c; --gold-secondary: #f0e6d2; --blue-accent: #0ac8b9; --red-accent: #ff4655; --text-primary: #f0e6d2; --text-secondary: #a09b8c; --border-color: #3c3c41; }
+    :root {
+        --bg-dark: #0a0e13;
+        --bg-card: #111827;
+        --bg-hover: #1f2937;
+        --gold-primary: #c89b3c;
+        --gold-secondary: #f0e6d2;
+        --blue-accent: #0ac8b9;
+        --red-accent: #ff4655;
+        --text-primary: #f0e6d2;
+        --text-secondary: #a09b8c;
+        --border-color: #3c3c41;
+        --gradient-gold: linear-gradient(135deg, #785a28 0%, #c8aa6e 50%, #c89b3c 100%);
+    }
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg-dark); color: var(--text-primary); min-height: 100vh; background-image: radial-gradient(ellipse at top, rgba(200, 155, 60, 0.05) 0%, transparent 50%); }
+    body {
+        font-family: 'Noto Sans KR', sans-serif;
+        background: var(--bg-dark);
+        color: var(--text-primary);
+        min-height: 100vh;
+        background-image: radial-gradient(ellipse at top, rgba(200, 155, 60, 0.05) 0%, transparent 50%);
+    }
     .container { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
-    .back-link { display: inline-flex; align-items: center; gap: 8px; color: var(--text-secondary); text-decoration: none; margin-bottom: 30px; font-size: 0.95rem; }
+    .back-link {
+        display: inline-flex; align-items: center; gap: 8px;
+        color: var(--text-secondary); text-decoration: none;
+        margin-bottom: 30px; font-size: 0.95rem; transition: color 0.2s;
+    }
     .back-link:hover { color: var(--gold-primary); }
-    .header { text-align: center; margin-bottom: 40px; padding: 40px; background: var(--bg-card); border-radius: 16px; border: 1px solid var(--border-color); }
-    .stage-badge { display: inline-block; font-family: 'Orbitron', sans-serif; font-size: 0.85rem; background: var(--gold-primary); color: var(--bg-dark); padding: 6px 16px; border-radius: 4px; font-weight: 700; margin-bottom: 16px; }
-    .match-title { font-family: 'Orbitron', sans-serif; font-size: 2rem; font-weight: 900; color: var(--text-primary); margin-bottom: 12px; display: flex; align-items: center; justify-content: center; gap: 16px; flex-wrap: wrap; }
+    .header {
+        text-align: center; margin-bottom: 40px; padding: 40px;
+        background: var(--bg-card); border-radius: 16px; border: 1px solid var(--border-color);
+    }
+    .stage-badge {
+        display: inline-block; font-family: 'Orbitron', sans-serif; font-size: 0.85rem;
+        background: var(--gold-primary); color: var(--bg-dark);
+        padding: 6px 16px; border-radius: 4px; font-weight: 700; margin-bottom: 16px;
+    }
+    .match-title {
+        font-family: 'Orbitron', sans-serif; font-size: 2rem; font-weight: 900;
+        color: var(--text-primary); margin-bottom: 12px; display: flex;
+        align-items: center; justify-content: center; gap: 16px; flex-wrap: wrap;
+    }
     .team-logo { width: 48px; height: 48px; object-fit: contain; }
     .team-with-logo { display: flex; align-items: center; gap: 8px; }
     .vs-divider { color: var(--red-accent); margin: 0 12px; font-size: 1.2rem; }
-    .final-score { font-family: 'Orbitron', sans-serif; font-size: 2.5rem; font-weight: 900; color: var(--gold-primary); margin-top: 12px; }
-    .keywords-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--border-color); }
-    .keyword-tag { font-family: 'Orbitron', sans-serif; font-size: 1.1rem; font-weight: 700; color: var(--blue-accent); background: rgba(10, 200, 185, 0.1); padding: 8px 16px; border-radius: 24px; border: 1px solid rgba(10, 200, 185, 0.3); }
+    .final-score {
+        font-family: 'Orbitron', sans-serif; font-size: 2.5rem; font-weight: 900;
+        color: var(--gold-primary); margin-top: 12px;
+    }
+    .keywords-container {
+        display: flex; flex-wrap: wrap; justify-content: center; gap: 12px;
+        margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--border-color);
+    }
+    .keyword-tag {
+        font-family: 'Orbitron', sans-serif; font-size: 1.1rem; font-weight: 700;
+        color: var(--blue-accent); background: rgba(10, 200, 185, 0.1);
+        padding: 8px 16px; border-radius: 24px; border: 1px solid rgba(10, 200, 185, 0.3);
+        transition: all 0.3s ease;
+    }
     .keyword-tag::before { content: '#'; opacity: 0.7; }
-    .overview-section { background: var(--bg-card); border-radius: 16px; padding: 30px; margin-bottom: 30px; border: 1px solid var(--border-color); }
-    .overview-title { display: flex; align-items: center; gap: 12px; font-family: 'Orbitron', sans-serif; font-size: 1.2rem; color: var(--gold-primary); margin-bottom: 16px; }
+    .keyword-tag:hover {
+        background: rgba(10, 200, 185, 0.2); transform: translateY(-2px);
+    }
+    .overview-section {
+        background: var(--bg-card); border-radius: 16px; padding: 30px;
+        margin-bottom: 30px; border: 1px solid var(--border-color);
+    }
+    .overview-title {
+        display: flex; align-items: center; gap: 12px;
+        font-family: 'Orbitron', sans-serif; font-size: 1.2rem;
+        color: var(--gold-primary); margin-bottom: 16px;
+    }
     .overview-text { color: var(--text-secondary); line-height: 1.9; }
-    #pulse-chart-container { width: 100%; height: 350px; margin-top: 30px; background: linear-gradient(180deg, rgba(17, 24, 39, 0) 0%, rgba(10, 14, 19, 0.5) 100%); border-radius: 12px; }
-    .custom-tooltip { position: absolute; visibility: hidden; background: rgba(0, 0, 0, 0.95); border: 1px solid var(--gold-primary); border-radius: 6px; padding: 10px 14px; color: #fff; font-size: 12px; pointer-events: none; z-index: 9999; }
-    .set-card { background: var(--bg-card); border-radius: 16px; border: 1px solid var(--border-color); margin-bottom: 24px; overflow: hidden; }
+    .set-card {
+        background: var(--bg-card); border-radius: 16px; border: 1px solid var(--border-color);
+        margin-bottom: 24px; overflow: hidden; transition: border-color 0.3s ease;
+    }
     .set-card:hover { border-color: var(--gold-primary); }
-    .set-header { background: linear-gradient(180deg, #1a2332 0%, #111827 100%); padding: 20px 24px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; }
+    .set-header {
+        background: linear-gradient(180deg, #1a2332 0%, #111827 100%);
+        padding: 20px 24px; border-bottom: 1px solid var(--border-color);
+        display: flex; justify-content: space-between; align-items: center;
+    }
     .set-number { font-family: 'Orbitron', sans-serif; font-size: 1.3rem; font-weight: 700; }
-    .set-winner { font-size: 0.9rem; padding: 6px 16px; border-radius: 20px; font-weight: 600; }
+    .set-winner {
+        font-size: 0.9rem; padding: 6px 16px; border-radius: 20px; font-weight: 600;
+    }
     .set-winner.team-a { background: rgba(10, 200, 185, 0.2); color: var(--blue-accent); border: 1px solid var(--blue-accent); }
     .set-winner.team-b { background: rgba(255, 70, 85, 0.2); color: var(--red-accent); border: 1px solid var(--red-accent); }
     .set-body { padding: 24px; }
     .analysis-section { margin-bottom: 24px; }
-    .analysis-label { display: flex; align-items: center; gap: 8px; font-family: 'Orbitron', sans-serif; font-size: 0.9rem; color: var(--gold-primary); margin-bottom: 12px; }
-    .analysis-content { color: var(--text-secondary); line-height: 1.9; font-size: 0.95rem; padding-left: 28px; border-left: 2px solid var(--border-color); }
+    .analysis-label {
+        display: flex; align-items: center; gap: 8px;
+        font-family: 'Orbitron', sans-serif; font-size: 0.9rem;
+        color: var(--gold-primary); margin-bottom: 12px;
+    }
+    .analysis-content {
+        color: var(--text-secondary); line-height: 1.9; font-size: 0.95rem;
+        padding-left: 28px; border-left: 2px solid var(--border-color);
+    }
+    .key-champions { margin-bottom: 24px; }
+    .key-champions-title {
+        display: flex; align-items: center; gap: 8px;
+        font-size: 0.9rem; color: var(--gold-primary); margin-bottom: 12px;
+    }
+    .champions-grid { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+    .champion-item { display: flex; flex-direction: column; align-items: center; gap: 6px; transition: transform 0.2s ease; }
+    .champion-item:hover { transform: scale(1.1); }
+    .champion-portrait {
+        width: 56px; height: 56px; border-radius: 8px; border: 2px solid var(--gold-primary);
+        background: var(--bg-hover); object-fit: cover; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    }
+    .champion-portrait.placeholder {
+        display: flex; align-items: center; justify-content: center;
+        font-size: 1.5rem; color: var(--gold-primary);
+    }
+    img.champion-portrait { display: block; }
+    .champion-name { font-size: 0.7rem; color: var(--text-secondary); text-align: center; max-width: 60px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .nav-buttons { display: flex; justify-content: space-between; margin-top: 40px; gap: 16px; }
-    .nav-btn { flex: 1; padding: 16px 24px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-secondary); text-decoration: none; text-align: center; font-weight: 500; }
+    .nav-btn {
+        flex: 1; padding: 16px 24px; background: var(--bg-card);
+        border: 1px solid var(--border-color); border-radius: 8px;
+        color: var(--text-secondary); text-decoration: none; text-align: center;
+        font-weight: 500; transition: all 0.3s ease;
+    }
     .nav-btn:hover { border-color: var(--gold-primary); color: var(--gold-primary); }
-    .footer { text-align: center; margin-top: 60px; padding: 30px; border-top: 1px solid var(--border-color); color: var(--text-secondary); }
+    .footer {
+        text-align: center; margin-top: 60px; padding: 30px;
+        border-top: 1px solid var(--border-color); color: var(--text-secondary);
+    }
+    @media (max-width: 768px) {
+        .match-title { font-size: 1.4rem; }
+        .final-score { font-size: 2rem; }
+        .nav-buttons { flex-direction: column; }
+    }
 </style>
 </head>
 <body>
     <div class="container">
         <a href="../../" class="back-link">← 스토리 목록으로 돌아가기</a>
+        
         <header class="header">
             <span class="stage-badge">8강</span>
             <h1 class="match-title">
-                <span class="team-with-logo"><img src="../../../static/images/teams/kt.svg" class="team-logo" onerror="this.style.display='none'">kt Rolster</span>
+                <span class="team-with-logo">
+                    <img src="../../../static/images/teams/kt.svg" class="team-logo" onerror="this.style.display='none'">
+                    kt Rolster
+                </span>
                 <span class="vs-divider">VS</span>
-                <span class="team-with-logo"><img src="../../../static/images/teams/cfo.webp" class="team-logo" onerror="this.style.display='none'">CFO</span>
+                <span class="team-with-logo">
+                    <img src="../../../static/images/teams/cfo.webp" class="team-logo" onerror="this.style.display='none'">
+                    CTBC Flying Oyster
+                </span>
             </h1>
             <div class="final-score">3:0</div>
+            
             <div class="keywords-container">
                 <span class="keyword-tag">다크호스대결</span><span class="keyword-tag">KT완승</span><span class="keyword-tag">대만리그의도전</span><span class="keyword-tag">4강진출</span>
             </div>
+            
         </header>
+
+        
         <section class="overview-section">
             <h2 class="overview-title"><span>📋</span> 경기 총평</h2>
-            <p class="overview-text">이번 월즈의 다크호스로 꼽혔던 두 팀, KT 롤스터와 CTBC 플라잉 오이스터(CFO)가 4강 길목에서 만났습니다. KT가 압도적인 경기력으로 3:0 완승을 거두며 4강에 진출했습니다.</p>
-            <div id="pulse-chart-container">
-                <h3 style="text-align: center; font-family: 'Orbitron'; color: #a09b8c; font-size: 0.9rem; margin-top: 15px;">MATCH STAT COMPARISON (VS)</h3>
-                <div id="chart"></div>
-            </div>
+            <p class="overview-text">이번 월즈의 다크호스로 꼽혔던 두 팀, KT 롤스터와 CTBC 플라잉 오이스터(CFO)가 4강 길목에서 만났습니다. 스위스 스테이지에서 비교적 약한 상대를 만나 전승으로 올라온 KT에게는 자신들의 실력을 증명해야 하는 무대였고, 13년 만에 4강 진출을 노리는 CFO에게는 대만 리그(LCP)의 희망을 증명해야 하는 중요한 경기였습니다.</p>
         </section>
-        <article class="set-card"><div class="set-header"><span class="set-number">1세트</span><span class="set-winner team-a">🏆 kt Rolster 승리</span></div><div class="set-body"><div class="analysis-section"><h3 class="analysis-label"><span>🎯</span> 밴픽 전략 분석</h3><p class="analysis-content">CFO는 KT의 에이스 비디디를 견제하기 위해 미드 3밴 전략을 구사했습니다.</p></div></div></article>
-        <article class="set-card"><div class="set-header"><span class="set-number">2세트</span><span class="set-winner team-a">🏆 kt Rolster 승리</span></div><div class="set-body"><div class="analysis-section"><h3 class="analysis-label"><span>🎯</span> 밴픽 전략 분석</h3><p class="analysis-content">24분 32초. KT는 2025 월즈 최단 시간 경기를 기록하며 CFO를 완파했습니다.</p></div></div></article>
-        <article class="set-card"><div class="set-header"><span class="set-number">3세트</span><span class="set-winner team-a">🏆 kt Rolster 승리</span></div><div class="set-body"><div class="analysis-section"><h3 class="analysis-label"><span>🎯</span> 밴픽 전략 분석</h3><p class="analysis-content">KT가 3:0 셧아웃으로 4강에 진출했습니다.</p></div></div></article>
-        <div class="nav-buttons"><a href="../../" class="nav-btn">📖 전체 스토리 목록</a><a href="../../../" class="nav-btn">🏠 메인으로</a></div>
-        <footer class="footer"><p>2025 롤드컵 벤픽 아카이브 | Data Storytelling Project</p></footer>
+        
+
+        
+            <article class="set-card">
+                <div class="set-header">
+                    <span class="set-number">1세트</span>
+                    <span class="set-winner team-a">🏆 kt Rolster 승리</span>
+                </div>
+                <div class="set-body">
+                    
+                    <div class="key-champions">
+                        <h4 class="key-champions-title"><span>🎖️</span> 주요 챔피언</h4>
+                        <div class="champions-grid">
+                            <div class="champion-item">
+                                <img src="../../../static/images/champions/ryze.webp" alt="Ryze" class="champion-portrait" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div class="champion-portrait placeholder" style="display: none;">⚔️</div>
+                                <span class="champion-name">Ryze</span>
+                            </div><div class="champion-item">
+                                <img src="../../../static/images/champions/orianna.webp" alt="Orianna" class="champion-portrait" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div class="champion-portrait placeholder" style="display: none;">⚔️</div>
+                                <span class="champion-name">Orianna</span>
+                            </div><div class="champion-item">
+                                <img src="../../../static/images/champions/azir.webp" alt="Azir" class="champion-portrait" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div class="champion-portrait placeholder" style="display: none;">⚔️</div>
+                                <span class="champion-name">Azir</span>
+                            </div><div class="champion-item">
+                                <img src="../../../static/images/champions/wukong.webp" alt="Wukong" class="champion-portrait" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div class="champion-portrait placeholder" style="display: none;">⚔️</div>
+                                <span class="champion-name">Wukong</span>
+                            </div><div class="champion-item">
+                                <img src="../../../static/images/champions/rumble.webp" alt="Rumble" class="champion-portrait" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div class="champion-portrait placeholder" style="display: none;">⚔️</div>
+                                <span class="champion-name">Rumble</span>
+                            </div><div class="champion-item">
+                                <img src="../../../static/images/champions/taliyah.webp" alt="Taliyah" class="champion-portrait" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div class="champion-portrait placeholder" style="display: none;">⚔️</div>
+                                <span class="champion-name">Taliyah</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="analysis-section">
+                        <h3 class="analysis-label"><span class="icon">🎯</span> 밴픽 전략 분석</h3>
+                        <p class="analysis-content">밴픽 전략 분석: CFO는 KT의 에이스 '비디디' 곽보성을 견제하기 위해 라이즈-오리아나-아지르라는 미드 3밴 전략을 구사했습니다. 하지만 KT는 이에 흔들리지 않고 오공-럼블-탈리야로 이어지는 강력한 상체 조합을 구성하며 교전에서의 자신감을 드러냈습니다.</p>
+                    </div>
+                    <div class="analysis-section">
+                        <h3 class="analysis-label"><span class="icon">⚔️</span> 경기 흐름 및 핵심 서사</h3>
+                        <p class="analysis-content">경기 흐름 및 핵심 서사: KT는 초반 인베이드 설계와 바위 게 싸움에서 연달아 승리하며 시작부터 주도권을 잡았습니다. 특히 '커즈' 문우찬의 오공은 초반 교전에서 4킬을 쓸어 담으며 '제천대성' 모드로 경기를 지배했습니다. CFO가 중반 교전에서 번뜩이는 모습을 보여주며 분전했지만, 이미 벌어진 성장 격차를 극복하지 못했고 KT가 안정적으로 스노우볼을 굴려 첫 세트를 가져갔습니다.</p>
+                    </div>
+                </div>
+            </article>
+            
+            <article class="set-card">
+                <div class="set-header">
+                    <span class="set-number">2세트</span>
+                    <span class="set-winner team-a">🏆 kt Rolster 승리</span>
+                </div>
+                <div class="set-body">
+                    
+                    <div class="key-champions">
+                        <h4 class="key-champions-title"><span>🎖️</span> 주요 챔피언</h4>
+                        <div class="champions-grid">
+                            <div class="champion-item">
+                                <img src="../../../static/images/champions/azir.webp" alt="Azir" class="champion-portrait" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div class="champion-portrait placeholder" style="display: none;">⚔️</div>
+                                <span class="champion-name">Azir</span>
+                            </div><div class="champion-item">
+                                <img src="../../../static/images/champions/orianna.webp" alt="Orianna" class="champion-portrait" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div class="champion-portrait placeholder" style="display: none;">⚔️</div>
+                                <span class="champion-name">Orianna</span>
+                            </div><div class="champion-item">
+                                <img src="../../../static/images/champions/jarvaniv.webp" alt="Jarvan IV" class="champion-portrait" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div class="champion-portrait placeholder" style="display: none;">⚔️</div>
+                                <span class="champion-name">Jarvan IV</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="analysis-section">
+                        <h3 class="analysis-label"><span class="icon">🎯</span> 밴픽 전략 분석</h3>
+                        <p class="analysis-content">밴픽 전략 분석: CFO는 블루 진영의 이점을 살려 아지르를 선픽했습니다. KT는 즉시 오리아나-자르반으로 대응하며 정석적인 구도를 형성했습니다. 결과적으로 KT가 구성한 조합은 라인전, 한타, 운영 모든 면에서 CFO를 압도하는 완성도를 보여주었습니다.</p>
+                    </div>
+                    <div class="analysis-section">
+                        <h3 class="analysis-label"><span class="icon">⚔️</span> 경기 흐름 및 핵심 서사</h3>
+                        <p class="analysis-content">경기 흐름 및 핵심 서사: 24분 32초. KT는 2025 월즈 최단 시간 경기를 기록하며 CFO를 완파했습니다. 경기의 중심에는 비디디의 오리아나가 있었습니다. 비디디는 상대 미드라이너 '홍큐'의 아지르를 라인전부터 완전히 압도했고, 이 미드 차이는 걷잡을 수 없는 스노우볼이 되어 굴러갔습니다. KT는 모든 드래곤과 유충을 완벽하게 획득하며 한 수 위의 경기력을 선보였습니다.</p>
+                    </div>
+                </div>
+            </article>
+            
+            <article class="set-card">
+                <div class="set-header">
+                    <span class="set-number">3세트</span>
+                    <span class="set-winner team-a">🏆 kt Rolster 승리</span>
+                </div>
+                <div class="set-body">
+                    
+                    <div class="key-champions">
+                        <h4 class="key-champions-title"><span>🎖️</span> 주요 챔피언</h4>
+                        <div class="champions-grid">
+                            <div class="champion-item">
+                                <img src="../../../static/images/champions/sion.webp" alt="Sion" class="champion-portrait" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div class="champion-portrait placeholder" style="display: none;">⚔️</div>
+                                <span class="champion-name">Sion</span>
+                            </div><div class="champion-item">
+                                <img src="../../../static/images/champions/zoe.webp" alt="Zoe" class="champion-portrait" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div class="champion-portrait placeholder" style="display: none;">⚔️</div>
+                                <span class="champion-name">Zoe</span>
+                            </div><div class="champion-item">
+                                <img src="../../../static/images/champions/viego.webp" alt="Viego" class="champion-portrait" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div class="champion-portrait placeholder" style="display: none;">⚔️</div>
+                                <span class="champion-name">Viego</span>
+                            </div><div class="champion-item">
+                                <img src="../../../static/images/champions/ziggs.webp" alt="Ziggs" class="champion-portrait" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div class="champion-portrait placeholder" style="display: none;">⚔️</div>
+                                <span class="champion-name">Ziggs</span>
+                            </div><div class="champion-item">
+                                <img src="../../../static/images/champions/hwei.webp" alt="Hwei" class="champion-portrait" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div class="champion-portrait placeholder" style="display: none;">⚔️</div>
+                                <span class="champion-name">Hwei</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="analysis-section">
+                        <h3 class="analysis-label"><span class="icon">🎯</span> 밴픽 전략 분석</h3>
+                        <p class="analysis-content">밴픽 전략 분석: KT는 사이온을 선픽하며 단단한 앞라인을 구축했고, 비디디의 조이와 커즈의 비에고 등 선수들의 시그니처 픽을 대거 기용했습니다. 조이-직스로 이어지는 강력한 포킹 조합은 CFO의 '점 찍기' 조합이 파고들 틈을 주지 않았습니다.</p>
+                    </div>
+                    <div class="analysis-section">
+                        <h3 class="analysis-label"><span class="icon">⚔️</span> 경기 흐름 및 핵심 서사</h3>
+                        <p class="analysis-content">경기 흐름 및 핵심 서사: 초반부터 우위를 점한 KT를 상대로 CFO가 반격에 성공하며 경기는 중반까지 비등하게 흘러갔습니다. 하지만 결정적인 실수가 CFO의 발목을 잡았습니다. 중계진조차 "아니 이게... 전령을 운전하는 파일럿이 흐웨이였어요..."라며 경악할 만큼, 미드라이너 홍큐가 흐웨이로 협곡의 전령을 직접 운전하다가 상대 진영 깊숙한 곳에서 허무하게 잘리는 치명적인 실수를 저질렀습니다. 이 실수를 기점으로 KT는 다시 주도권을 잡았고, 포킹 조합의 강점을 십분 발휘하며 경기를 마무리, 3:0 셧아웃으로 4강에 진출했습니다.</p>
+                    </div>
+                </div>
+            </article>
+            
+
+        <div class="nav-buttons">
+            <a href="../../" class="nav-btn">📖 전체 스토리 목록</a>
+            <a href="../../../" class="nav-btn">🏠 메인으로</a>
+        </div>
+
+        <footer class="footer">
+            <p>2025 롤드컵 벤픽 아카이브 | Data Storytelling Project</p>
+        </footer>
     </div>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const rawData = [{"category":"SERIES SCORE","left":3,"right":0},{"category":"TOTAL KILLS","left":70,"right":28},{"category":"TOWERS","left":26,"right":6},{"category":"DRAGONS","left":11,"right":2},{"category":"BARONS","left":2,"right":0},{"category":"GOLD (k)","left":179.2,"right":146.0}];
-            const teamA = "KT", teamB = "CFO";
-            const container = document.getElementById("pulse-chart-container");
-            const tooltip = d3.select("body").append("div").attr("class", "custom-tooltip");
-            const width = container.clientWidth, height = 300, center = width / 2, chartWidth = width - 100;
-            const svg = d3.select("#chart").append("svg").attr("width", width).attr("height", height);
-            const y = d3.scaleBand().domain(rawData.map(d => d.category)).range([40, height - 20]).padding(0.4);
-            const groups = svg.selectAll(".row").data(rawData).enter().append("g").attr("transform", d => "translate(0," + y(d.category) + ")");
-            groups.append("text").text(d => d.category).attr("x", center).attr("y", y.bandwidth()/2).attr("dy", "0.35em").attr("text-anchor", "middle").attr("fill", "#a09b8c").attr("font-family", "Orbitron").attr("font-size", "12px");
-            groups.append("rect").attr("x", center).attr("y", 0).attr("height", y.bandwidth()).attr("width", 0).attr("fill", "#c89b3c").attr("rx", 4)
-                .on("mouseover", function(e, d) { d3.select(this).attr("fill", "#ffd700"); tooltip.style("visibility", "visible").html("<strong>"+d.category+"</strong><br><span style='color:#ffd700'>"+teamA+": "+d.left+(d.category.includes("GOLD")?"k":"")+"</span>"); })
-                .on("mousemove", function(e) { tooltip.style("top", (e.pageY-10)+"px").style("left", (e.pageX+10)+"px"); })
-                .on("mouseout", function() { d3.select(this).attr("fill", "#c89b3c"); tooltip.style("visibility", "hidden"); })
-                .transition().duration(1500).attr("x", d => center - (d.left/(d.left+d.right+0.001)*(chartWidth/2-60))).attr("width", d => d.left/(d.left+d.right+0.001)*(chartWidth/2-60));
-            groups.append("rect").attr("x", center).attr("y", 0).attr("height", y.bandwidth()).attr("width", 0).attr("fill", "#ff4655").attr("rx", 4)
-                .on("mouseover", function(e, d) { d3.select(this).attr("fill", "#ff8080"); tooltip.style("visibility", "visible").html("<strong>"+d.category+"</strong><br><span style='color:#ff8080'>"+teamB+": "+d.right+(d.category.includes("GOLD")?"k":"")+"</span>"); })
-                .on("mousemove", function(e) { tooltip.style("top", (e.pageY-10)+"px").style("left", (e.pageX+10)+"px"); })
-                .on("mouseout", function() { d3.select(this).attr("fill", "#ff4655"); tooltip.style("visibility", "hidden"); })
-                .transition().duration(1500).attr("width", d => d.right/(d.left+d.right+0.001)*(chartWidth/2-60));
-            groups.append("text").text(d => d.category.includes("GOLD")?d.left+"k":d.left).attr("x", d => center-(d.left/(d.left+d.right+0.001)*(chartWidth/2-60))-10).attr("y", y.bandwidth()/2).attr("dy", "0.35em").attr("text-anchor", "end").attr("fill", "#c89b3c").attr("font-weight", "bold").style("opacity", 0).transition().delay(500).duration(1000).style("opacity", 1);
-            groups.append("text").text(d => d.category.includes("GOLD")?d.right+"k":d.right).attr("x", d => center+(d.right/(d.left+d.right+0.001)*(chartWidth/2-60))+10).attr("y", y.bandwidth()/2).attr("dy", "0.35em").attr("text-anchor", "start").attr("fill", "#ff4655").attr("font-weight", "bold").style("opacity", 0).transition().delay(500).duration(1000).style("opacity", 1);
-            svg.append("text").attr("x", center-100).attr("y", 20).text(teamA).attr("fill", "#c89b3c").attr("font-weight", "bold").attr("text-anchor", "middle");
-            svg.append("text").attr("x", center+100).attr("y", 20).text(teamB).attr("fill", "#ff4655").attr("font-weight", "bold").attr("text-anchor", "middle");
-        });
-    </script>
 </body>
 </html>

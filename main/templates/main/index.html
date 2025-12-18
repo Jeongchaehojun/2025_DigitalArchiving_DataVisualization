@@ -1,433 +1,524 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>{{ title }}</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
-<style>
-    :root {
-        --bg-dark: #0a0e13;
-        --bg-card: #111827;
-        --bg-hover: #1f2937;
-        --gold-primary: #c89b3c;
-        --gold-secondary: #f0e6d2;
-        --blue-accent: #0ac8b9;
-        --red-accent: #ff4655;
-        --purple-accent: #9333ea;
-        --text-primary: #f0e6d2;
-        --text-secondary: #a09b8c;
-        --border-color: #3c3c41;
-        --gradient-gold: linear-gradient(135deg, #785a28 0%, #c8aa6e 50%, #c89b3c 100%);
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Orbitron:wght@400;700;900&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0a0e13;
+            --bg-card: #111827;
+            --bg-hover: #1f2937;
+            --gold-primary: #c89b3c;
+            --gold-secondary: #f0e6d2;
+            --blue-accent: #0ac8b9;
+            --red-accent: #ff4655;
+            --purple-accent: #9333ea;
+            --text-primary: #f0e6d2;
+            --text-secondary: #a09b8c;
+            --border-color: #3c3c41;
+            --gradient-gold: linear-gradient(135deg, #785a28 0%, #c8aa6e 50%, #c89b3c 100%);
+        }
 
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    body {
-        font-family: 'Noto Sans KR', sans-serif;
-        background: var(--bg-dark);
-        color: var(--text-primary);
-        min-height: 100vh;
-        background-image: 
-            radial-gradient(ellipse at top, rgba(200, 155, 60, 0.05) 0%, transparent 50%),
-            radial-gradient(ellipse at bottom right, rgba(10, 200, 185, 0.03) 0%, transparent 40%);
-    }
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            min-height: 100vh;
+            background-image:
+                radial-gradient(ellipse at top, rgba(200, 155, 60, 0.05) 0%, transparent 50%),
+                radial-gradient(ellipse at bottom right, rgba(10, 200, 185, 0.03) 0%, transparent 40%);
+        }
 
-    .container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 40px 20px;
-    }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
 
-    /* Header */
-    .header {
-        text-align: center;
-        margin-bottom: 50px;
-    }
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
 
-    .title {
-        font-family: 'Orbitron', sans-serif;
-        font-size: 3rem;
-        font-weight: 900;
-        background: var(--gradient-gold);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        letter-spacing: 4px;
-        text-transform: uppercase;
-        margin-bottom: 15px;
-    }
+        .title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3rem;
+            font-weight: 900;
+            background: var(--gradient-gold);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+        }
 
-    .subtitle {
-        font-size: 1.1rem;
-        color: var(--text-secondary);
-        letter-spacing: 2px;
-        max-width: 600px;
-        margin: 0 auto;
-        line-height: 1.8;
-    }
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            letter-spacing: 2px;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
 
-    /* Main Feature Cards - 크게 중앙 배치 */
-    .main-features {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 30px;
-        margin-bottom: 40px;
-    }
+        /* Main Feature Cards - 크게 중앙 배치 */
+        .main-features {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin-bottom: 40px;
+        }
 
-    .main-card {
-        background: var(--bg-card);
-        border: 2px solid var(--border-color);
-        border-radius: 20px;
-        padding: 50px 40px;
-        text-decoration: none;
-        color: inherit;
-        transition: all 0.4s ease;
-        position: relative;
-        overflow: hidden;
-        text-align: center;
-    }
+        .main-card {
+            background: var(--bg-card);
+            border: 2px solid var(--border-color);
+            border-radius: 20px;
+            padding: 50px 40px;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
 
-    .main-card::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 4px;
-        background: var(--gradient-gold);
-        transform: scaleX(0);
-        transition: transform 0.4s ease;
-    }
+        .main-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-gold);
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
 
-    .main-card:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
-    }
+        .main-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+        }
 
-    .main-card:hover::before {
-        transform: scaleX(1);
-    }
+        .main-card:hover::before {
+            transform: scaleX(1);
+        }
 
-    /* Story Card */
-    .main-card.story-card {
-        background: linear-gradient(145deg, #0f1923 0%, #111827 100%);
-        border-color: var(--blue-accent);
-    }
+        /* Story Card */
+        .main-card.story-card {
+            background: linear-gradient(145deg, #0f1923 0%, #111827 100%);
+            border-color: var(--blue-accent);
+        }
 
-    .main-card.story-card::before {
-        background: linear-gradient(90deg, var(--blue-accent), var(--gold-primary));
-    }
+        .main-card.story-card::before {
+            background: linear-gradient(90deg, var(--blue-accent), var(--gold-primary));
+        }
 
-    .main-card.story-card:hover {
-        border-color: var(--blue-accent);
-        box-shadow: 0 25px 50px rgba(10, 200, 185, 0.3);
-    }
+        .main-card.story-card:hover {
+            border-color: var(--blue-accent);
+            box-shadow: 0 25px 50px rgba(10, 200, 185, 0.3);
+        }
 
-    .main-card.story-card .main-card-title {
-        color: var(--blue-accent);
-    }
+        .main-card.story-card .main-card-title {
+            color: var(--blue-accent);
+        }
 
-    /* Stats Card */
-    .main-card.stats-card {
-        background: linear-gradient(145deg, #1a1520 0%, #111827 100%);
-        border-color: var(--gold-primary);
-    }
+        /* Stats Card */
+        .main-card.stats-card {
+            background: linear-gradient(145deg, #1a1520 0%, #111827 100%);
+            border-color: var(--gold-primary);
+        }
 
-    .main-card.stats-card:hover {
-        border-color: var(--gold-primary);
-        box-shadow: 0 25px 50px rgba(200, 155, 60, 0.3);
-    }
+        .main-card.stats-card:hover {
+            border-color: var(--gold-primary);
+            box-shadow: 0 25px 50px rgba(200, 155, 60, 0.3);
+        }
 
-    .main-card-icon {
-        font-size: 5rem;
-        margin-bottom: 24px;
-        display: block;
-    }
+        .main-card-icon {
+            font-size: 5rem;
+            margin-bottom: 24px;
+            display: block;
+        }
 
-    .main-card-title {
-        font-family: 'Orbitron', sans-serif;
-        font-size: 1.8rem;
-        font-weight: 700;
-        color: var(--gold-primary);
-        margin-bottom: 16px;
-        letter-spacing: 2px;
-    }
+        .main-card-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--gold-primary);
+            margin-bottom: 16px;
+            letter-spacing: 2px;
+        }
 
-    .main-card-desc {
-        color: var(--text-secondary);
-        line-height: 1.8;
-        font-size: 1.05rem;
-        margin-bottom: 24px;
-    }
+        .main-card-desc {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            font-size: 1.05rem;
+            margin-bottom: 24px;
+        }
 
-    .main-card-arrow {
-        font-size: 2rem;
-        color: var(--gold-primary);
-        opacity: 0;
-        transform: translateY(10px);
-        transition: all 0.4s ease;
-    }
+        .main-card-arrow {
+            font-size: 2rem;
+            color: var(--gold-primary);
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.4s ease;
+        }
 
-    .main-card:hover .main-card-arrow {
-        opacity: 1;
-        transform: translateY(0);
-    }
+        .main-card:hover .main-card-arrow {
+            opacity: 1;
+            transform: translateY(0);
+        }
 
-    .main-card.story-card .main-card-arrow {
-        color: var(--blue-accent);
-    }
+        .main-card.story-card .main-card-arrow {
+            color: var(--blue-accent);
+        }
 
-    /* Sub Feature Cards - 작게 하단 배치 */
-    .sub-features {
-        display: flex;
-        justify-content: center;
-        gap: 16px;
-        margin-bottom: 50px;
-    }
+        /* Sub Feature Cards - 작게 하단 배치 */
+        .sub-features {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 50px;
+        }
 
-    .sub-card {
-        background: var(--bg-card);
-        border: 1px solid var(--border-color);
-        border-radius: 10px;
-        padding: 16px 28px;
-        text-decoration: none;
-        color: inherit;
-        transition: all 0.3s ease;
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        font-size: 0.9rem;
-    }
+        .sub-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px 28px;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.9rem;
+        }
 
-    .sub-card:hover {
-        border-color: var(--text-secondary);
-        background: var(--bg-hover);
-        transform: translateY(-3px);
-    }
+        .sub-card:hover {
+            border-color: var(--text-secondary);
+            background: var(--bg-hover);
+            transform: translateY(-3px);
+        }
 
-    .sub-card-icon {
-        font-size: 1.3rem;
-    }
+        .sub-card-icon {
+            font-size: 1.3rem;
+        }
 
-    .sub-card-text {
-        color: var(--text-secondary);
-        font-weight: 500;
-    }
+        .sub-card-text {
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
 
-    /* Conclusion Section */
-    .conclusion-section {
-        background: linear-gradient(145deg, #141a24 0%, #0f1318 100%);
-        border: 2px solid var(--purple-accent);
-        border-radius: 20px;
-        padding: 50px;
-        margin-bottom: 50px;
-        position: relative;
-        overflow: hidden;
-    }
+        /* Conclusion Section */
+        .conclusion-section {
+            background: linear-gradient(145deg, #141a24 0%, #0f1318 100%);
+            border: 2px solid var(--purple-accent);
+            border-radius: 20px;
+            padding: 50px;
+            margin-bottom: 50px;
+            position: relative;
+            overflow: hidden;
+        }
 
-    .conclusion-section::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 4px;
-        background: linear-gradient(90deg, var(--purple-accent), var(--gold-primary), var(--blue-accent));
-    }
+        .conclusion-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--purple-accent), var(--gold-primary), var(--blue-accent));
+        }
 
-    .conclusion-badge {
-        display: inline-block;
-        background: var(--purple-accent);
-        color: white;
-        padding: 6px 16px;
-        border-radius: 20px;
-        font-size: 0.85rem;
-        font-weight: 700;
-        margin-bottom: 20px;
-        letter-spacing: 1px;
-    }
+        .conclusion-badge {
+            display: inline-block;
+            background: var(--purple-accent);
+            color: white;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
 
-    .conclusion-title {
-        font-family: 'Orbitron', sans-serif;
-        font-size: 1.6rem;
-        color: var(--text-primary);
-        margin-bottom: 24px;
-        line-height: 1.5;
-    }
+        .conclusion-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.6rem;
+            color: var(--text-primary);
+            margin-bottom: 24px;
+            line-height: 1.5;
+        }
 
-    .conclusion-highlight {
-        color: var(--purple-accent);
-    }
+        .conclusion-highlight {
+            color: var(--purple-accent);
+        }
 
-    .conclusion-content {
-        color: var(--text-secondary);
-        line-height: 2;
-        font-size: 1rem;
-    }
+        .conclusion-content {
+            color: var(--text-secondary);
+            line-height: 2;
+            font-size: 1rem;
+        }
 
-    .conclusion-content p {
-        margin-bottom: 20px;
-    }
+        .conclusion-content p {
+            margin-bottom: 20px;
+        }
 
-    .conclusion-content p:last-child {
-        margin-bottom: 0;
-    }
+        .conclusion-content p:last-child {
+            margin-bottom: 0;
+        }
 
-    .conclusion-quote {
-        background: rgba(147, 51, 234, 0.1);
-        border-left: 4px solid var(--purple-accent);
-        padding: 20px 24px;
-        margin: 24px 0;
-        border-radius: 0 12px 12px 0;
-        font-style: italic;
-        color: var(--text-primary);
-        font-size: 1.1rem;
-    }
+        .conclusion-quote {
+            background: rgba(147, 51, 234, 0.1);
+            border-left: 4px solid var(--purple-accent);
+            padding: 20px 24px;
+            margin: 24px 0;
+            border-radius: 0 12px 12px 0;
+            font-style: italic;
+            color: var(--text-primary);
+            font-size: 1.1rem;
+        }
 
-    .conclusion-keywords {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        margin-top: 24px;
-    }
+        .conclusion-keywords {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 24px;
+        }
 
-    .conclusion-keyword {
-        background: rgba(147, 51, 234, 0.15);
-        color: var(--purple-accent);
-        padding: 6px 14px;
-        border-radius: 16px;
-        font-size: 0.85rem;
-        font-weight: 600;
-        border: 1px solid rgba(147, 51, 234, 0.3);
-    }
+        .conclusion-keyword {
+            background: rgba(147, 51, 234, 0.15);
+            color: var(--purple-accent);
+            padding: 6px 14px;
+            border-radius: 16px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border: 1px solid rgba(147, 51, 234, 0.3);
+        }
 
-    /* Section Title */
-    .section-title {
-        font-family: 'Orbitron', sans-serif;
-        font-size: 1.5rem;
-        color: var(--gold-primary);
-        margin-bottom: 24px;
-        padding-bottom: 12px;
-        border-bottom: 1px solid var(--border-color);
-        letter-spacing: 2px;
-    }
+        /* Section Title */
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            color: var(--gold-primary);
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border-color);
+            letter-spacing: 2px;
+        }
 
-    /* Match Table */
-    .table-container {
-        background: var(--bg-card);
-        border-radius: 12px;
-        border: 1px solid var(--border-color);
-        overflow: hidden;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-    }
+        /* Match Table */
+        .table-container {
+            background: var(--bg-card);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
 
-    .match-table {
-        width: 100%;
-        border-collapse: collapse;
-    }
+        .match-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
 
-    .match-table th {
-        background: linear-gradient(180deg, #1a2332 0%, #111827 100%);
-        padding: 16px;
-        text-align: left;
-        font-weight: 600;
-        color: var(--gold-primary);
-        text-transform: uppercase;
-        font-size: 0.85rem;
-        letter-spacing: 1px;
-        border-bottom: 2px solid var(--gold-primary);
-    }
+        .match-table th {
+            background: linear-gradient(180deg, #1a2332 0%, #111827 100%);
+            padding: 16px;
+            text-align: left;
+            font-weight: 600;
+            color: var(--gold-primary);
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            border-bottom: 2px solid var(--gold-primary);
+        }
 
-    .match-table td {
-        padding: 16px;
-        border-bottom: 1px solid var(--border-color);
-    }
+        .match-table td {
+            padding: 16px;
+            border-bottom: 1px solid var(--border-color);
+        }
 
-    .match-table tbody tr {
-        transition: all 0.2s ease;
-    }
+        .match-table tbody tr {
+            transition: all 0.2s ease;
+        }
 
-    .match-table tbody tr:hover {
-        background: var(--bg-hover);
-    }
+        .match-table tbody tr:hover {
+            background: var(--bg-hover);
+        }
 
-    .match-link {
-        color: var(--blue-accent);
-        text-decoration: none;
-        font-weight: 500;
-        transition: color 0.2s ease;
-        display: inline-flex;
-        align-items: center;
-        gap: 10px;
-    }
+        .match-link {
+            color: var(--blue-accent);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
 
-    .match-link:hover {
-        color: var(--gold-primary);
-        text-decoration: underline;
-    }
+        .match-link:hover {
+            color: var(--gold-primary);
+            text-decoration: underline;
+        }
 
-    .team-logo-small {
-        width: 24px;
-        height: 24px;
-        object-fit: contain;
-        vertical-align: middle;
-    }
+        .team-logo-small {
+            width: 24px;
+            height: 24px;
+            object-fit: contain;
+            vertical-align: middle;
+        }
 
-    .winner-badge {
-        background: rgba(200, 155, 60, 0.2);
-        color: var(--gold-primary);
-        padding: 4px 12px;
-        border-radius: 4px;
-        font-weight: 600;
-    }
+        .winner-badge {
+            background: rgba(200, 155, 60, 0.2);
+            color: var(--gold-primary);
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
 
-    /* Empty State */
-    .empty-state {
-        text-align: center;
-        padding: 60px 20px;
-        background: var(--bg-card);
-        border-radius: 12px;
-        border: 1px solid var(--border-color);
-    }
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            background: var(--bg-card);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
 
-    .empty-state h3 {
-        font-size: 1.3rem;
-        margin-bottom: 12px;
-        color: var(--text-primary);
-    }
+        .empty-state h3 {
+            font-size: 1.3rem;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+        }
 
-    .empty-state p {
-        color: var(--text-secondary);
-    }
+        .empty-state p {
+            color: var(--text-secondary);
+        }
 
-    /* Footer */
-    .footer {
-        text-align: center;
-        margin-top: 60px;
-        padding: 30px;
-        border-top: 1px solid var(--border-color);
-        color: var(--text-secondary);
-        font-size: 0.9rem;
-    }
+        /* Footer */
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding: 30px;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
 
-    /* Responsive */
-    @media (max-width: 768px) {
-        .title { font-size: 2rem; }
-        .main-features { grid-template-columns: 1fr; }
-        .sub-features { flex-direction: column; align-items: center; }
-        .main-card { padding: 40px 30px; }
-        .main-card-icon { font-size: 4rem; }
-        .main-card-title { font-size: 1.5rem; }
-        .conclusion-section { padding: 30px; }
-    }
-</style>
+        /* 차트 섹션 스타일 */
+        .charts-section {
+            margin-bottom: 50px;
+        }
+
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+        }
+
+        .chart-card {
+            background: linear-gradient(145deg, rgba(17, 24, 39, 0.9) 0%, rgba(15, 23, 42, 0.95) 100%);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 24px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .chart-card:hover {
+            border-color: var(--gold-primary);
+            box-shadow: 0 8px 32px rgba(200, 155, 60, 0.15);
+            transform: translateY(-4px);
+        }
+
+        .chart-card-wide {
+            grid-column: span 2;
+        }
+
+        .chart-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            color: var(--gold-primary);
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+
+        .chart-desc {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 280px;
+        }
+
+        .donut-container {
+            height: 260px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .title {
+                font-size: 2rem;
+            }
+
+            .main-features {
+                grid-template-columns: 1fr;
+            }
+
+            .sub-features {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .main-card {
+                padding: 40px 30px;
+            }
+
+            .main-card-icon {
+                font-size: 4rem;
+            }
+
+            .main-card-title {
+                font-size: 1.5rem;
+            }
+
+            .conclusion-section {
+                padding: 30px;
+            }
+
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .chart-card-wide {
+                grid-column: span 1;
+            }
+
+            .chart-container {
+                height: 250px;
+            }
+        }
+    </style>
 </head>
+
 <body>
     <div class="container">
         <!-- Header -->
@@ -471,6 +562,40 @@
             </a>
         </div>
 
+        <!-- 📊 통계 그래프 섹션 -->
+        <section class="charts-section">
+            <h2 class="section-title">📊 2025 월드 챔피언십 데이터 인사이트</h2>
+
+            <div class="charts-grid">
+                <!-- Top 10 Tier Score 차트 -->
+                <div class="chart-card">
+                    <h3 class="chart-title">🏆 Top 10 챔피언 Tier Score</h3>
+                    <p class="chart-desc">사전 분석 기준 가장 높은 가치를 가진 챔피언 순위</p>
+                    <div class="chart-container">
+                        <canvas id="tierScoreChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- 진영 선호도 분포 도넛 차트 -->
+                <div class="chart-card">
+                    <h3 class="chart-title">🔵🔴 진영 선호도 분포</h3>
+                    <p class="chart-desc">분석 챔피언의 블루/레드 진영 선호도 비율</p>
+                    <div class="chart-container donut-container">
+                        <canvas id="sidePreferenceChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- 1픽 비교 차트 -->
+                <div class="chart-card chart-card-wide">
+                    <h3 class="chart-title">⚔️ 블루 vs 레드 1픽 비교 (Top 8 챔피언)</h3>
+                    <p class="chart-desc">양 진영에서의 1픽 선택 빈도 비교</p>
+                    <div class="chart-container">
+                        <canvas id="firstPickChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- Conclusion Section -->
         <section class="conclusion-section">
             <span class="conclusion-badge">📝 결론</span>
@@ -479,25 +604,25 @@
             </h2>
             <div class="conclusion-content">
                 <p>
-                    2025 월드 챔피언십의 녹아웃 스테이지를 분석하면서 가장 인상적이었던 것은, 밴픽에서의 우위가 반드시 승리로 이어지지 않았다는 점입니다. 
+                    2025 월드 챔피언십의 녹아웃 스테이지를 분석하면서 가장 인상적이었던 것은, 밴픽에서의 우위가 반드시 승리로 이어지지 않았다는 점입니다.
                     8강 젠지 vs 한화생명 2세트에서 한화생명은 조합적으로 완벽에 가까운 밴픽을 이끌어냈지만, 젠지는 58분간의 혈전 끝에 결정적인 한타에서 역전승을 거두었습니다.
                 </p>
-                
+
                 <div class="conclusion-quote">
                     "밴픽은 경기의 시작일 뿐, 끝을 결정하는 것은 선수들의 실력과 정신력이다."
                 </div>
-                
+
                 <p>
-                    4강에서 KT가 젠지를 꺾은 대이변 역시 마찬가지입니다. 객관적인 전력과 밴픽 분석에서 젠지가 압도적으로 유리했지만, 
+                    4강에서 KT가 젠지를 꺾은 대이변 역시 마찬가지입니다. 객관적인 전력과 밴픽 분석에서 젠지가 압도적으로 유리했지만,
                     KT는 '언더독의 저력'으로 이를 극복했습니다. 결승에서도 T1은 불리한 조합 상황을 뒤집으며 3연속 우승이라는 대기록을 완성했습니다.
                 </p>
-                
+
                 <p>
-                    결국 리그 오브 레전드에서 밴픽은 중요한 전략적 도구이지만, 최종 승패를 가르는 것은 순간의 판단력, 팀워크, 그리고 압박 속에서 발휘되는 선수 개개인의 역량입니다. 
+                    결국 리그 오브 레전드에서 밴픽은 중요한 전략적 도구이지만, 최종 승패를 가르는 것은 순간의 판단력, 팀워크, 그리고 압박 속에서 발휘되는 선수 개개인의 역량입니다.
                     이번 월드 챔피언십은 그 사실을 다시 한번 증명했습니다.
                 </p>
             </div>
-            
+
             <div class="conclusion-keywords">
                 <span class="conclusion-keyword">#밴픽만능론반박</span>
                 <span class="conclusion-keyword">#선수역량</span>
@@ -529,17 +654,23 @@
                             <td>{{ item.match.match_date|date:"Y.m.d" }}</td>
                             <td>{{ item.match.get_stage_display }}</td>
                             <td>
-                                <a href="{% url 'match_story_detail' stage=item.story_stage match_number=item.story_match_number %}" class="match-link">
-                                    <img src="{% static 'main/images/teams/' %}{{ item.team_a_logo }}" alt="{{ item.match.team_a.name }}" class="team-logo-small" onerror="this.style.display='none'">
+                                <a href="{% url 'match_story_detail' stage=item.story_stage match_number=item.story_match_number %}"
+                                    class="match-link">
+                                    <img src="{% static 'main/images/teams/' %}{{ item.team_a_logo }}"
+                                        alt="{{ item.match.team_a.name }}" class="team-logo-small"
+                                        onerror="this.style.display='none'">
                                     {{ item.match.team_a.name }}
                                     <span style="color: var(--red-accent);">vs</span>
                                     {{ item.match.team_b.name }}
-                                    <img src="{% static 'main/images/teams/' %}{{ item.team_b_logo }}" alt="{{ item.match.team_b.name }}" class="team-logo-small" onerror="this.style.display='none'">
+                                    <img src="{% static 'main/images/teams/' %}{{ item.team_b_logo }}"
+                                        alt="{{ item.match.team_b.name }}" class="team-logo-small"
+                                        onerror="this.style.display='none'">
                                 </a>
                             </td>
                             <td><span class="winner-badge">{{ item.match.winner.name }}</span></td>
                             <td>
-                                <a href="{% url 'match_story_detail' stage=item.story_stage match_number=item.story_match_number %}" class="match-link">
+                                <a href="{% url 'match_story_detail' stage=item.story_stage match_number=item.story_match_number %}"
+                                    class="match-link">
                                     📖 스토리 보기 →
                                 </a>
                             </td>
@@ -561,5 +692,227 @@
             <p>2025 롤드컵 벤픽 아카이브 | Data Storytelling Project</p>
         </footer>
     </div>
+
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+    <script>
+        // Chart.js 글로벌 설정
+        Chart.defaults.color = '#a09b8c';
+        Chart.defaults.borderColor = 'rgba(60, 60, 65, 0.5)';
+        Chart.defaults.font.family = "'Noto Sans KR', sans-serif";
+
+        // API에서 데이터 가져와서 차트 렌더링
+        fetch('/api/champions/')
+            .then(response => response.json())
+            .then(data => {
+                const champions = data.champions;
+
+                // Tier Score 기준 정렬 후 Top 10 추출
+                const sortedByTier = [...champions].sort((a, b) => b.tier_score - a.tier_score).slice(0, 10);
+
+                // 1. Top 10 Tier Score 바 차트
+                const tierScoreCtx = document.getElementById('tierScoreChart').getContext('2d');
+                const tierGradient = tierScoreCtx.createLinearGradient(0, 0, 400, 0);
+                tierGradient.addColorStop(0, '#785a28');
+                tierGradient.addColorStop(0.5, '#c8aa6e');
+                tierGradient.addColorStop(1, '#c89b3c');
+
+                new Chart(tierScoreCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: sortedByTier.map(c => c.name),
+                        datasets: [{
+                            label: 'Tier Score',
+                            data: sortedByTier.map(c => c.tier_score),
+                            backgroundColor: tierGradient,
+                            borderColor: '#c89b3c',
+                            borderWidth: 1,
+                            borderRadius: 6,
+                            borderSkipped: false,
+                        }]
+                    },
+                    options: {
+                        indexAxis: 'y',
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                backgroundColor: 'rgba(17, 24, 39, 0.95)',
+                                titleColor: '#c89b3c',
+                                bodyColor: '#f0e6d2',
+                                borderColor: '#c89b3c',
+                                borderWidth: 1,
+                                padding: 12,
+                                callbacks: {
+                                    label: (ctx) => `Tier Score: ${ctx.raw}`
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                beginAtZero: true,
+                                max: 15,
+                                grid: { color: 'rgba(60, 60, 65, 0.3)' },
+                                ticks: { color: '#a09b8c' }
+                            },
+                            y: {
+                                grid: { display: false },
+                                ticks: {
+                                    color: '#f0e6d2',
+                                    font: { weight: 500 }
+                                }
+                            }
+                        }
+                    }
+                });
+
+                // 2. 진영 선호도 도넛 차트 - 진영 선호도별 집계
+                const sidePreferenceCounts = {
+                    'BLUE_MUST': 0, 'BLUE_PREF': 0, 'BLUE_WEAK': 0, 'BALANCED': 0, 'RED_WEAK': 0, 'RED_PREF': 0, 'RED_MUST': 0
+                };
+                champions.forEach(c => {
+                    if (sidePreferenceCounts.hasOwnProperty(c.side_preference_code)) {
+                        sidePreferenceCounts[c.side_preference_code]++;
+                    }
+                });
+
+                const sideCtx = document.getElementById('sidePreferenceChart').getContext('2d');
+                new Chart(sideCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['블루 필수', '블루 선호', '약한 블루', '균형', '약한 레드', '레드 선호', '레드 필수'],
+                        datasets: [{
+                            data: [
+                                sidePreferenceCounts['BLUE_MUST'],
+                                sidePreferenceCounts['BLUE_PREF'],
+                                sidePreferenceCounts['BLUE_WEAK'],
+                                sidePreferenceCounts['BALANCED'],
+                                sidePreferenceCounts['RED_WEAK'],
+                                sidePreferenceCounts['RED_PREF'],
+                                sidePreferenceCounts['RED_MUST']
+                            ],
+                            backgroundColor: [
+                                '#2563eb',  // 블루 필수
+                                '#4a90d9',  // 블루 선호
+                                '#60a5fa',  // 약한 블루
+                                '#6b7280',  // 균형
+                                '#f87171',  // 약한 레드
+                                '#ef4444',  // 레드 선호
+                                '#dc2626',  // 레드 필수
+                            ],
+                            borderColor: '#0a0e13',
+                            borderWidth: 3,
+                            hoverOffset: 8
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        cutout: '55%',
+                        plugins: {
+                            legend: {
+                                position: 'right',
+                                labels: {
+                                    padding: 12,
+                                    usePointStyle: true,
+                                    pointStyle: 'circle',
+                                    font: { size: 11 }
+                                }
+                            },
+                            tooltip: {
+                                backgroundColor: 'rgba(17, 24, 39, 0.95)',
+                                titleColor: '#c89b3c',
+                                bodyColor: '#f0e6d2',
+                                borderColor: '#c89b3c',
+                                borderWidth: 1,
+                                padding: 12,
+                                callbacks: {
+                                    label: (ctx) => {
+                                        const total = champions.length;
+                                        return `${ctx.label}: ${ctx.raw}개 챔피언 (${Math.round(ctx.raw / total * 100)}%)`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+
+                // 3. 블루 vs 레드 1픽 비교 차트 (Top 8)
+                const top8Champions = sortedByTier.slice(0, 8);
+                const firstPickCtx = document.getElementById('firstPickChart').getContext('2d');
+
+                new Chart(firstPickCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: top8Champions.map(c => c.name),
+                        datasets: [
+                            {
+                                label: '블루 1픽',
+                                data: top8Champions.map(c => c.blue_first_pick),
+                                backgroundColor: 'rgba(74, 144, 217, 0.8)',
+                                borderColor: '#4a90d9',
+                                borderWidth: 1,
+                                borderRadius: 4,
+                            },
+                            {
+                                label: '레드 1픽',
+                                data: top8Champions.map(c => c.red_first_pick),
+                                backgroundColor: 'rgba(239, 68, 68, 0.8)',
+                                borderColor: '#ef4444',
+                                borderWidth: 1,
+                                borderRadius: 4,
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                                labels: {
+                                    padding: 16,
+                                    usePointStyle: true,
+                                    pointStyle: 'rectRounded',
+                                    font: { weight: 500 }
+                                }
+                            },
+                            tooltip: {
+                                backgroundColor: 'rgba(17, 24, 39, 0.95)',
+                                titleColor: '#c89b3c',
+                                bodyColor: '#f0e6d2',
+                                borderColor: '#c89b3c',
+                                borderWidth: 1,
+                                padding: 12
+                            }
+                        },
+                        scales: {
+                            x: {
+                                grid: { display: false },
+                                ticks: {
+                                    color: '#f0e6d2',
+                                    font: { weight: 500 }
+                                }
+                            },
+                            y: {
+                                beginAtZero: true,
+                                max: 5,
+                                grid: { color: 'rgba(60, 60, 65, 0.3)' },
+                                ticks: {
+                                    color: '#a09b8c',
+                                    stepSize: 1
+                                }
+                            }
+                        }
+                    }
+                });
+            })
+            .catch(error => {
+                console.error('차트 데이터 로드 실패:', error);
+            });
+    </script>
 </body>
+
 </html>

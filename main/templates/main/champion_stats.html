@@ -764,7 +764,7 @@
                             <div class="tier-bar-container">
                                 <div class="tier-bar">
                                     <div class="tier-bar-fill"
-                                        style="width: {{ stat.tier_score|floatformat:0 }}%; background: linear-gradient(90deg, #785a28, #c8aa6e);">
+                                        style="--w: {{ stat.tier_score|floatformat:0 }}%; width: var(--w); background: linear-gradient(90deg, #785a28, #c8aa6e);">
                                     </div>
                                 </div>
                                 <span class="tier-value">{{ stat.tier_score }}</span>
@@ -772,10 +772,8 @@
                         </td>
                         <td>
                             <div class="pick-stats">
-                                <span class="pick-stat total" data-total="{{ stat.total_picks }}">{{ stat.total_picks
-                                    }}</span>
-                                <span class="pick-stat blue" data-blue="{{ stat.blue_first_pick }}">B{{
-                                    stat.blue_first_pick }}</span>
+                                <span class="pick-stat total" data-total="{{ stat.total_picks }}">{{ stat.total_picks }}</span>
+                                <span class="pick-stat blue" data-blue="{{ stat.blue_first_pick }}">B{{ stat.blue_first_pick }}</span>
                                 <span class="pick-stat red">R{{ stat.red_first_pick }}</span>
                             </div>
                         </td>
