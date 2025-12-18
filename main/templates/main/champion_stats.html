@@ -1,10 +1,15 @@
+{% load static %}
+{% load champion_filters %}
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ title }}</title>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Orbitron:wght@400;700;900&display=swap"
+        rel="stylesheet">
     <style>
         :root {
             --bg-dark: #0a0e13;
@@ -31,7 +36,7 @@
             background: var(--bg-dark);
             color: var(--text-primary);
             min-height: 100vh;
-            background-image: 
+            background-image:
                 radial-gradient(ellipse at top, rgba(200, 155, 60, 0.05) 0%, transparent 50%),
                 radial-gradient(ellipse at bottom right, rgba(10, 200, 185, 0.03) 0%, transparent 40%),
                 radial-gradient(ellipse at bottom left, rgba(255, 70, 85, 0.03) 0%, transparent 40%);
@@ -106,7 +111,8 @@
             font-weight: 500;
         }
 
-        .nav-link:hover, .nav-link.active {
+        .nav-link:hover,
+        .nav-link.active {
             color: var(--gold-primary);
             border-color: var(--gold-primary);
             background: rgba(200, 155, 60, 0.1);
@@ -171,15 +177,27 @@
             font-size: 0.9rem;
         }
 
-        .filter-btn:hover, .filter-btn.active {
+        .filter-btn:hover,
+        .filter-btn.active {
             border-color: var(--blue-accent);
             color: var(--blue-accent);
             background: rgba(10, 200, 185, 0.1);
         }
 
-        .filter-btn.blue { border-color: #4a90d9; color: #4a90d9; }
-        .filter-btn.red { border-color: #d94a4a; color: #d94a4a; }
-        .filter-btn.balanced { border-color: #7a7a7a; color: #7a7a7a; }
+        .filter-btn.blue {
+            border-color: #4a90d9;
+            color: #4a90d9;
+        }
+
+        .filter-btn.red {
+            border-color: #d94a4a;
+            color: #d94a4a;
+        }
+
+        .filter-btn.balanced {
+            border-color: #7a7a7a;
+            color: #7a7a7a;
+        }
 
         /* Champion Table */
         .table-container {
@@ -255,10 +273,26 @@
             font-size: 0.85rem;
         }
 
-        .rank-1 { background: linear-gradient(135deg, #ffd700, #b8860b); color: #000; }
-        .rank-2 { background: linear-gradient(135deg, #c0c0c0, #808080); color: #000; }
-        .rank-3 { background: linear-gradient(135deg, #cd7f32, #8b4513); color: #fff; }
-        .rank-default { background: var(--bg-dark); color: var(--text-secondary); border: 1px solid var(--border-color); }
+        .rank-1 {
+            background: linear-gradient(135deg, #ffd700, #b8860b);
+            color: #000;
+        }
+
+        .rank-2 {
+            background: linear-gradient(135deg, #c0c0c0, #808080);
+            color: #000;
+        }
+
+        .rank-3 {
+            background: linear-gradient(135deg, #cd7f32, #8b4513);
+            color: #fff;
+        }
+
+        .rank-default {
+            background: var(--bg-dark);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+        }
 
         /* Champion Name */
         .champion-name {
@@ -280,6 +314,15 @@
             align-items: center;
             justify-content: center;
             font-size: 1.2rem;
+            object-fit: cover;
+        }
+
+        img.champion-icon {
+            display: block;
+        }
+
+        .champion-icon.placeholder {
+            display: none;
         }
 
         /* Tier Score Bar */
@@ -349,13 +392,42 @@
             font-weight: 500;
         }
 
-        .side-badge.BLUE_MUST { background: rgba(74, 144, 217, 0.3); color: #6db3f2; border: 1px solid #4a90d9; }
-        .side-badge.BLUE_PREF { background: rgba(74, 144, 217, 0.2); color: #4a90d9; }
-        .side-badge.BLUE_WEAK { background: rgba(74, 144, 217, 0.1); color: #4a90d9; }
-        .side-badge.BALANCED { background: rgba(160, 155, 140, 0.2); color: var(--text-secondary); }
-        .side-badge.RED_WEAK { background: rgba(217, 74, 74, 0.1); color: #d94a4a; }
-        .side-badge.RED_PREF { background: rgba(217, 74, 74, 0.2); color: #d94a4a; }
-        .side-badge.RED_MUST { background: rgba(217, 74, 74, 0.3); color: #f26d6d; border: 1px solid #d94a4a; }
+        .side-badge.BLUE_MUST {
+            background: rgba(74, 144, 217, 0.3);
+            color: #6db3f2;
+            border: 1px solid #4a90d9;
+        }
+
+        .side-badge.BLUE_PREF {
+            background: rgba(74, 144, 217, 0.2);
+            color: #4a90d9;
+        }
+
+        .side-badge.BLUE_WEAK {
+            background: rgba(74, 144, 217, 0.1);
+            color: #4a90d9;
+        }
+
+        .side-badge.BALANCED {
+            background: rgba(160, 155, 140, 0.2);
+            color: var(--text-secondary);
+        }
+
+        .side-badge.RED_WEAK {
+            background: rgba(217, 74, 74, 0.1);
+            color: #d94a4a;
+        }
+
+        .side-badge.RED_PREF {
+            background: rgba(217, 74, 74, 0.2);
+            color: #d94a4a;
+        }
+
+        .side-badge.RED_MUST {
+            background: rgba(217, 74, 74, 0.3);
+            color: #f26d6d;
+            border: 1px solid #d94a4a;
+        }
 
         .side-index {
             font-family: 'Orbitron', sans-serif;
@@ -378,28 +450,68 @@
 
         /* Animations */
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .champion-table tbody tr {
             animation: fadeIn 0.3s ease forwards;
         }
 
-        .champion-table tbody tr:nth-child(1) { animation-delay: 0.05s; }
-        .champion-table tbody tr:nth-child(2) { animation-delay: 0.1s; }
-        .champion-table tbody tr:nth-child(3) { animation-delay: 0.15s; }
-        .champion-table tbody tr:nth-child(4) { animation-delay: 0.2s; }
-        .champion-table tbody tr:nth-child(5) { animation-delay: 0.25s; }
+        .champion-table tbody tr:nth-child(1) {
+            animation-delay: 0.05s;
+        }
+
+        .champion-table tbody tr:nth-child(2) {
+            animation-delay: 0.1s;
+        }
+
+        .champion-table tbody tr:nth-child(3) {
+            animation-delay: 0.15s;
+        }
+
+        .champion-table tbody tr:nth-child(4) {
+            animation-delay: 0.2s;
+        }
+
+        .champion-table tbody tr:nth-child(5) {
+            animation-delay: 0.25s;
+        }
 
         /* Responsive */
         @media (max-width: 768px) {
-            .title { font-size: 1.8rem; }
-            .stats-summary { grid-template-columns: repeat(2, 1fr); }
-            .champion-table { font-size: 0.85rem; }
-            .champion-table th, .champion-table td { padding: 12px 8px; }
-            .tier-bar { width: 60px; }
-            .champion-icon { width: 30px; height: 30px; }
+            .title {
+                font-size: 1.8rem;
+            }
+
+            .stats-summary {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .champion-table {
+                font-size: 0.85rem;
+            }
+
+            .champion-table th,
+            .champion-table td {
+                padding: 12px 8px;
+            }
+
+            .tier-bar {
+                width: 60px;
+            }
+
+            .champion-icon {
+                width: 30px;
+                height: 30px;
+            }
         }
 
         /* Footer */
@@ -539,6 +651,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <!-- Header -->
@@ -578,18 +691,18 @@
 
         <!-- Filter Controls -->
         <section class="filter-controls">
-            <a href="?side=all&sort={{ sort_by }}&order={{ order }}" 
-               class="filter-btn {% if side_filter == 'all' %}active{% endif %}">전체</a>
-            <a href="?side=BLUE_MUST&sort={{ sort_by }}&order={{ order }}" 
-               class="filter-btn blue {% if side_filter == 'BLUE_MUST' %}active{% endif %}">블루 필수</a>
-            <a href="?side=BLUE_PREF&sort={{ sort_by }}&order={{ order }}" 
-               class="filter-btn blue {% if side_filter == 'BLUE_PREF' %}active{% endif %}">블루 선호</a>
-            <a href="?side=BALANCED&sort={{ sort_by }}&order={{ order }}" 
-               class="filter-btn balanced {% if side_filter == 'BALANCED' %}active{% endif %}">균형</a>
-            <a href="?side=RED_PREF&sort={{ sort_by }}&order={{ order }}" 
-               class="filter-btn red {% if side_filter == 'RED_PREF' %}active{% endif %}">레드 선호</a>
-            <a href="?side=RED_MUST&sort={{ sort_by }}&order={{ order }}" 
-               class="filter-btn red {% if side_filter == 'RED_MUST' %}active{% endif %}">레드 필수</a>
+            <a href="?side=all&sort={{ sort_by }}&order={{ order }}"
+                class="filter-btn {% if side_filter == 'all' %}active{% endif %}">전체</a>
+            <a href="?side=BLUE_MUST&sort={{ sort_by }}&order={{ order }}"
+                class="filter-btn blue {% if side_filter == 'BLUE_MUST' %}active{% endif %}">블루 필수</a>
+            <a href="?side=BLUE_PREF&sort={{ sort_by }}&order={{ order }}"
+                class="filter-btn blue {% if side_filter == 'BLUE_PREF' %}active{% endif %}">블루 선호</a>
+            <a href="?side=BALANCED&sort={{ sort_by }}&order={{ order }}"
+                class="filter-btn balanced {% if side_filter == 'BALANCED' %}active{% endif %}">균형</a>
+            <a href="?side=RED_PREF&sort={{ sort_by }}&order={{ order }}"
+                class="filter-btn red {% if side_filter == 'RED_PREF' %}active{% endif %}">레드 선호</a>
+            <a href="?side=RED_MUST&sort={{ sort_by }}&order={{ order }}"
+                class="filter-btn red {% if side_filter == 'RED_MUST' %}active{% endif %}">레드 필수</a>
         </section>
 
         <!-- Champion Table -->
@@ -600,30 +713,30 @@
                     <tr>
                         <th style="width: 60px;">#</th>
                         <th>
-                            <a href="?sort=tier_score&order={% if sort_by == 'tier_score' and order == 'desc' %}asc{% else %}desc{% endif %}&side={{ side_filter }}" 
-                               style="color: inherit; text-decoration: none;"
-                               class="{% if sort_by == 'tier_score' %}sorted {% if order == 'asc' %}asc{% endif %}{% endif %}">
+                            <a href="?sort=tier_score&order={% if sort_by == 'tier_score' and order == 'desc' %}asc{% else %}desc{% endif %}&side={{ side_filter }}"
+                                style="color: inherit; text-decoration: none;"
+                                class="{% if sort_by == 'tier_score' %}sorted {% if order == 'asc' %}asc{% endif %}{% endif %}">
                                 챔피언
                             </a>
                         </th>
                         <th>
                             <a href="?sort=tier_score&order={% if sort_by == 'tier_score' and order == 'desc' %}asc{% else %}desc{% endif %}&side={{ side_filter }}"
-                               style="color: inherit; text-decoration: none;"
-                               class="{% if sort_by == 'tier_score' %}sorted {% if order == 'asc' %}asc{% endif %}{% endif %}">
+                                style="color: inherit; text-decoration: none;"
+                                class="{% if sort_by == 'tier_score' %}sorted {% if order == 'asc' %}asc{% endif %}{% endif %}">
                                 Tier Score
                             </a>
                         </th>
                         <th>
                             <a href="?sort=total_picks&order={% if sort_by == 'total_picks' and order == 'desc' %}asc{% else %}desc{% endif %}&side={{ side_filter }}"
-                               style="color: inherit; text-decoration: none;"
-                               class="{% if sort_by == 'total_picks' %}sorted {% if order == 'asc' %}asc{% endif %}{% endif %}">
+                                style="color: inherit; text-decoration: none;"
+                                class="{% if sort_by == 'total_picks' %}sorted {% if order == 'asc' %}asc{% endif %}{% endif %}">
                                 픽 횟수
                             </a>
                         </th>
                         <th>
                             <a href="?sort=side_index&order={% if sort_by == 'side_index' and order == 'desc' %}asc{% else %}desc{% endif %}&side={{ side_filter }}"
-                               style="color: inherit; text-decoration: none;"
-                               class="{% if sort_by == 'side_index' %}sorted {% if order == 'asc' %}asc{% endif %}{% endif %}">
+                                style="color: inherit; text-decoration: none;"
+                                class="{% if sort_by == 'side_index' %}sorted {% if order == 'asc' %}asc{% endif %}{% endif %}">
                                 진영 선호도
                             </a>
                         </th>
@@ -633,30 +746,36 @@
                     {% for stat in stats %}
                     <tr>
                         <td>
-                            <span class="rank-badge {% if forloop.counter == 1 %}rank-1{% elif forloop.counter == 2 %}rank-2{% elif forloop.counter == 3 %}rank-3{% else %}rank-default{% endif %}">
+                            <span
+                                class="rank-badge {% if forloop.counter == 1 %}rank-1{% elif forloop.counter == 2 %}rank-2{% elif forloop.counter == 3 %}rank-3{% else %}rank-default{% endif %}">
                                 {{ forloop.counter }}
                             </span>
                         </td>
                         <td>
                             <div class="champion-name">
-                                <div class="champion-icon">⚔️</div>
+                                <img src="{% static 'main/images/champions/' %}{{ stat.champion.name|champion_filename }}.webp"
+                                    alt="{{ stat.champion.name }}" class="champion-icon"
+                                    onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div class="champion-icon placeholder">⚔️</div>
                                 {{ stat.champion.name }}
                             </div>
                         </td>
                         <td>
                             <div class="tier-bar-container">
                                 <div class="tier-bar">
-                                    <div class="tier-bar-fill" 
-                                         style="width: {{ stat.tier_score|floatformat:0 }}%; 
-                                                background: linear-gradient(90deg, #785a28, #c8aa6e);"></div>
+                                    <div class="tier-bar-fill"
+                                        style="width: {{ stat.tier_score|floatformat:0 }}%; background: linear-gradient(90deg, #785a28, #c8aa6e);">
+                                    </div>
                                 </div>
                                 <span class="tier-value">{{ stat.tier_score }}</span>
                             </div>
                         </td>
                         <td>
                             <div class="pick-stats">
-                                <span class="pick-stat total" data-total="{{ stat.total_picks }}">{{ stat.total_picks }}</span>
-                                <span class="pick-stat blue" data-blue="{{ stat.blue_first_pick }}">B{{ stat.blue_first_pick }}</span>
+                                <span class="pick-stat total" data-total="{{ stat.total_picks }}">{{ stat.total_picks
+                                    }}</span>
+                                <span class="pick-stat blue" data-blue="{{ stat.blue_first_pick }}">B{{
+                                    stat.blue_first_pick }}</span>
                                 <span class="pick-stat red">R{{ stat.red_first_pick }}</span>
                             </div>
                         </td>
@@ -685,14 +804,14 @@
         <section class="methodology-section">
             <span class="methodology-badge">📐 분석 원리</span>
             <h2 class="methodology-title">챔피언 통계 지표 해석 가이드</h2>
-            
+
             <div class="methodology-grid">
                 <!-- Tier Score -->
                 <div class="method-card">
                     <div class="method-icon">🏆</div>
                     <h3 class="method-name">Tier Score</h3>
                     <p class="method-desc">
-                        챔피언의 전반적인 경쟁력을 0~100 사이의 점수로 나타낸 종합 지표입니다. 
+                        챔피언의 전반적인 경쟁력을 0~100 사이의 점수로 나타낸 종합 지표입니다.
                         픽률, 밴률, 승률, 프로 선수들의 선호도 등 다양한 요소를 가중치로 반영하여 산출됩니다.
                     </p>
                     <div class="method-formula">
@@ -708,7 +827,7 @@
                     <div class="method-icon">📊</div>
                     <h3 class="method-name">픽 횟수</h3>
                     <p class="method-desc">
-                        해당 챔피언이 경기에서 선택된 총 횟수입니다. 블루(B)와 레드(R) 진영에서의 1픽 횟수를 함께 표시하여 
+                        해당 챔피언이 경기에서 선택된 총 횟수입니다. 블루(B)와 레드(R) 진영에서의 1픽 횟수를 함께 표시하여
                         진영별 선호도를 빠르게 파악할 수 있습니다.
                     </p>
                     <div class="method-formula">
@@ -724,7 +843,7 @@
                     <div class="method-icon">⚖️</div>
                     <h3 class="method-name">Side Index</h3>
                     <p class="method-desc">
-                        진영 선호도를 수치화한 지표입니다. -100(완전 레드 선호)부터 +100(완전 블루 선호)까지의 범위를 가지며, 
+                        진영 선호도를 수치화한 지표입니다. -100(완전 레드 선호)부터 +100(완전 블루 선호)까지의 범위를 가지며,
                         0에 가까울수록 양 진영에서 균등하게 선택됨을 의미합니다.
                     </p>
                     <div class="method-formula">
@@ -740,23 +859,23 @@
                     <div class="method-icon">🎯</div>
                     <h3 class="method-name">진영 선호도</h3>
                     <p class="method-desc">
-                        Side Index를 기반으로 챔피언의 진영 선호도를 직관적으로 분류한 레이블입니다. 
+                        Side Index를 기반으로 챔피언의 진영 선호도를 직관적으로 분류한 레이블입니다.
                         밴픽 단계에서 어느 진영이 해당 챔피언을 우선적으로 고려해야 하는지 판단하는 데 활용됩니다.
                     </p>
                     <div class="method-example">
                         <strong>분류 기준:</strong><br>
                         • <span style="color: #6db3f2;">블루 필수</span>: SI ≥ 50 (블루 1픽 필수)<br>
                         • <span style="color: #4a90d9;">블루 선호</span>: 25 ≤ SI < 50<br>
-                        • <span style="color: var(--text-secondary);">균형</span>: -25 < SI < 25<br>
-                        • <span style="color: #d94a4a;">레드 선호</span>: -50 < SI ≤ -25<br>
-                        • <span style="color: #f26d6d;">레드 필수</span>: SI ≤ -50 (레드 응픽 필수)
+                            • <span style="color: var(--text-secondary);">균형</span>: -25 < SI < 25<br>
+                                • <span style="color: #d94a4a;">레드 선호</span>: -50 < SI ≤ -25<br>
+                                    • <span style="color: #f26d6d;">레드 필수</span>: SI ≤ -50 (레드 응픽 필수)
                     </div>
                 </div>
             </div>
 
             <div class="methodology-note">
-                <strong>⚠️ 주의사항:</strong> 이 통계는 2025 월드 챔피언십 사전 분석 데이터를 기반으로 합니다. 
-                실제 경기에서의 밴픽은 상대 팀 전력, 패치 변화, 메타 흐름, 선수 챔피언 풀 등 다양한 변수에 영향을 받습니다. 
+                <strong>⚠️ 주의사항:</strong> 이 통계는 2025 월드 챔피언십 사전 분석 데이터를 기반으로 합니다.
+                실제 경기에서의 밴픽은 상대 팀 전력, 패치 변화, 메타 흐름, 선수 챔피언 풀 등 다양한 변수에 영향을 받습니다.
                 통계는 참고 지표로 활용하시고, 실시간 경기 상황에 맞는 유연한 해석이 필요합니다.
             </div>
         </section>
@@ -769,24 +888,22 @@
 
     <script>
         // Calculate totals
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             let totalPicks = 0;
             let bluePicks = 0;
-            
+
             document.querySelectorAll('.pick-stat.total').forEach(el => {
                 totalPicks += parseInt(el.dataset.total) || 0;
             });
-            
+
             document.querySelectorAll('.pick-stat.blue').forEach(el => {
                 bluePicks += parseInt(el.dataset.blue) || 0;
             });
-            
+
             document.getElementById('total-picks').textContent = totalPicks;
             document.getElementById('blue-picks').textContent = bluePicks;
         });
     </script>
 </body>
+
 </html>
-
-
-
