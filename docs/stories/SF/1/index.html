@@ -1,276 +1,575 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>4강 - Gen.G vs kt Rolster</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
-<style>
-    :root {
-        --bg-dark: #0a0e13;
-        --bg-card: #111827;
-        --bg-hover: #1f2937;
-        --gold-primary: #c89b3c;
-        --gold-secondary: #f0e6d2;
-        --blue-accent: #0ac8b9;
-        --red-accent: #ff4655;
-        --text-primary: #f0e6d2;
-        --text-secondary: #a09b8c;
-        --border-color: #3c3c41;
-        --gradient-gold: linear-gradient(135deg, #785a28 0%, #c8aa6e 50%, #c89b3c 100%);
-    }
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-        font-family: 'Noto Sans KR', sans-serif;
-        background: var(--bg-dark);
-        color: var(--text-primary);
-        min-height: 100vh;
-        background-image: radial-gradient(ellipse at top, rgba(200, 155, 60, 0.05) 0%, transparent 50%);
-    }
-    .container { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
-    .back-link {
-        display: inline-flex; align-items: center; gap: 8px;
-        color: var(--text-secondary); text-decoration: none;
-        margin-bottom: 30px; font-size: 0.95rem; transition: color 0.2s;
-    }
-    .back-link:hover { color: var(--gold-primary); }
-    .header {
-        text-align: center; margin-bottom: 40px; padding: 40px;
-        background: var(--bg-card); border-radius: 16px; border: 1px solid var(--border-color);
-    }
-    .stage-badge {
-        display: inline-block; font-family: 'Orbitron', sans-serif; font-size: 0.85rem;
-        background: var(--gold-primary); color: var(--bg-dark);
-        padding: 6px 16px; border-radius: 4px; font-weight: 700; margin-bottom: 16px;
-    }
-    .match-title {
-        font-family: 'Orbitron', sans-serif; font-size: 2rem; font-weight: 900;
-        color: var(--text-primary); margin-bottom: 12px; display: flex;
-        align-items: center; justify-content: center; gap: 16px; flex-wrap: wrap;
-    }
-    .team-logo { width: 48px; height: 48px; object-fit: contain; }
-    .team-with-logo { display: flex; align-items: center; gap: 8px; }
-    .vs-divider { color: var(--red-accent); margin: 0 12px; font-size: 1.2rem; }
-    .final-score {
-        font-family: 'Orbitron', sans-serif; font-size: 2.5rem; font-weight: 900;
-        color: var(--gold-primary); margin-top: 12px;
-    }
-    .keywords-container {
-        display: flex; flex-wrap: wrap; justify-content: center; gap: 12px;
-        margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--border-color);
-    }
-    .keyword-tag {
-        font-family: 'Orbitron', sans-serif; font-size: 1.1rem; font-weight: 700;
-        color: var(--blue-accent); background: rgba(10, 200, 185, 0.1);
-        padding: 8px 16px; border-radius: 24px; border: 1px solid rgba(10, 200, 185, 0.3);
-        transition: all 0.3s ease;
-    }
-    .keyword-tag::before { content: '#'; opacity: 0.7; }
-    .keyword-tag:hover {
-        background: rgba(10, 200, 185, 0.2); transform: translateY(-2px);
-    }
-    .overview-section {
-        background: var(--bg-card); border-radius: 16px; padding: 30px;
-        margin-bottom: 30px; border: 1px solid var(--border-color);
-    }
-    .overview-title {
-        display: flex; align-items: center; gap: 12px;
-        font-family: 'Orbitron', sans-serif; font-size: 1.2rem;
-        color: var(--gold-primary); margin-bottom: 16px;
-    }
-    .overview-text { color: var(--text-secondary); line-height: 1.9; }
-    .set-card {
-        background: var(--bg-card); border-radius: 16px; border: 1px solid var(--border-color);
-        margin-bottom: 24px; overflow: hidden; transition: border-color 0.3s ease;
-    }
-    .set-card:hover { border-color: var(--gold-primary); }
-    .set-header {
-        background: linear-gradient(180deg, #1a2332 0%, #111827 100%);
-        padding: 20px 24px; border-bottom: 1px solid var(--border-color);
-        display: flex; justify-content: space-between; align-items: center;
-    }
-    .set-number { font-family: 'Orbitron', sans-serif; font-size: 1.3rem; font-weight: 700; }
-    .set-winner {
-        font-size: 0.9rem; padding: 6px 16px; border-radius: 20px; font-weight: 600;
-    }
-    .set-winner.team-a { background: rgba(10, 200, 185, 0.2); color: var(--blue-accent); border: 1px solid var(--blue-accent); }
-    .set-winner.team-b { background: rgba(255, 70, 85, 0.2); color: var(--red-accent); border: 1px solid var(--red-accent); }
-    .set-body { padding: 24px; }
-    .analysis-section { margin-bottom: 24px; }
-    .analysis-label {
-        display: flex; align-items: center; gap: 8px;
-        font-family: 'Orbitron', sans-serif; font-size: 0.9rem;
-        color: var(--gold-primary); margin-bottom: 12px;
-    }
-    .analysis-content {
-        color: var(--text-secondary); line-height: 1.9; font-size: 0.95rem;
-        padding-left: 28px; border-left: 2px solid var(--border-color);
-    }
-    .key-champions { margin-bottom: 24px; }
-    .key-champions-title {
-        display: flex; align-items: center; gap: 8px;
-        font-size: 0.9rem; color: var(--gold-primary); margin-bottom: 12px;
-    }
-    .champions-grid { display: flex; flex-wrap: wrap; gap: 12px; }
-    .champion-item { display: flex; flex-direction: column; align-items: center; gap: 6px; }
-    .champion-portrait {
-        width: 50px; height: 50px; border-radius: 50%; border: 2px solid var(--gold-primary);
-        background: var(--bg-hover); display: flex; align-items: center; justify-content: center;
-        font-size: 1.5rem; color: var(--gold-primary);
-    }
-    .champion-name { font-size: 0.7rem; color: var(--text-secondary); text-align: center; }
-    .nav-buttons { display: flex; justify-content: space-between; margin-top: 40px; gap: 16px; }
-    .nav-btn {
-        flex: 1; padding: 16px 24px; background: var(--bg-card);
-        border: 1px solid var(--border-color); border-radius: 8px;
-        color: var(--text-secondary); text-decoration: none; text-align: center;
-        font-weight: 500; transition: all 0.3s ease;
-    }
-    .nav-btn:hover { border-color: var(--gold-primary); color: var(--gold-primary); }
-    .footer {
-        text-align: center; margin-top: 60px; padding: 30px;
-        border-top: 1px solid var(--border-color); color: var(--text-secondary);
-    }
-    @media (max-width: 768px) {
-        .match-title { font-size: 1.4rem; }
-        .final-score { font-size: 2rem; }
-        .nav-buttons { flex-direction: column; }
-    }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>4강 - Gen.G vs kt Rolster</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Orbitron:wght@400;700;900&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0a0e13;
+            --bg-card: #111827;
+            --bg-hover: #1f2937;
+            --gold-primary: #c89b3c;
+            --gold-secondary: #f0e6d2;
+            --blue-accent: #0ac8b9;
+            --red-accent: #ff4655;
+            --text-primary: #f0e6d2;
+            --text-secondary: #a09b8c;
+            --border-color: #3c3c41;
+            --gradient-gold: linear-gradient(135deg, #785a28 0%, #c8aa6e 50%, #c89b3c 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            min-height: 100vh;
+            background-image: radial-gradient(ellipse at top, rgba(200, 155, 60, 0.05) 0%, transparent 50%);
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            margin-bottom: 30px;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+
+        .back-link:hover {
+            color: var(--gold-primary);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 40px;
+            background: var(--bg-card);
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+        }
+
+        .stage-badge {
+            display: inline-block;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.85rem;
+            background: var(--gold-primary);
+            color: var(--bg-dark);
+            padding: 6px 16px;
+            border-radius: 4px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .match-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .team-logo {
+            width: 48px;
+            height: 48px;
+            object-fit: contain;
+        }
+
+        .team-with-logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .vs-divider {
+            color: var(--red-accent);
+            margin: 0 12px;
+            font-size: 1.2rem;
+        }
+
+        .final-score {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--gold-primary);
+            margin-top: 12px;
+        }
+
+        .keywords-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 24px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .keyword-tag {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--blue-accent);
+            background: rgba(10, 200, 185, 0.1);
+            padding: 8px 16px;
+            border-radius: 24px;
+            border: 1px solid rgba(10, 200, 185, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .keyword-tag::before {
+            content: '#';
+            opacity: 0.7;
+        }
+
+        .keyword-tag:hover {
+            background: rgba(10, 200, 185, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .overview-section {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid var(--border-color);
+        }
+
+        .overview-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            color: var(--gold-primary);
+            margin-bottom: 16px;
+        }
+
+        .overview-text {
+            color: var(--text-secondary);
+            line-height: 1.9;
+        }
+
+        #pulse-chart-container {
+            width: 100%;
+            height: 350px;
+            margin-top: 30px;
+            background: linear-gradient(180deg, rgba(17, 24, 39, 0) 0%, rgba(10, 14, 19, 0.5) 100%);
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .custom-tooltip {
+            position: absolute;
+            visibility: hidden;
+            background: rgba(0, 0, 0, 0.95);
+            border: 1px solid var(--gold-primary);
+            border-radius: 6px;
+            padding: 10px 14px;
+            color: #fff;
+            font-size: 12px;
+            pointer-events: none;
+            z-index: 9999;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+        }
+
+        .set-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 24px;
+            overflow: hidden;
+            transition: border-color 0.3s ease;
+        }
+
+        .set-card:hover {
+            border-color: var(--gold-primary);
+        }
+
+        .set-header {
+            background: linear-gradient(180deg, #1a2332 0%, #111827 100%);
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .set-number {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+
+        .set-winner {
+            font-size: 0.9rem;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .set-winner.team-a {
+            background: rgba(10, 200, 185, 0.2);
+            color: var(--blue-accent);
+            border: 1px solid var(--blue-accent);
+        }
+
+        .set-winner.team-b {
+            background: rgba(255, 70, 85, 0.2);
+            color: var(--red-accent);
+            border: 1px solid var(--red-accent);
+        }
+
+        .set-body {
+            padding: 24px;
+        }
+
+        .analysis-section {
+            margin-bottom: 24px;
+        }
+
+        .analysis-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            color: var(--gold-primary);
+            margin-bottom: 12px;
+        }
+
+        .analysis-content {
+            color: var(--text-secondary);
+            line-height: 1.9;
+            font-size: 0.95rem;
+            padding-left: 28px;
+            border-left: 2px solid var(--border-color);
+        }
+
+        .key-champions {
+            margin-bottom: 24px;
+        }
+
+        .key-champions-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            color: var(--gold-primary);
+            margin-bottom: 12px;
+        }
+
+        .champions-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .champion-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .champion-portrait {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 2px solid var(--gold-primary);
+            background: var(--bg-hover);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--gold-primary);
+        }
+
+        .champion-name {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            text-align: center;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+            gap: 16px;
+        }
+
+        .nav-btn {
+            flex: 1;
+            padding: 16px 24px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            text-align: center;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            border-color: var(--gold-primary);
+            color: var(--gold-primary);
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding: 30px;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-secondary);
+        }
+
+        @media (max-width: 768px) {
+            .match-title {
+                font-size: 1.4rem;
+            }
+
+            .final-score {
+                font-size: 2rem;
+            }
+
+            .nav-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
 </head>
+
 <body>
     <div class="container">
         <a href="../../" class="back-link">← 스토리 목록으로 돌아가기</a>
-        
+
         <header class="header">
             <span class="stage-badge">4강</span>
             <h1 class="match-title">
                 <span class="team-with-logo">
-                    <img src="../../../static/images/teams/geng.svg" class="team-logo" onerror="this.style.display='none'">
+                    <img src="../../../static/images/teams/geng.svg" class="team-logo"
+                        onerror="this.style.display='none'">
                     Gen.G
                 </span>
                 <span class="vs-divider">VS</span>
                 <span class="team-with-logo">
-                    <img src="../../../static/images/teams/kt.svg" class="team-logo" onerror="this.style.display='none'">
+                    <img src="../../../static/images/teams/kt.svg" class="team-logo"
+                        onerror="this.style.display='none'">
                     kt Rolster
                 </span>
             </h1>
             <div class="final-score">1:3</div>
-            
+
             <div class="keywords-container">
-                <span class="keyword-tag">대이변</span><span class="keyword-tag">신데렐라런</span><span class="keyword-tag">DRX신화재림</span><span class="keyword-tag">언더독의반란</span><span class="keyword-tag">KT의기적</span>
+                <span class="keyword-tag">대이변</span><span class="keyword-tag">신데렐라런</span><span
+                    class="keyword-tag">DRX신화재림</span><span class="keyword-tag">언더독의반란</span><span
+                    class="keyword-tag">KT의기적</span>
             </div>
-            
         </header>
 
-        
         <section class="overview-section">
             <h2 class="overview-title"><span>📋</span> 경기 총평</h2>
-            <p class="overview-text">모두가 젠지의 압도적인 승리를 예상했지만, 결과는 정반대였습니다. 언더독 KT가 막강한 우승 후보 젠지를 격침시키는 대이변이 일어났습니다. '2022 DRX 신화의 재림'을 연상시키는 KT의 기적 같은 승리와 'KT는 1년에 2번 젠지를 이긴다'는 징크스의 실현은 이번 4강 최고의 드라마였습니다.</p>
-        </section>
-        
+            <p class="overview-text">모두가 젠지의 압도적인 승리를 예상했지만, 결과는 정반대였습니다. 언더독 KT가 막강한 우승 후보 젠지를 격침시키는 대이변이 일어났습니다. '2022
+                DRX 신화의 재림'을 연상시키는 KT의 기적 같은 승리와 'KT는 1년에 2번 젠지를 이긴다'는 징크스의 실현은 이번 4강 최고의 드라마였습니다.</p>
 
-        
-            <article class="set-card">
-                <div class="set-header">
-                    <span class="set-number">1세트</span>
-                    <span class="set-winner team-b">🏆 kt Rolster 승리</span>
-                </div>
-                <div class="set-body">
-                    
-                    <div class="key-champions">
-                        <h4 class="key-champions-title"><span>🎖️</span> 주요 챔피언</h4>
-                        <div class="champions-grid">
-                            <div class="champion-item"><div class="champion-portrait placeholder">⚔️</div><span class="champion-name">Taliyah</span></div><div class="champion-item"><div class="champion-portrait placeholder">⚔️</div><span class="champion-name">Vi</span></div><div class="champion-item"><div class="champion-portrait placeholder">⚔️</div><span class="champion-name">Corki</span></div><div class="champion-item"><div class="champion-portrait placeholder">⚔️</div><span class="champion-name">Yone</span></div><div class="champion-item"><div class="champion-portrait placeholder">⚔️</div><span class="champion-name">Caitlyn</span></div>
+            <div id="pulse-chart-container">
+                <h3
+                    style="text-align: center; font-family: 'Orbitron'; color: #a09b8c; font-size: 0.9rem; margin-top: 15px;">
+                    MATCH STAT COMPARISON (VS)
+                </h3>
+                <div id="chart"></div>
+            </div>
+        </section>
+
+        <article class="set-card">
+            <div class="set-header">
+                <span class="set-number">1세트</span>
+                <span class="set-winner team-b">🏆 kt Rolster 승리</span>
+            </div>
+            <div class="set-body">
+                <div class="key-champions">
+                    <h4 class="key-champions-title"><span>🎖️</span> 주요 챔피언</h4>
+                    <div class="champions-grid">
+                        <div class="champion-item">
+                            <div class="champion-portrait placeholder">⚔️</div><span
+                                class="champion-name">Taliyah</span>
+                        </div>
+                        <div class="champion-item">
+                            <div class="champion-portrait placeholder">⚔️</div><span class="champion-name">Vi</span>
+                        </div>
+                        <div class="champion-item">
+                            <div class="champion-portrait placeholder">⚔️</div><span class="champion-name">Corki</span>
+                        </div>
+                        <div class="champion-item">
+                            <div class="champion-portrait placeholder">⚔️</div><span class="champion-name">Yone</span>
+                        </div>
+                        <div class="champion-item">
+                            <div class="champion-portrait placeholder">⚔️</div><span
+                                class="champion-name">Caitlyn</span>
                         </div>
                     </div>
-                    
-                    <div class="analysis-section">
-                        <h3 class="analysis-label"><span class="icon">🎯</span> 밴픽 전략 분석</h3>
-                        <p class="analysis-content">밴픽 전략 분석: 젠지는 탈리야-바이-코르키로 강력한 돌진 조합을 구성했습니다. 이에 맞서 KT는 비디디의 요네라는 도박수와 함께, 덕담의 케이틀린을 중심으로 후반 보험을 드는 유연한 조합을 선보였습니다.</p>
-                    </div>
-                    <div class="analysis-section">
-                        <h3 class="analysis-label"><span class="icon">⚔️</span> 경기 흐름 및 핵심 서사</h3>
-                        <p class="analysis-content">경기 흐름 및 핵심 서사: 중반까지 젠지가 7천 골드 차이까지 벌리며 승기를 굳히는 듯했습니다. 하지만 KT는 불리한 상황을 압도적인 교전력으로 뒤집어냈습니다. 비디디의 요네가 젠지의 허리를 끊어놓으면, 성장한 덕담의 케이틀린이 판을 마무리하는 대역전극이 펼쳐졌습니다.</p>
-                    </div>
                 </div>
-            </article>
-            
-            <article class="set-card">
-                <div class="set-header">
-                    <span class="set-number">2세트</span>
-                    <span class="set-winner team-a">🏆 Gen.G 승리</span>
+                <div class="analysis-section">
+                    <h3 class="analysis-label"><span class="icon">🎯</span> 밴픽 전략 분석</h3>
+                    <p class="analysis-content">밴픽 전략 분석: 젠지는 탈리야-바이-코르키로 강력한 돌진 조합을 구성했습니다. 이에 맞서 KT는 비디디의 요네라는 도박수와
+                        함께, 덕담의 케이틀린을 중심으로 후반 보험을 드는 유연한 조합을 선보였습니다.</p>
                 </div>
-                <div class="set-body">
-                    
-                    <div class="key-champions">
-                        <h4 class="key-champions-title"><span>🎖️</span> 주요 챔피언</h4>
-                        <div class="champions-grid">
-                            <div class="champion-item"><div class="champion-portrait placeholder">⚔️</div><span class="champion-name">XinZhao</span></div><div class="champion-item"><div class="champion-portrait placeholder">⚔️</div><span class="champion-name">Ambessa</span></div><div class="champion-item"><div class="champion-portrait placeholder">⚔️</div><span class="champion-name">Galio</span></div><div class="champion-item"><div class="champion-portrait placeholder">⚔️</div><span class="champion-name">Qiyana</span></div><div class="champion-item"><div class="champion-portrait placeholder">⚔️</div><span class="champion-name">Ryze</span></div><div class="champion-item"><div class="champion-portrait placeholder">⚔️</div><span class="champion-name">Ezreal</span></div>
+                <div class="analysis-section">
+                    <h3 class="analysis-label"><span class="icon">⚔️</span> 경기 흐름 및 핵심 서사</h3>
+                    <p class="analysis-content">경기 흐름 및 핵심 서사: 중반까지 젠지가 7천 골드 차이까지 벌리며 승기를 굳히는 듯했습니다. 하지만 KT는 불리한 상황을
+                        압도적인 교전력으로 뒤집어냈습니다. 비디디의 요네가 젠지의 허리를 끊어놓으면, 성장한 덕담의 케이틀린이 판을 마무리하는 대역전극이 펼쳐졌습니다.</p>
+                </div>
+            </div>
+        </article>
+
+        <article class="set-card">
+            <div class="set-header">
+                <span class="set-number">2세트</span>
+                <span class="set-winner team-a">🏆 Gen.G 승리</span>
+            </div>
+            <div class="set-body">
+                <div class="key-champions">
+                    <h4 class="key-champions-title"><span>🎖️</span> 주요 챔피언</h4>
+                    <div class="champions-grid">
+                        <div class="champion-item">
+                            <div class="champion-portrait placeholder">⚔️</div><span
+                                class="champion-name">XinZhao</span>
+                        </div>
+                        <div class="champion-item">
+                            <div class="champion-portrait placeholder">⚔️</div><span
+                                class="champion-name">Ambessa</span>
+                        </div>
+                        <div class="champion-item">
+                            <div class="champion-portrait placeholder">⚔️</div><span class="champion-name">Galio</span>
+                        </div>
+                        <div class="champion-item">
+                            <div class="champion-portrait placeholder">⚔️</div><span class="champion-name">Qiyana</span>
+                        </div>
+                        <div class="champion-item">
+                            <div class="champion-portrait placeholder">⚔️</div><span class="champion-name">Ryze</span>
+                        </div>
+                        <div class="champion-item">
+                            <div class="champion-portrait placeholder">⚔️</div><span class="champion-name">Ezreal</span>
                         </div>
                     </div>
-                    
-                    <div class="analysis-section">
-                        <h3 class="analysis-label"><span class="icon">🎯</span> 밴픽 전략 분석</h3>
-                        <p class="analysis-content">밴픽 전략 분석: 젠지는 신 짜오와 암베사-갈리오를 중심으로 한층 더 강력한 돌진 조합을 완성했습니다. KT는 키아나-라이즈로 받아치려 했지만, 젠지의 조합 파괴력을 감당하기엔 역부족이었습니다.</p>
-                    </div>
-                    <div class="analysis-section">
-                        <h3 class="analysis-label"><span class="icon">⚔️</span> 경기 흐름 및 핵심 서사</h3>
-                        <p class="analysis-content">경기 흐름 및 핵심 서사: 초반 교전에서 승리하며 기세를 올린 KT였지만, 젠지는 침착하게 오브젝트를 독식하며 격차를 좁혀나갔습니다. '룰러' 박재혁의 이즈리얼이 폭발적으로 성장하며 경기를 캐리했고, 젠지가 시리즈를 원점으로 돌리는 데 성공했습니다.</p>
-                    </div>
                 </div>
-            </article>
-            
-            <article class="set-card">
-                <div class="set-header">
-                    <span class="set-number">3세트</span>
-                    <span class="set-winner team-b">🏆 kt Rolster 승리</span>
+                <div class="analysis-section">
+                    <h3 class="analysis-label"><span class="icon">🎯</span> 밴픽 전략 분석</h3>
+                    <p class="analysis-content">밴픽 전략 분석: 젠지는 신 짜오와 암베사-갈리오를 중심으로 한층 더 강력한 돌진 조합을 완성했습니다. KT는 키아나-라이즈로
+                        받아치려 했지만, 젠지의 조합 파괴력을 감당하기엔 역부족이었습니다.</p>
                 </div>
-                <div class="set-body">
-                    
-                    <div class="key-champions">
-                        <h4 class="key-champions-title"><span>🎖️</span> 주요 챔피언</h4>
-                        <div class="champions-grid">
-                            <div class="champion-item"><div class="champion-portrait placeholder">⚔️</div><span class="champion-name">Azir</span></div><div class="champion-item"><div class="champion-portrait placeholder">⚔️</div><span class="champion-name">Orianna</span></div><div class="champion-item"><div class="champion-portrait placeholder">⚔️</div><span class="champion-name">Pantheon</span></div>
+                <div class="analysis-section">
+                    <h3 class="analysis-label"><span class="icon">⚔️</span> 경기 흐름 및 핵심 서사</h3>
+                    <p class="analysis-content">경기 흐름 및 핵심 서사: 초반 교전에서 승리하며 기세를 올린 KT였지만, 젠지는 침착하게 오브젝트를 독식하며 격차를
+                        좁혀나갔습니다. '룰러' 박재혁의 이즈리얼이 폭발적으로 성장하며 경기를 캐리했고, 젠지가 시리즈를 원점으로 돌리는 데 성공했습니다.</p>
+                </div>
+            </div>
+        </article>
+
+        <article class="set-card">
+            <div class="set-header">
+                <span class="set-number">3세트</span>
+                <span class="set-winner team-b">🏆 kt Rolster 승리</span>
+            </div>
+            <div class="set-body">
+                <div class="key-champions">
+                    <h4 class="key-champions-title"><span>🎖️</span> 주요 챔피언</h4>
+                    <div class="champions-grid">
+                        <div class="champion-item">
+                            <div class="champion-portrait placeholder">⚔️</div><span class="champion-name">Azir</span>
+                        </div>
+                        <div class="champion-item">
+                            <div class="champion-portrait placeholder">⚔️</div><span
+                                class="champion-name">Orianna</span>
+                        </div>
+                        <div class="champion-item">
+                            <div class="champion-portrait placeholder">⚔️</div><span
+                                class="champion-name">Pantheon</span>
                         </div>
                     </div>
-                    
-                    <div class="analysis-section">
-                        <h3 class="analysis-label"><span class="icon">🎯</span> 밴픽 전략 분석</h3>
-                        <p class="analysis-content">밴픽 전략 분석: KT는 아지르-오리아나를 모두 풀어주는 과감한 전략을 선택했고, 비디디에게 그의 시그니처 픽인 아지르를 안겨주었습니다. 젠지는 오리아나-판테온으로 대응했지만, 비디디의 아지르를 막기에는 역부족이었습니다.</p>
-                    </div>
-                    <div class="analysis-section">
-                        <h3 class="analysis-label"><span class="icon">⚔️</span> 경기 흐름 및 핵심 서사</h3>
-                        <p class="analysis-content">경기 흐름 및 핵심 서사: 그야말로 '순수 체급' 차이가 무엇인지 보여준 경기였습니다. 비디디는 아지르로 '쵸비' 정지훈의 오리아나를 상대로 솔로킬을 기록하는 등 미드 라인을 완벽하게 압도했습니다. 중계진조차 "이 판은 이미 젠지 다운입니다. 말 그대로 순수 박살이에요."라며 경악할 정도였습니다. 이 미드 차이는 거대한 스노우볼이 되어 굴러갔고, KT가 젠지를 상대로 완승을 거뒀습니다.</p>
-                    </div>
                 </div>
-            </article>
-            
-            <article class="set-card">
-                <div class="set-header">
-                    <span class="set-number">4세트</span>
-                    <span class="set-winner team-b">🏆 kt Rolster 승리</span>
+                <div class="analysis-section">
+                    <h3 class="analysis-label"><span class="icon">🎯</span> 밴픽 전략 분석</h3>
+                    <p class="analysis-content">밴픽 전략 분석: KT는 아지르-오리아나를 모두 풀어주는 과감한 전략을 선택했고, 비디디에게 그의 시그니처 픽인 아지르를
+                        안겨주었습니다. 젠지는 오리아나-판테온으로 대응했지만, 비디디의 아지르를 막기에는 역부족이었습니다.</p>
                 </div>
-                <div class="set-body">
-                    
-                    <div class="key-champions">
-                        <h4 class="key-champions-title"><span>🎖️</span> 주요 챔피언</h4>
-                        <div class="champions-grid">
-                            <div class="champion-item"><div class="champion-portrait placeholder">⚔️</div><span class="champion-name">Anivia</span></div><div class="champion-item"><div class="champion-portrait placeholder">⚔️</div><span class="champion-name">Ornn</span></div><div class="champion-item"><div class="champion-portrait placeholder">⚔️</div><span class="champion-name">DrMundo</span></div><div class="champion-item"><div class="champion-portrait placeholder">⚔️</div><span class="champion-name">Cassiopeia</span></div><div class="champion-item"><div class="champion-portrait placeholder">⚔️</div><span class="champion-name">Kalista</span></div>
+                <div class="analysis-section">
+                    <h3 class="analysis-label"><span class="icon">⚔️</span> 경기 흐름 및 핵심 서사</h3>
+                    <p class="analysis-content">경기 흐름 및 핵심 서사: 그야말로 '순수 체급' 차이가 무엇인지 보여준 경기였습니다. 비디디는 아지르로 '쵸비' 정지훈의
+                        오리아나를 상대로 솔로킬을 기록하는 등 미드 라인을 완벽하게 압도했습니다. 중계진조차 "이 판은 이미 젠지 다운입니다. 말 그대로 순수 박살이에요."라며 경악할
+                        정도였습니다. 이 미드 차이는 거대한 스노우볼이 되어 굴러갔고, KT가 젠지를 상대로 완승을 거뒀습니다.</p>
+                </div>
+            </div>
+        </article>
+
+        <article class="set-card">
+            <div class="set-header">
+                <span class="set-number">4세트</span>
+                <span class="set-winner team-b">🏆 kt Rolster 승리</span>
+            </div>
+            <div class="set-body">
+                <div class="key-champions">
+                    <h4 class="key-champions-title"><span>🎖️</span> 주요 챔피언</h4>
+                    <div class="champions-grid">
+                        <div class="champion-item">
+                            <div class="champion-portrait placeholder">⚔️</div><span class="champion-name">Anivia</span>
+                        </div>
+                        <div class="champion-item">
+                            <div class="champion-portrait placeholder">⚔️</div><span class="champion-name">Ornn</span>
+                        </div>
+                        <div class="champion-item">
+                            <div class="champion-portrait placeholder">⚔️</div><span
+                                class="champion-name">DrMundo</span>
+                        </div>
+                        <div class="champion-item">
+                            <div class="champion-portrait placeholder">⚔️</div><span
+                                class="champion-name">Cassiopeia</span>
+                        </div>
+                        <div class="champion-item">
+                            <div class="champion-portrait placeholder">⚔️</div><span
+                                class="champion-name">Kalista</span>
                         </div>
                     </div>
-                    
-                    <div class="analysis-section">
-                        <h3 class="analysis-label"><span class="icon">🎯</span> 밴픽 전략 분석</h3>
-                        <p class="analysis-content">밴픽 전략 분석: 벼랑 끝에 몰린 젠지는 쵸비의 통산 첫 애니비아 픽이라는 승부수를 던졌습니다. 하지만 KT는 오른-문도라는 극강의 탱커 라인과 카시오페아-칼리스타 딜러진으로 구성된 안정적이면서도 파괴력 있는 조합으로 맞섰습니다.</p>
-                    </div>
-                    <div class="analysis-section">
-                        <h3 class="analysis-label"><span class="icon">⚔️</span> 경기 흐름 및 핵심 서사</h3>
-                        <p class="analysis-content">경기 흐름 및 핵심 서사: 젠지의 애니비아가 힘을 발휘하기도 전에 KT가 주도권을 잡았습니다. 승부에 쐐기를 박은 것은 마지막 장로 드래곤 한타였습니다. '퍼펙트' 이승민의 오른이 환상적인 궁극기 활용으로 '4인 에어본'을 성공시키며 한타를 대승으로 이끌었습니다. 이 한타를 끝으로 KT는 창단 13년 만에 월즈 결승에 진출하는 역사적인 순간을 맞이했습니다.</p>
-                    </div>
                 </div>
-            </article>
-            
+                <div class="analysis-section">
+                    <h3 class="analysis-label"><span class="icon">🎯</span> 밴픽 전략 분석</h3>
+                    <p class="analysis-content">밴픽 전략 분석: 벼랑 끝에 몰린 젠지는 쵸비의 통산 첫 애니비아 픽이라는 승부수를 던졌습니다. 하지만 KT는 오른-문도라는
+                        극강의 탱커 라인과 카시오페아-칼리스타 딜러진으로 구성된 안정적이면서도 파괴력 있는 조합으로 맞섰습니다.</p>
+                </div>
+                <div class="analysis-section">
+                    <h3 class="analysis-label"><span class="icon">⚔️</span> 경기 흐름 및 핵심 서사</h3>
+                    <p class="analysis-content">경기 흐름 및 핵심 서사: 젠지의 애니비아가 힘을 발휘하기도 전에 KT가 주도권을 잡았습니다. 승부에 쐐기를 박은 것은 마지막
+                        장로 드래곤 한타였습니다. '퍼펙트' 이승민의 오른이 환상적인 궁극기 활용으로 '4인 에어본'을 성공시키며 한타를 대승으로 이끌었습니다. 이 한타를 끝으로 KT는 창단
+                        13년 만에 월즈 결승에 진출하는 역사적인 순간을 맞이했습니다.</p>
+                </div>
+            </div>
+        </article>
 
         <div class="nav-buttons">
             <a href="../../" class="nav-btn">📖 전체 스토리 목록</a>
@@ -281,5 +580,59 @@
             <p>2025 롤드컵 벤픽 아카이브 | Data Storytelling Project</p>
         </footer>
     </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const rawData = [
+                { "category": "SERIES SCORE", "left": 1, "right": 3 },
+                { "category": "TOTAL KILLS", "left": 48, "right": 66 },
+                { "category": "TOWERS", "left": 22, "right": 31 },
+                { "category": "DRAGONS", "left": 7, "right": 16 },
+                { "category": "BARONS", "left": 4, "right": 3 },
+                { "category": "GOLD (k)", "left": 262.8, "right": 281.6 }
+            ];
+            const teamA = "Gen.G";
+            const teamB = "kt Rolster";
+
+            const container = document.getElementById("pulse-chart-container");
+            d3.select("body").selectAll(".custom-tooltip").remove();
+            const tooltip = d3.select("body").append("div").attr("class", "custom-tooltip");
+
+            const width = container.clientWidth;
+            const height = 300;
+            const margin = { top: 40, right: 50, bottom: 20, left: 50 };
+            const center = width / 2;
+            const chartWidth = width - margin.left - margin.right;
+
+            d3.select("#chart").selectAll("*").remove();
+            const svg = d3.select("#chart").append("svg").attr("width", width).attr("height", height);
+
+            const y = d3.scaleBand().domain(rawData.map(d => d.category)).range([margin.top, height - margin.bottom]).padding(0.4);
+
+            const groups = svg.selectAll(".row").data(rawData).enter().append("g").attr("class", "row").attr("transform", d => `translate(0, ${y(d.category)})`);
+
+            groups.append("text").text(d => d.category).attr("x", center).attr("y", y.bandwidth() / 2).attr("dy", "0.35em").attr("text-anchor", "middle").attr("fill", "#a09b8c").attr("font-family", "Orbitron").attr("font-size", "12px");
+
+            groups.append("rect").attr("class", "bar-left").attr("x", center).attr("y", 0).attr("height", y.bandwidth()).attr("width", 0).attr("fill", "#c89b3c").attr("rx", 4)
+                .on("mouseover", function (event, d) { d3.select(this).attr("fill", "#ffd700"); const suffix = d.category.includes("GOLD") ? "k" : ""; tooltip.style("visibility", "visible").html(`<strong>${d.category}</strong><br><span style="color:#ffd700">${teamA}: ${d.left}${suffix}</span>`); })
+                .on("mousemove", function (event) { tooltip.style("top", (event.pageY - 10) + "px").style("left", (event.pageX + 10) + "px"); })
+                .on("mouseout", function () { d3.select(this).attr("fill", "#c89b3c"); tooltip.style("visibility", "hidden"); })
+                .transition().duration(1500).attr("x", d => center - (d.left / (d.left + d.right) * (chartWidth / 2 - 60))).attr("width", d => (d.left / (d.left + d.right) * (chartWidth / 2 - 60)));
+
+            groups.append("rect").attr("class", "bar-right").attr("x", center).attr("y", 0).attr("height", y.bandwidth()).attr("width", 0).attr("fill", "#ff4655").attr("rx", 4)
+                .on("mouseover", function (event, d) { d3.select(this).attr("fill", "#ff8080"); const suffix = d.category.includes("GOLD") ? "k" : ""; tooltip.style("visibility", "visible").html(`<strong>${d.category}</strong><br><span style="color:#ff8080">${teamB}: ${d.right}${suffix}</span>`); })
+                .on("mousemove", function (event) { tooltip.style("top", (event.pageY - 10) + "px").style("left", (event.pageX + 10) + "px"); })
+                .on("mouseout", function () { d3.select(this).attr("fill", "#ff4655"); tooltip.style("visibility", "hidden"); })
+                .transition().duration(1500).attr("width", d => (d.right / (d.left + d.right) * (chartWidth / 2 - 60)));
+
+            groups.append("text").text(d => d.category.includes("GOLD") ? d.left + "k" : d.left).attr("x", d => center - (d.left / (d.left + d.right) * (chartWidth / 2 - 60)) - 10).attr("y", y.bandwidth() / 2).attr("dy", "0.35em").attr("text-anchor", "end").attr("fill", "#c89b3c").attr("font-weight", "bold").style("opacity", 0).transition().delay(500).duration(1000).style("opacity", 1);
+
+            groups.append("text").text(d => d.category.includes("GOLD") ? d.right + "k" : d.right).attr("x", d => center + (d.right / (d.left + d.right) * (chartWidth / 2 - 60)) + 10).attr("y", y.bandwidth() / 2).attr("dy", "0.35em").attr("text-anchor", "start").attr("fill", "#ff4655").attr("font-weight", "bold").style("opacity", 0).transition().delay(500).duration(1000).style("opacity", 1);
+
+            svg.append("text").attr("x", center - 100).attr("y", 20).text(teamA).attr("fill", "#c89b3c").attr("font-weight", "bold").attr("text-anchor", "middle");
+            svg.append("text").attr("x", center + 100).attr("y", 20).text(teamB).attr("fill", "#ff4655").attr("font-weight", "bold").attr("text-anchor", "middle");
+        });
+    </script>
 </body>
+
 </html>

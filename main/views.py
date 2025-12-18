@@ -1,3 +1,4 @@
+import json
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, JsonResponse, Http404
 from django.views import View
@@ -303,6 +304,74 @@ def match_story_detail(request, stage, match_number):
     
     first_story = stories.first()
     
+    # [데이터 정의] 경기별 통계 시각화 데이터
+    viz_data_map = {
+        # === 8강 (Quarterfinals) ===
+        "QF_1": [
+            {"category": "SERIES SCORE", "left": 3, "right": 1},
+            {"category": "TOTAL KILLS",  "left": 74, "right": 65},
+            {"category": "TOWERS",       "left": 30, "right": 26},
+            {"category": "DRAGONS",      "left": 11, "right": 10},
+            {"category": "BARONS",       "left": 4, "right": 3},
+            {"category": "GOLD (k)",     "left": 296.2, "right": 287.4}
+        ],
+        "QF_2": [
+            {"category": "SERIES SCORE", "left": 3, "right": 0},
+            {"category": "TOTAL KILLS",  "left": 70, "right": 28},
+            {"category": "TOWERS",       "left": 26, "right": 6},
+            {"category": "DRAGONS",      "left": 11, "right": 2},
+            {"category": "BARONS",       "left": 2, "right": 0},
+            {"category": "GOLD (k)",     "left": 179.2, "right": 146.0}
+        ],
+        "QF_3": [
+            {"category": "SERIES SCORE", "left": 1, "right": 3},
+            {"category": "TOTAL KILLS",  "left": 38, "right": 65},
+            {"category": "TOWERS",       "left": 16, "right": 26},
+            {"category": "DRAGONS",      "left": 5, "right": 11},
+            {"category": "BARONS",       "left": 1, "right": 3},
+            {"category": "GOLD (k)",     "left": 210.5, "right": 232.8}
+        ],
+        "QF_4": [
+            {"category": "SERIES SCORE", "left": 2, "right": 3},
+            {"category": "TOTAL KILLS",  "left": 76, "right": 73},
+            {"category": "TOWERS",       "left": 25, "right": 35},
+            {"category": "DRAGONS",      "left": 9, "right": 17},
+            {"category": "BARONS",       "left": 2, "right": 3},
+            {"category": "GOLD (k)",     "left": 322.5, "right": 328.6}
+        ],
+
+        # === 4강 (Semifinals) ===
+        "SF_1": [
+            {"category": "SERIES SCORE", "left": 1, "right": 3},
+            {"category": "TOTAL KILLS",  "left": 48, "right": 66},
+            {"category": "TOWERS",       "left": 22, "right": 31},
+            {"category": "DRAGONS",      "left": 7, "right": 16},
+            {"category": "BARONS",       "left": 4, "right": 3},
+            {"category": "GOLD (k)",     "left": 262.8, "right": 281.6}
+        ],
+        "SF_2": [
+            {"category": "SERIES SCORE", "left": 3, "right": 0},
+            {"category": "TOTAL KILLS",  "left": 70, "right": 27},
+            {"category": "TOWERS",       "left": 22, "right": 7},
+            {"category": "DRAGONS",      "left": 11, "right": 1},
+            {"category": "BARONS",       "left": 3, "right": 0},
+            {"category": "GOLD (k)",     "left": 178.6, "right": 147.6}
+        ],
+
+        # === 결승 (Finals) ===
+        "F_1": [
+            {"category": "SERIES SCORE", "left": 2, "right": 3},
+            {"category": "TOTAL KILLS",  "left": 77, "right": 89},
+            {"category": "TOWERS",       "left": 23, "right": 37},
+            {"category": "DRAGONS",      "left": 12, "right": 15},
+            {"category": "BARONS",       "left": 3, "right": 4},
+            {"category": "GOLD (k)",     "left": 325.7, "right": 350.0}
+        ],
+    }
+
+    match_key = f"{stage}_{match_number}"
+    current_viz_data = viz_data_map.get(match_key, [])
+    
     context = {
         'title': f'{first_story.get_stage_display()} - {first_story.team_a} vs {first_story.team_b}',
         'team_a': first_story.team_a,
@@ -314,6 +383,9 @@ def match_story_detail(request, stage, match_number):
         'match_overview': first_story.match_overview,
         'stories': stories,
         'keywords': get_match_keywords(stage, match_number),
+        
+        # [핵심] 시각화 데이터를 리스트 그대로 넘김 (템플릿에서 json_script 필터 사용)
+        'viz_data': current_viz_data, 
     }
     return render(request, 'main/match_story_detail.html', context=context)
 
